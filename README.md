@@ -113,21 +113,29 @@ are derived on every save. Never read them as authoritative.
 not survive every structured-clone implementation, and an untestable backup
 path is not acceptable for the only copy of this data.
 
-## Deploying
+## Deploying and self-hosting
 
-Local-first and dependency-free at runtime: with no environment variables the
-app is a fully static client that stores everything in the browser.
+Sidenote is a standard Next.js app. It runs **local-only** with no backend, or
+with **your own Supabase** for accounts, sync and share links. The full guide —
+Vercel, Docker, any Node host, Supabase migrations, auth redirects and the
+build-time variables — is in **[docs/SELF-HOSTING.md](docs/SELF-HOSTING.md)**.
 
-To enable optional accounts and cross-device sync, set two env vars (see
-`.env.example`) pointing at a self-hosted Supabase stack:
+With no environment variables the app stores everything in the browser and needs
+no server. To enable optional accounts and cross-device sync, set two variables
+at **build time** (see `.env.example`):
 
 ```
-NEXT_PUBLIC_SUPABASE_URL=https://supabase-sidenote.<domain>
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon key>
 ```
 
-Vercel: connect the repository, add the vars, deploy. The service worker only
-becomes real once it is served over HTTPS from the deployed origin.
+`NEXT_PUBLIC_*` values are inlined by Next.js at build time, so rebuild after
+changing them. The anon key is public by design; never put the service-role key
+in the client.
+
+Vercel: connect the repository, add the variables, deploy. Docker:
+`docker compose up --build` (pass the two build args). The service worker only
+becomes real once the app is served over HTTPS from the deployed origin.
 
 ## Sync (optional)
 

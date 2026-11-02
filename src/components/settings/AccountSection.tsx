@@ -12,6 +12,7 @@ import { relativeTime } from "@/lib/format";
 import { FREE_ATTACHMENT_BYTES } from "@/lib/attachments/path";
 import { formatBytes } from "@/lib/storage/quota";
 import { signOutRemote } from "@/lib/supabase/actions";
+import { supabaseHost } from "@/lib/supabase/client";
 import { runSyncNow } from "@/lib/sync/trigger";
 import type { AuthSnapshot } from "@/lib/supabase/auth-store";
 import type { SyncStatus } from "@/lib/sync/status";
@@ -30,6 +31,7 @@ export function AccountSection() {
   const auth = useAuth();
   const status = useSyncStatus();
   const usage = useRemoteAttachmentUsage();
+  const host = supabaseHost();
 
   if (auth.status === "disabled") {
     return (
@@ -56,6 +58,12 @@ export function AccountSection() {
           Your notes live in this browser. Sign in to back them up and sync them to
           your other devices — offline editing keeps working either way.
         </p>
+        {host !== null && (
+          <p className="text-xs text-muted-foreground">
+            This deployment is connected to{" "}
+            <span className="font-mono">{host}</span>.
+          </p>
+        )}
         <Button variant="outline" size="sm" className="mt-1" asChild>
           <Link href="/auth">Sign in or create an account</Link>
         </Button>
@@ -73,6 +81,11 @@ export function AccountSection() {
         Signed in as <span className="font-medium">{auth.email}</span>
       </p>
       <p className="text-xs text-muted-foreground">{statusLine(auth, status)}</p>
+      {host !== null && (
+        <p className="text-xs text-muted-foreground">
+          Connected to <span className="font-mono">{host}</span>.
+        </p>
+      )}
 
       {usage.data !== undefined && (
         <div className="space-y-1">

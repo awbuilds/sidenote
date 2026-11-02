@@ -13,11 +13,13 @@ import { Brand } from "@/components/Brand";
 import { useAuth } from "@/hooks/use-auth";
 import { useAuthLinkError } from "@/hooks/use-auth-link-error";
 import { signInWithPassword, signUpWithPassword } from "@/lib/supabase/actions";
+import { supabaseHost } from "@/lib/supabase/client";
 
 function AuthView() {
   const router = useRouter();
   const auth = useAuth();
   const linkError = useAuthLinkError();
+  const host = supabaseHost();
   const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -63,6 +65,12 @@ function AuthView() {
         An account is optional. Your notes keep working offline in this browser
         whether or not you sign in.
       </p>
+      {host !== null && (
+        <p className="mt-2 text-xs text-muted-foreground">
+          This deployment syncs to <span className="font-mono">{host}</span>. Sign
+          in only if you trust that server.
+        </p>
+      )}
 
       {linkError !== null && auth.status !== "signed-in" && (
         <p className="mt-6 rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">

@@ -24,6 +24,22 @@ export function isRemoteEnabled(): boolean {
   return supabaseConfig() !== null;
 }
 
+/**
+ * Host of the configured Supabase instance, for honest sign-in copy.
+ *
+ * The URL is public (the anon key is too), so showing it tells the user which
+ * server their notes will reach before they sign in.
+ */
+export function supabaseHost(): string | null {
+  const config = supabaseConfig();
+  if (!config) return null;
+  try {
+    return new URL(config.url).host;
+  } catch {
+    return config.url;
+  }
+}
+
 export function getSupabase(): SupabaseClient | null {
   if (cached) return cached;
   const config = supabaseConfig();

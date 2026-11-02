@@ -1,0 +1,16 @@
+node_modules
+.next
+.git
+.github
+.gitignore
+.superpowers
+coverage
+docs
+website
+supabase
+scripts
+*.md
+.env*
+!.env.example
+npm-debug.log*
+.DS_Store
