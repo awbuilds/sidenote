@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Warm Paper identity: a terracotta tile holding a paper note. Kept to
+       three shapes and three lines so it still reads at 16px. -->
+  <rect width="512" height="512" rx="112" fill="#c2540a"/>
+  <path d="M160 96h144l72 72v224a24 24 0 0 1-24 24H160a24 24 0 0 1-24-24V120a24 24 0 0 1 24-24z" fill="#faf7f0"/>
+  <path d="M304 96l72 72h-72z" fill="#e0d7c4"/>
+  <g fill="#c2540a">
+    <rect x="172" y="232" width="168" height="16" rx="8"/>
+    <rect x="172" y="274" width="168" height="16" rx="8"/>
+    <rect x="172" y="316" width="112" height="16" rx="8"/>
+  </g>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Maskable variant: full-bleed terracotta, the note scaled into the 80%
+       safe zone so no platform mask crops it. -->
+  <rect width="512" height="512" fill="#c2540a"/>
+  <g transform="translate(256 256) scale(0.58) translate(-256 -256)">
+    <path d="M160 96h144l72 72v224a24 24 0 0 1-24 24H160a24 24 0 0 1-24-24V120a24 24 0 0 1 24-24z" fill="#faf7f0"/>
+    <path d="M304 96l72 72h-72z" fill="#e0d7c4"/>
+    <g fill="#c2540a">
+      <rect x="172" y="232" width="168" height="16" rx="8"/>
+      <rect x="172" y="274" width="168" height="16" rx="8"/>
+      <rect x="172" y="316" width="112" height="16" rx="8"/>
+    </g>
+  </g>
+</svg>

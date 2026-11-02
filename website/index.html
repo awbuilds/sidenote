@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sidenote — a private, local-first notes app</title>
+  <meta name="description" content="A private notes and knowledge base that runs in your browser. No account, no analytics, and optional sync to a server you control. Free and open source under AGPL-3.0.">
+  <meta name="theme-color" content="#faf7f0">
+  <link rel="icon" href="./assets/icon-512.png" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icon-512.png">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="canonical" href="https://awbuilds.github.io/sidenote/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Sidenote — a private, local-first notes app">
+  <meta property="og:description" content="Your notes, on your machine. Local-first by default, with optional sync to a server you control.">
+  <meta property="og:url" content="https://awbuilds.github.io/sidenote/">
+  <meta property="og:image" content="https://awbuilds.github.io/sidenote/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./">
+        <img src="./assets/icon-512.png" alt="" width="30" height="30">
+        <span>Sidenote</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#self-host">Self-host</a>
+        <a href="https://github.com/awbuilds/sidenote">GitHub</a>
+        <a class="button button-small" href="https://sidenoteapp.vercel.app">Open app</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero wrap">
+      <div class="hero-copy">
+        <p class="eyebrow">Local-first notes</p>
+        <h1>Your notes,<br>on your machine.</h1>
+        <p class="lede">
+          A private notes and knowledge base that runs in your browser.
+          No account, no analytics — and optional sync to a server you control.
+        </p>
+        <div class="actions">
+          <a class="button" href="https://sidenoteapp.vercel.app">Open Sidenote</a>
+          <a class="button button-ghost" href="https://github.com/awbuilds/sidenote">View source</a>
+        </div>
+        <p class="fine">Free · AGPL-3.0 · Works offline</p>
+      </div>
+      <figure class="hero-art">
+        <img src="./assets/poster.png" width="1920" height="1080"
+             alt="Sidenote's three-pane layout: nested notebooks, the note list, and the editor with a note open.">
+      </figure>
+    </section>
+
+    <section class="strip" aria-label="At a glance">
+      <div class="wrap strip-inner">
+        <span>Local-first by default</span>
+        <span>No account required</span>
+        <span>Optional self-hosted sync</span>
+        <span>Free and open source</span>
+      </div>
+    </section>
+
+    <section id="features" class="section wrap">
+      <p class="eyebrow">What it does</p>
+      <h2>A notebook that feels like paper.</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Nested notebooks</h3>
+          <p>Unlimited depth, drag to re-parent, and cycle detection that refuses a move into its own subtree.</p>
+        </article>
+        <article class="card">
+          <h3>A real editor</h3>
+          <p>TipTap with a raw Markdown view, tables, LaTeX, images, task lists, slash commands, and templates.</p>
+        </article>
+        <article class="card">
+          <h3>Search that stays local</h3>
+          <p>MiniSearch runs in a Web Worker and the index is persisted, so search is fast and offline.</p>
+        </article>
+        <article class="card">
+          <h3>Notes that link</h3>
+          <p>Write <code>[[Note Title]]</code> to connect notes, with a backlinks panel and links that resolve later.</p>
+        </article>
+        <article class="card">
+          <h3>Backups you own</h3>
+          <p>Export a ZIP with every note, attachment, and a lossless copy. Import from that ZIP or an Evernote ENEX file.</p>
+        </article>
+        <article class="card">
+          <h3>Sync if you want it</h3>
+          <p>Point Sidenote at your own Supabase instance for sign-in, multi-device sync, and expiring share links.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="privacy" class="section wrap split">
+      <div>
+        <p class="eyebrow">Privacy</p>
+        <h2>Your data is yours.</h2>
+      </div>
+      <div class="prose">
+        <p><strong>Local by default.</strong> Notes live in your browser's IndexedDB. With no server configured, the app makes no network request of its own and works with no network at all.</p>
+        <p><strong>Optional sync, your server.</strong> Set two environment variables and Sidenote can sign in and sync against a Supabase instance you control. The hosted demo uses the maintainer's instance; self-host if you want your own.</p>
+        <p><strong>No third parties.</strong> No analytics, advertising, crash reporting, or AI. The only outward edges are the server you configure and the share links you choose to create.</p>
+        <p><a href="./privacy.html">Read the privacy policy →</a></p>
+      </div>
+    </section>
+
+    <section id="self-host" class="section wrap">
+      <p class="eyebrow">Self-host</p>
+      <h2>Run the whole thing yourself.</h2>
+      <p class="lede">The app is a single Next.js codebase. Without environment variables it is fully local; with a Supabase stack it gains accounts, sync, and share links.</p>
+      <pre><code>npm ci
+npm run dev</code></pre>
+      <p class="fine">Then, if you want sync:</p>
+      <pre><code>NEXT_PUBLIC_SUPABASE_URL=https://your-supabase.example.com
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key</code></pre>
+      <div class="actions">
+        <a class="button button-ghost" href="https://github.com/awbuilds/sidenote/blob/main/docs/ops/supabase-stack.md">Read the self-hosting runbook</a>
+        <a class="button button-ghost" href="https://github.com/awbuilds/sidenote/blob/main/LICENSE">AGPL-3.0 licence</a>
+      </div>
+    </section>
+
+    <section class="section wrap cta">
+      <h2>Start writing.</h2>
+      <p>Open the app and your first note is one click away. Export a ZIP whenever you want.</p>
+      <a class="button" href="https://sidenoteapp.vercel.app">Open Sidenote</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="brand" href="./">
+        <img src="./assets/icon-512.png" alt="" width="26" height="26">
+        <span>Sidenote</span>
+      </a>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="https://github.com/awbuilds/sidenote">Source</a>
+        <a href="./privacy.html">Privacy</a>
+        <a href="https://github.com/awbuilds/sidenote/blob/main/LICENSE">Licence</a>
+        <a href="https://github.com/awbuilds/sidenote/blob/main/docs/ops/supabase-stack.md">Docs</a>
+      </nav>
+      <p>© 2026 Abhijith Warrier · AGPL-3.0</p>
+    </div>
+  </footer>
+</body>
+</html>

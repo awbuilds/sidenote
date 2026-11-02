@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#faf7f0"/>
+  <rect width="1200" height="12" fill="#c2540a"/>
+
+  <!-- The mark, at 96px, beside the wordmark. -->
+  <g transform="translate(96 96) scale(0.1875)">
+    <rect width="512" height="512" rx="112" fill="#c2540a"/>
+    <path d="M160 96h144l72 72v224a24 24 0 0 1-24 24H160a24 24 0 0 1-24-24V120a24 24 0 0 1 24-24z" fill="#faf7f0"/>
+    <path d="M304 96l72 72h-72z" fill="#e0d7c4"/>
+    <g fill="#c2540a">
+      <rect x="172" y="232" width="168" height="16" rx="8"/>
+      <rect x="172" y="274" width="168" height="16" rx="8"/>
+      <rect x="172" y="316" width="112" height="16" rx="8"/>
+    </g>
+  </g>
+
+  <text x="228" y="160" font-family="Georgia, 'DejaVu Serif', 'Times New Roman', serif"
+        font-size="76" font-weight="700" fill="#2b2620">Sidenote</text>
+  <text x="232" y="200" font-family="'DejaVu Sans Mono', 'Courier New', monospace"
+        font-size="19" letter-spacing="6" fill="#6b6357">A PRIVATE, LOCAL-FIRST NOTEBOOK</text>
+
+  <rect x="96" y="292" width="1008" height="2" fill="#d8d2c4"/>
+
+  <text x="96" y="392" font-family="Georgia, 'DejaVu Serif', 'Times New Roman', serif"
+        font-size="42" fill="#2b2620">Your notes live in your browser, not on someone</text>
+  <text x="96" y="446" font-family="Georgia, 'DejaVu Serif', 'Times New Roman', serif"
+        font-size="42" fill="#2b2620">else&#8217;s server. Export everything, any time.</text>
+
+  <text x="96" y="548" font-family="'DejaVu Sans Mono', 'Courier New', monospace"
+        font-size="24" fill="#c2540a">sidenoteapp.vercel.app</text>
+</svg>

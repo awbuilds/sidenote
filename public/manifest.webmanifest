@@ -1,0 +1,47 @@
+{
+  "name": "Sidenote",
+  "short_name": "Sidenote",
+  "description": "A private, local-first notes and knowledge base. Everything stays in your browser.",
+  "start_url": "/notes",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#faf7f0",
+  "theme_color": "#faf7f0",
+  "orientation": "any",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New note",
+      "short_name": "New",
+      "url": "/notes"
+    },
+    {
+      "name": "Trash",
+      "url": "/trash"
+    },
+    {
+      "name": "Settings",
+      "url": "/settings"
+    }
+  ]
+}

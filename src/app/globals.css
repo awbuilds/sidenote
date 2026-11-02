@@ -1,0 +1,331 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: var(--font-sans);
+    /* The splash wordmark's face, set by next/font on <html>. Named apart from
+       --font-plex-mono so the token and the variable it reads cannot collide
+       the way the self-referential --font-sans above deliberately does. */
+    --font-mono-brand: var(--font-plex-mono);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+
+    /* The tonal container ladder from the design md. shadcn's vocabulary has no
+       equivalent, and "Surface Nesting" — separation by tonal step-down rather
+       than by shadow — is how this design builds depth. Exposed as utilities so
+       a pane can sit between the canvas and a card rather than only below them. */
+    --color-surface-container-lowest: var(--surface-container-lowest);
+    --color-surface-container-low: var(--surface-container-low);
+    --color-surface-container: var(--surface-container);
+    --color-surface-container-high: var(--surface-container-high);
+    --color-surface-container-highest: var(--surface-container-highest);
+    /* The amber the design reserves for pinned/starred markers behind soft fill. */
+    --color-amber-soft: var(--amber-soft);
+    /* Outline in the design is a warm brown, not a grey. */
+    --color-outline: var(--outline);
+
+    /* Stated literally rather than derived from --radius. The design's scale is
+       2 / 4 / 6 / 8 / 12px, which is not the multiples shadcn defaults to, so
+       `calc(--radius * 0.6)` and friends cannot express it. */
+    --radius-sm: 0.125rem;
+    --radius-md: 0.375rem;
+    --radius-lg: 0.5rem;
+    --radius-xl: 0.75rem;
+    /* The design tops out at 12px and reserves full rounds for pills and chips,
+       so anything past `xl` is a pill rather than an increasingly round box. */
+    --radius-2xl: 0.75rem;
+    --radius-3xl: 9999px;
+    --radius-4xl: 9999px;
+}
+
+/* Warm Paper — the light theme's identity. A warm white canvas with
+   terracotta reserved for meaning: primary actions, the active row, pinned
+   notes, wiki links. Values are hex rather than oklch, matching the palette's
+   source, so the file stays diffable against it. The white here is paper,
+   not snow. */
+:root {
+    --background: #faf7f0;
+    --foreground: #2b2620;
+    --card: #f5f0e6;
+    --card-foreground: #2b2620;
+    --popover: #f5f0e6;
+    --popover-foreground: #2b2620;
+    --primary: #c2540a;
+    --primary-foreground: #faf7f0;
+    --secondary: #e9e2d3;
+    --secondary-foreground: #2b2620;
+    --muted: #e9e2d3;
+    --muted-foreground: #6b6357;
+    --accent: #e9e2d3;
+    --accent-foreground: #2b2620;
+    --destructive: #b3341e;
+    --destructive-foreground: #faf7f0;
+    --border: #d8d2c4;
+    --input: #d8d2c4;
+    --ring: #c2540a;
+    --chart-1: #c2540a;
+    --chart-2: #d97a3d;
+    --chart-3: #8a8172;
+    --chart-4: #6b6357;
+    --chart-5: #4a4438;
+    --radius: 0.625rem;
+    --sidebar: #f0ebe0;
+    --sidebar-foreground: #2b2620;
+    --sidebar-primary: #c2540a;
+    --sidebar-primary-foreground: #faf7f0;
+    --sidebar-accent: #e9e2d3;
+    --sidebar-accent-foreground: #2b2620;
+    --sidebar-border: #d8d2c4;
+    --sidebar-ring: #c2540a;
+}
+
+/* Dark — a true-black theme for OLED panels.
+
+   Depth is tonal, not shadowed: a near-black canvas with surfaces lifted just
+   enough to stay legible, and a neutral ladder rather than the warm one the
+   light theme uses. The palette was previously the separate `amoled` theme;
+   it is now the one and only dark theme. */
+.dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+
+    /* Re-stepped in neutral: the light ladder is warm and would tint this
+       canvas. Without these, a pane using `bg-surface-container` would fall
+       through to the light-mode values declared on `:root` and come out pale. */
+    --surface-container-lowest: oklch(0.118 0 0);
+    --surface-container-low: oklch(0.175 0 0);
+    --surface-container: oklch(0.205 0 0);
+    --surface-container-high: oklch(0.269 0 0);
+    --surface-container-highest: oklch(0.32 0 0);
+    --amber-soft: oklch(0.32 0 0);
+    --outline: oklch(0.708 0 0);
+}
+
+/* The surface ladder, the outline and the pinned fill for the light theme —
+   Warm Paper's warm steps, so `bg-surface-container` and friends resolve on a
+   light page instead of falling back to transparent. The dark theme re-steps
+   them in its own block above. */
+:root {
+    --surface-container-lowest: #faf7f0;
+    --surface-container-low: #f0ebe0;
+    --surface-container: #e9e2d3;
+    --surface-container-high: #e0d7c4;
+    --surface-container-highest: #d6cbb4;
+    --amber-soft: #f7e8dc;
+    --outline: #8a8172;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  html {
+    @apply font-sans;
+    }
+}
+/* Editor content. Scoped so these rules cannot leak into app chrome. */
+.note-prose {
+  color: var(--foreground);
+  line-height: 1.7;
+  max-width: 46rem;
+}
+.note-prose > * + * { margin-top: 0.85em; }
+.note-prose h1 { font-size: 1.7em; font-weight: 600; line-height: 1.25; margin-top: 1.4em; }
+.note-prose h2 { font-size: 1.35em; font-weight: 600; line-height: 1.3; margin-top: 1.3em; }
+.note-prose h3 { font-size: 1.12em; font-weight: 600; line-height: 1.35; margin-top: 1.2em; }
+.note-prose ul { list-style: disc; padding-left: 1.5em; }
+.note-prose ol { list-style: decimal; padding-left: 1.5em; }
+.note-prose li { margin: 0.2em 0; }
+.note-prose ul[data-type="taskList"] { list-style: none; padding-left: 0.25em; }
+.note-prose ul[data-type="taskList"] li { display: flex; gap: 0.6em; align-items: flex-start; }
+.note-prose ul[data-type="taskList"] li > label { margin-top: 0.25em; }
+.note-prose ul[data-type="taskList"] li > div { flex: 1 1 auto; min-width: 0; }
+/* A blockquote reads as a callout: a raised panel with a tinted edge, which is
+   how the reference sets an opening summary apart from the body. */
+.note-prose blockquote {
+  border-left: 3px solid color-mix(in oklab, var(--primary) 55%, transparent);
+  background: color-mix(in oklab, var(--muted) 55%, transparent);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.9em 1.1em;
+  color: var(--foreground);
+}
+.note-prose blockquote > * + * { margin-top: 0.7em; }
+.note-prose blockquote p { color: color-mix(in oklab, var(--foreground) 88%, transparent); }
+.note-prose code {
+  background: var(--muted);
+  padding: 0.15em 0.35em;
+  border-radius: 0.25em;
+  font-size: 0.9em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.note-prose pre {
+  background: var(--muted);
+  padding: 1em;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+.note-prose pre code { background: none; padding: 0; font-size: 0.875em; }
+.note-prose img { max-width: 100%; height: auto; border-radius: 0.375rem; }
+.note-prose hr { border: none; border-top: 1px solid var(--border); margin: 1.75em 0; }
+.note-prose a { text-decoration: underline; text-underline-offset: 2px; }
+
+/* A `[[wiki link]]` is a decoration over plain text, not an anchor, so it is
+ * styled from the data attribute the extension sets. */
+.note-prose .wiki-link {
+  color: var(--primary);
+  cursor: pointer;
+  border-bottom: 1px solid color-mix(in oklab, var(--primary) 35%, transparent);
+  text-decoration: none;
+}
+.note-prose .wiki-link:hover {
+  border-bottom-color: var(--primary);
+  background: color-mix(in oklab, var(--primary) 8%, transparent);
+}
+/* The note does not exist yet. Still clickable-looking so it reads as a link
+ * you can go and create, but visibly not resolved. */
+.note-prose .wiki-link-unresolved {
+  color: var(--muted-foreground);
+  border-bottom-style: dashed;
+  border-bottom-color: color-mix(in oklab, var(--muted-foreground) 45%, transparent);
+}
+.note-prose .wiki-link-unresolved:hover {
+  background: color-mix(in oklab, var(--muted-foreground) 10%, transparent);
+}
+.note-prose p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--muted-foreground);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Tables. The reference gives them full-width cell borders, generous padding
+   and a bold first column, which is what makes a comparison table scannable.
+   Without the first-column rule a wide table loses its row labels when the
+   eye drifts down a column. */
+.note-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.95em;
+}
+.note-prose th,
+.note-prose td {
+  border: 1px solid var(--border);
+  padding: 0.6em 0.8em;
+  vertical-align: top;
+  text-align: left;
+  word-break: break-word;
+}
+.note-prose th {
+  background: color-mix(in oklab, var(--muted) 60%, transparent);
+  font-weight: 600;
+}
+.note-prose tbody tr:nth-child(even) td {
+  background: color-mix(in oklab, var(--muted) 25%, transparent);
+}
+/* Row labels: the first cell of every body row. Scoped to tbody so a header
+   row keeps its own treatment rather than being bolded twice. */
+.note-prose tbody > tr > *:first-child {
+  font-weight: 600;
+  color: color-mix(in oklab, var(--foreground) 92%, transparent);
+}
+.note-prose .selectedCell::after {
+  background: color-mix(in oklab, var(--primary) 20%, transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Boot                                                                */
+/* ------------------------------------------------------------------ */
+
+/* The bar grows from nothing to full width and holds. It is deliberately not
+   a looping indeterminate bar: the boot is a known, bounded event, and a bar
+   that keeps pretending to be busy while it waits for a floor timer is
+   dishonest about what the app is doing. */
+@keyframes boot-bar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* A slow breath on the mark. Restrained on purpose — the eye should rest on it,
+   not be held by it. */
+@keyframes splash-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(0.97);
+  }
+}
