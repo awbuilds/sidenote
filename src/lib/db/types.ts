@@ -173,6 +173,24 @@ export type NoteRow = Omit<Note, "isPinned" | "isTrashed" | "notebookId"> & {
 /* Settings keys                                                      */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Ids of the rows created by the sample seeder.
+ *
+ * Sample content is ordinary data once written, so there is no column that
+ * says "this came from the seed". Recording the ids at seed time is what lets
+ * "remove sample data" delete only what it created — a title-matching heuristic
+ * would eventually delete a user's note called "Roadmap".
+ *
+ * Null means this database has no tracked sample content: either it was seeded
+ * before the manifest existed or the samples were already removed.
+ */
+export interface SampleDataManifest {
+  noteIds: NoteId[];
+  notebookIds: NotebookId[];
+  tagIds: TagId[];
+  attachmentIds: AttachmentId[];
+}
+
 export interface AppSettings {
   profileName: string;
   /**
@@ -195,6 +213,12 @@ export interface AppSettings {
   /** Bumped whenever note content changes; invalidates the search index. */
   dataVersion: number;
   seeded: boolean;
+  /** Ids created by the sample seeder; null when nothing is tracked. */
+  sampleData: SampleDataManifest | null;
+  /** First-run tour is pending for this browser. */
+  onboardingPending: boolean;
+  /** When the tour was completed or skipped; null until then. */
+  onboardingCompletedAt: number | null;
   /** First-run getting-started card; once dismissed it stays gone. */
   onboardingDismissed: boolean;
   /** Timestamp of the last successful ZIP export, for the checklist. */
@@ -224,6 +248,9 @@ export const DEFAULT_SETTINGS: AppSettings = {
   lastNotebookId: null,
   dataVersion: 0,
   seeded: false,
+  sampleData: null,
+  onboardingPending: false,
+  onboardingCompletedAt: null,
   onboardingDismissed: false,
   lastBackupAt: null,
   listDensity: "comfortable",

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -45,6 +46,7 @@ function SettingsView() {
   const { data: settings } = useSettings();
   const updateSettings = useUpdateSettings();
   const auth = useAuth();
+  const router = useRouter();
 
   return (
     <div className="mx-auto w-full max-w-2xl px-6 py-8">
@@ -63,6 +65,25 @@ function SettingsView() {
       <section className="mt-6 space-y-2 rounded-lg border p-4">
         <h2 className="text-sm font-medium">Appearance</h2>
         <ThemeGallery />
+
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t pt-3">
+          <div>
+            <p className="text-sm">Welcome tour</p>
+            <p className="text-xs text-muted-foreground">
+              Replay the three-page introduction. Sample deletion stays in Settings.
+            </p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={async () => {
+              await updateSettings.mutateAsync({ onboardingPending: true });
+              router.push("/notes");
+            }}
+          >
+            Show again
+          </Button>
+        </div>
 
         <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div className="space-y-1.5">

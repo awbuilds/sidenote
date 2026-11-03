@@ -6,6 +6,7 @@ import { listNotes, listTrashedNotes } from "@/lib/db/repositories/notes";
 import { backlinksFor, linkCounts, outgoingLinks } from "@/lib/db/repositories/links";
 import { listAllAttachments, type AttachmentSummary } from "@/lib/db/repositories/attachments";
 import { getSettings } from "@/lib/db/repositories/settings";
+import { getSamplePreview, type SamplePreview } from "@/lib/seed/seed";
 import { buildNotebookTree } from "@/lib/db/tree";
 import type { AppSettings, Note, NoteLink, NotebookNode } from "@/lib/db/types";
 import { QUERY_KEYS } from "./query-keys";
@@ -17,6 +18,15 @@ export function useSettings(): UseQueryResult<AppSettings> {
   return useQuery({
     queryKey: QUERY_KEYS.settings,
     queryFn: getSettings,
+    staleTime: Number.POSITIVE_INFINITY,
+  });
+}
+
+/** The sample set, summarised for the onboarding preview. */
+export function useSamplePreview(): UseQueryResult<SamplePreview> {
+  return useQuery({
+    queryKey: QUERY_KEYS.samplePreview,
+    queryFn: getSamplePreview,
     staleTime: Number.POSITIVE_INFINITY,
   });
 }

@@ -1,15 +1,21 @@
 import { describe, expect, it, vi } from "vitest";
 import {
   DEFAULT_THEME,
+  DEFAULT_THEME_PACK,
   SERVER_THEME,
   THEME_INIT_SCRIPT,
+  THEME_PACK_STORAGE_KEY,
   applyTheme,
   isTheme,
+  isThemePack,
   normalizeTheme,
+  normalizeThemePack,
   prefersDark,
   readStoredTheme,
+  readStoredThemePack,
   resolveTheme,
   writeStoredTheme,
+  writeStoredThemePack,
   type Theme,
 } from "./theme";
 import type { AppSettings } from "./db/types";
@@ -329,5 +335,59 @@ describe("theme values", () => {
     expect(isTheme("amoled")).toBe(false);
     expect(isTheme(null)).toBe(false);
     expect(isTheme(undefined)).toBe(false);
+  });
+});
+
+describe("theme packs", () => {
+  it("accepts the four packs and rejects anything else", () => {
+    expect(isThemePack("paper")).toBe(true);
+    expect(isThemePack("blue")).toBe(true);
+    expect(isThemePack("glass")).toBe(true);
+    expect(isThemePack("gel")).toBe(true);
+    expect(isThemePack("xp")).toBe(false);
+    expect(isThemePack(null)).toBe(false);
+  });
+
+  it("falls back to Warm Paper for unknown values", () => {
+    expect(normalizeThemePack("gel")).toBe("gel");
+    expect(normalizeThemePack("windows")).toBe(DEFAULT_THEME_PACK);
+    expect(DEFAULT_THEME_PACK).toBe("paper");
+  });
+
+  it("round-trips through the localStorage mirror", () => {
+    writeStoredThemePack("glass");
+    expect(readStoredThemePack()).toBe("glass");
+    expect(localStorage.getItem(THEME_PACK_STORAGE_KEY)).toBe("glass");
+  });
+
+  it("applies the pack attribute alongside the dark class", () => {
+    applyTheme("dark", "blue");
+    const root = document.documentElement;
+    expect(root.getAttribute("data-theme-pack")).toBe("blue");
+    expect(root.classList.contains("dark")).toBe(true);
+
+    applyTheme("light", "gel");
+    expect(root.getAttribute("data-theme-pack")).toBe("gel");
+    expect(root.classList.contains("dark")).toBe(false);
+  });
+
+  it("is applied by the pre-paint script", () => {
+    localStorage.clear();
+    writeStoredThemePack("glass");
+    new Function(THEME_INIT_SCRIPT)();
+    expect(document.documentElement.getAttribute("data-theme-pack")).toBe("glass");
+  });
+
+  it("falls back to the default pack before paint", () => {
+    localStorage.removeItem(THEME_PACK_STORAGE_KEY);
+    new Function(THEME_INIT_SCRIPT)();
+    expect(document.documentElement.getAttribute("data-theme-pack")).toBe(
+      DEFAULT_THEME_PACK,
+    );
+  });
+
+  it("keeps the persisted settings pack in step", () => {
+    expect(DEFAULT_SETTINGS.themePack).toBe(DEFAULT_THEME_PACK);
+    expect(isThemePack(DEFAULT_SETTINGS.themePack)).toBe(true);
   });
 });
