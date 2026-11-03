@@ -11,17 +11,22 @@ import {
 } from "react";
 import {
   DEFAULT_THEME,
+  DEFAULT_THEME_PACK,
   SERVER_SYSTEM_DARK,
   SERVER_THEME,
   applyTheme,
   isTheme,
+  isThemePack,
   prefersDark,
   readStoredTheme,
+  readStoredThemePack,
   subscribeToSystemTheme,
   subscribeToTheme,
   writeStoredTheme,
+  writeStoredThemePack,
   type ResolvedTheme,
   type Theme,
+  type ThemePack,
 } from "@/lib/theme";
 
 /**
@@ -49,12 +54,24 @@ function persistTheme(theme: Theme): void {
     });
 }
 
+/** Persist the pack the same way, then leave the mirror in charge of repaint. */
+function persistPack(pack: ThemePack): void {
+  void import("@/lib/db/repositories/settings")
+    .then(({ setSetting }) => setSetting("themePack", pack))
+    .catch(() => {
+      // See persistTheme: the localStorage mirror already has the choice.
+    });
+}
+
 interface ThemeContextValue {
   /** The user's choice, including `system`. */
   theme: Theme;
+  /** The visual language, independent of light/dark. */
+  pack: ThemePack;
   /** What is actually on screen right now. */
   resolved: ResolvedTheme;
   setTheme: (next: Theme) => void;
+  setPack: (next: ThemePack) => void;
   /** Flip between light and dark, resolving `system` first. */
   toggle: () => void;
 }
@@ -90,6 +107,12 @@ export function ThemeProvider({
     () => null,
   );
 
+  const storedPack = useSyncExternalStore<ThemePack | null>(
+    subscribeToTheme,
+    () => readStoredThemePack(),
+    () => null,
+  );
+
   const systemDark = useSyncExternalStore<boolean>(
     subscribeToSystemTheme,
     prefersDark,
@@ -99,14 +122,15 @@ export function ThemeProvider({
   // A store read during hydration is the server's; the client's arrives on the
   // next commit, so the prop only seeds the very first value.
   const theme = stored ?? initialTheme ?? SERVER_THEME;
+  const pack = storedPack ?? DEFAULT_THEME_PACK;
 
   const resolved: ResolvedTheme =
     theme === "system" ? (systemDark ? "dark" : "light") : theme;
 
   // The only thing this effect does is touch the DOM. State is derived above.
   useEffect(() => {
-    applyTheme(theme);
-  }, [theme]);
+    applyTheme(theme, pack);
+  }, [theme, pack]);
 
   const setTheme = useCallback((next: Theme) => {
     if (!isTheme(next)) return;
@@ -116,6 +140,12 @@ export function ThemeProvider({
     persistTheme(next);
   }, []);
 
+  const setPack = useCallback((next: ThemePack) => {
+    if (!isThemePack(next)) return;
+    writeStoredThemePack(next);
+    persistPack(next);
+  }, []);
+
   const toggle = useCallback(() => {
     const next: Theme = resolved === "dark" ? "light" : "dark";
     writeStoredTheme(next);
@@ -123,8 +153,8 @@ export function ThemeProvider({
   }, [resolved]);
 
   const value = useMemo<ThemeContextValue>(
-    () => ({ theme, resolved, setTheme, toggle }),
-    [theme, resolved, setTheme, toggle],
+    () => ({ theme, pack, resolved, setTheme, setPack, toggle }),
+    [theme, pack, resolved, setTheme, setPack, toggle],
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;

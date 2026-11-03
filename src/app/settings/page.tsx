@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Providers } from "@/components/providers";
 import { StorageStatus } from "@/components/layout/StorageStatus";
-import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { ThemeGallery } from "@/components/theme/ThemeGallery";
 import { BackupSection } from "@/components/settings/BackupSection";
 import { AccountSection } from "@/components/settings/AccountSection";
 import { SampleDataSection } from "@/components/settings/SampleDataSection";
@@ -24,7 +24,6 @@ import { Brand } from "@/components/Brand";
 import { useAuth } from "@/hooks/use-auth";
 import { useSettings } from "@/hooks/queries";
 import { useUpdateSettings } from "@/hooks/mutations";
-import { useTheme } from "@/components/providers/theme-provider";
 import { settingsSubtitle, toCopyAccountState } from "@/lib/copy";
 import {
   EDITOR_FONT_LABELS,
@@ -45,7 +44,6 @@ import {
 function SettingsView() {
   const { data: settings } = useSettings();
   const updateSettings = useUpdateSettings();
-  const { theme } = useTheme();
   const auth = useAuth();
 
   return (
@@ -64,10 +62,7 @@ function SettingsView() {
 
       <section className="mt-6 space-y-2 rounded-lg border p-4">
         <h2 className="text-sm font-medium">Appearance</h2>
-        <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <span className="text-sm text-muted-foreground">Currently {theme}</span>
-        </div>
+        <ThemeGallery />
 
         <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div className="space-y-1.5">

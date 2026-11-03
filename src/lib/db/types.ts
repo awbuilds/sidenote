@@ -1,8 +1,8 @@
 import type { JSONContent } from "@tiptap/core";
 import type { CompanionId } from "@/lib/companion";
 import { DEFAULT_COMPANION } from "@/lib/companion";
-import type { Theme } from "@/lib/theme";
-import { DEFAULT_THEME } from "@/lib/theme";
+import type { Theme, ThemePack } from "@/lib/theme";
+import { DEFAULT_THEME, DEFAULT_THEME_PACK } from "@/lib/theme";
 import type { EditorFont, EditorLineHeight, EditorWidth } from "@/lib/typography";
 
 export type NotebookId = string;
@@ -183,6 +183,8 @@ export interface AppSettings {
    * the data layer, so pointing at it adds no dependency edge.
    */
   theme: Theme;
+  /** Visual language, independent of light/dark. */
+  themePack: ThemePack;
   /** Hide the notebook and list panes, leaving only the editor. */
   focusMode: boolean;
   /** Max retained snapshots per note before pruning. */
@@ -215,6 +217,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   profileName: "",
   /** See `DEFAULT_THEME` — only a brand-new database ever sees this. */
   theme: DEFAULT_THEME,
+  themePack: DEFAULT_THEME_PACK,
   focusMode: false,
   versionLimit: 30,
   versionMaxAgeDays: 90,
