@@ -327,6 +327,30 @@ describe("reconcile", () => {
     expect(remote.pushed).not.toContain(attachment.id);
   });
 
+  it("warns and keeps going when an attachment upload fails", async () => {
+    const note = await createNote({ title: "With image" });
+    await setNoteTags(note.id, ["survives"]);
+    await addAttachment({
+      noteId: note.id,
+      fileName: "big.png",
+      mime: "image/png",
+      blob: new Blob([new Uint8Array([1, 2])], { type: "image/png" }),
+    });
+
+    const remote = new FakeAdapter();
+    remote.uploadAttachment = async () => {
+      throw new Error("quota exceeded");
+    };
+
+    const result = await reconcile(remote);
+
+    expect(result.warnings.join(" ")).toMatch(/attachment/i);
+    // The pass completed: the note reached the server and the tag join row
+    // (which syncs after attachments) still went through.
+    expect(remote.notes.get(note.id)).toBeDefined();
+    expect(remote.noteTags.size).toBe(1);
+  });
+
   it("deletes an attachment remotely through a tombstone", async () => {
     const note = await createNote({ title: "Delete me" });
     const attachment = await addAttachment({

@@ -1,12 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { EditorContent, useEditor, type Editor } from "@tiptap/react";
-import type { JSONContent } from "@tiptap/core";
 
 import { buildExtensions } from "@/lib/tiptap/extensions";
 import { filesFromTransfer, insertAttachments } from "@/hooks/useAttachmentIngest";
-import { docToText, toMarkdown } from "@/lib/tiptap/markdown";
 import { countText } from "@/lib/tiptap/outline";
 import { setCurrentNoteId } from "@/lib/tiptap/image-picker";
 import { WikiLink, wikiLinkTitleFrom } from "@/lib/tiptap/wiki-link";
@@ -14,19 +12,12 @@ import { useTitleResolver } from "./useWikiLink";
 import { SlashMenu } from "./SlashMenu";
 import { EditorToolbar } from "./EditorToolbar";
 import { useSaveNoteContent } from "@/hooks/mutations";
+import { useAutosave } from "@/hooks/useAutosave";
+import { hasPendingSave, subscribePendingSaves } from "@/lib/editor/pending-saves";
 import { useSettings } from "@/hooks/queries";
 import { editorTypographyClass } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 import type { Note, SaveStatus } from "@/lib/db/types";
-
-/** Debounce for autosave. Long enough to coalesce typing, short enough that a
- *  note switch never feels like it lost work. */
-const AUTOSAVE_DEBOUNCE_MS = 800;
-
-interface Pending {
-  title: string;
-  doc: JSONContent;
-}
 
 interface NoteEditorProps {
   note: Note;
@@ -95,58 +86,16 @@ function NoteEditorInner({
 }: NoteEditorProps) {
   const save = useSaveNoteContent();
   const { data: settings } = useSettings();
-  const [status, setStatus] = useState<SaveStatus>("idle");
+  const { status, queue, flush } = useAutosave(note.id, save);
   const [title, setTitle] = useState(note.title);
-
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pending = useRef<Pending | null>(null);
-  const latest = useRef<{ save: typeof save; noteId: string }>({ save, noteId: note.id });
-  const editorRef = useRef<ReturnType<typeof useEditor>>(null);
-
-  // Refs are synced in an effect, never during render — the React Compiler
-  // lint rule rejects reading or writing a ref mid-render.
-  useEffect(() => {
-    latest.current = { save, noteId: note.id };
-  }, [save, note.id]);
-
-  const flush = useCallback(async () => {
-    if (timer.current !== null) {
-      clearTimeout(timer.current);
-      timer.current = null;
-    }
-    const payload = pending.current;
-    if (payload === null) return;
-
-    pending.current = null;
-    setStatus("saving");
-
-    try {
-      await latest.current.save.mutateAsync({
-        id: latest.current.noteId,
-        patch: {
-          title: payload.title,
-          contentJson: payload.doc,
-          contentMarkdown: toMarkdown(payload.doc),
-          contentText: docToText(payload.doc),
-        },
-      });
-      setStatus("saved");
-    } catch {
-      // Keep the payload so the next flush retries rather than dropping the edit.
-      pending.current = payload;
-      setStatus("error");
-    }
-  }, []);
-
-  const queue = useCallback(
-    (payload: Pending) => {
-      pending.current = payload;
-      setStatus("saving");
-      if (timer.current !== null) clearTimeout(timer.current);
-      timer.current = setTimeout(() => void flush(), AUTOSAVE_DEBOUNCE_MS);
-    },
-    [flush],
+  // A payload that outlived its editor (a failed save during a note switch).
+  const stranded = useSyncExternalStore(
+    subscribePendingSaves,
+    () => hasPendingSave(note.id),
+    () => false,
   );
+
+  const editorRef = useRef<ReturnType<typeof useEditor>>(null);
 
   // Resolves `[[Title]]` against real notes. Behind a ref so the decoration
   // reads the current set from inside a transaction.
@@ -228,21 +177,6 @@ function NoteEditorInner({
     if (editor !== null) setCurrentNoteId(editor, note.id);
   }, [editor, note.id]);
 
-  // A tab close or a backgrounded tab must not lose the in-flight edit.
-  useEffect(() => {
-    const onHide = () => {
-      if (document.visibilityState === "hidden") void flush();
-    };
-    document.addEventListener("visibilitychange", onHide);
-    window.addEventListener("pagehide", onHide);
-    return () => {
-      document.removeEventListener("visibilitychange", onHide);
-      window.removeEventListener("pagehide", onHide);
-      // Unmounting flushes too — this is the note-switch path.
-      void flush();
-    };
-  }, [flush]);
-
   if (editor === null) {
     return <div className="p-8 text-sm text-muted-foreground">Loading editor…</div>;
   }
@@ -276,7 +210,7 @@ function NoteEditorInner({
         />
 
         <div className="flex items-center justify-end py-1">
-          <SaveIndicator status={status} onRetry={() => void flush()} />
+          <SaveIndicator status={status} stranded={stranded} onRetry={() => void flush()} />
         </div>
 
         <EditorToolbar
@@ -298,18 +232,28 @@ function NoteEditorInner({
   );
 }
 
-function SaveIndicator({ status, onRetry }: { status: SaveStatus; onRetry: () => void }) {
-  if (status === "idle") return null;
+function SaveIndicator({
+  status,
+  stranded,
+  onRetry,
+}: {
+  status: SaveStatus;
+  /** A payload is still waiting in the module store, e.g. after a failed switch. */
+  stranded: boolean;
+  onRetry: () => void;
+}) {
+  if (status === "idle" && !stranded) return null;
 
-  const label = status === "saving" ? "Saving…" : status === "saved" ? "Saved" : "Not saved";
+  const failed = status === "error" || (stranded && status !== "saving");
+  const label = failed ? "Unsaved changes" : status === "saving" ? "Saving…" : "Saved";
 
   return (
     <span
-      className={status === "error" ? "text-xs text-destructive" : "text-xs text-muted-foreground"}
+      className={failed ? "text-xs text-destructive" : "text-xs text-muted-foreground"}
       aria-live="polite"
     >
       {label}
-      {status === "error" && (
+      {failed && (
         <button type="button" onClick={onRetry} className="ml-2 underline">
           Retry
         </button>

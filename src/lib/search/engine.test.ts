@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import MiniSearch from "minisearch";
-import { buildDocs, createIndex, search, snippetFor } from "./engine";
+import { applyUpdate, buildDocs, createIndex, search, snippetFor } from "./engine";
 
 function indexOf(notes: { id: string; title: string; text: string }[]) {
   const index = createIndex();
@@ -113,5 +113,28 @@ describe("snippetFor", () => {
     expect(snippet).toContain("needle");
     expect(snippet.startsWith("…")).toBe(true);
     expect(snippet.endsWith("…")).toBe(true);
+  });
+});
+
+describe("applyUpdate", () => {
+  it("adds a note the index has not seen, replaces one it has, and discards removals", () => {
+    const index = createIndex();
+    applyUpdate(index, [{ id: "a", title: "Roof", text: "tiles", updatedAt: 1 }]);
+
+    expect(index.has("a")).toBe(true);
+    expect(search(index, "roof")).toHaveLength(1);
+
+    applyUpdate(index, [{ id: "a", title: "Roof", text: "slate", updatedAt: 2 }]);
+    expect(index.documentCount).toBe(1);
+    expect(search(index, "slate")).toHaveLength(1);
+
+    applyUpdate(index, [], ["a"]);
+    expect(index.has("a")).toBe(false);
+    expect(search(index, "roof")).toHaveLength(0);
+  });
+
+  it("tolerates removing an id that was never indexed", () => {
+    const index = createIndex();
+    expect(() => applyUpdate(index, [], ["missing"])).not.toThrow();
   });
 });

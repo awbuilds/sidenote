@@ -10,6 +10,7 @@ import { useSettings } from "@/hooks/queries";
 import { useUpdateSettings } from "@/hooks/mutations";
 import { isRemoteEnabled } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import { backupHealth } from "@/lib/backup";
 
 /** `display-mode: standalone` capture also needs to work on iOS Safari. */
 function readStandalone(): boolean {
@@ -38,7 +39,7 @@ export function GettingStartedCard() {
 
   const remote = isRemoteEnabled();
   const signedIn = auth.status === "signed-in";
-  const backedUp = settings.lastBackupAt !== null;
+  const backedUp = backupHealth(settings).state === "fresh";
 
   const steps: {
     key: string;

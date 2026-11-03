@@ -1,3 +1,4 @@
+import Dexie from "dexie";
 import { db } from "../db";
 import { fromNotebookRow, toNotebookRow } from "../convert";
 import { descendantIds, reindexPositions, wouldCreateCycle } from "../tree";
@@ -40,11 +41,18 @@ async function listNotebookRows(): Promise<NotebookRow[]> {
 /** Count of live (non-trashed) notes per notebook, for the sidebar badges. */
 export async function noteCountsByNotebook(): Promise<Map<NotebookId, number>> {
   const counts = new Map<NotebookId, number>();
-  const rows = await db().notes.where("isTrashed").equals(0).toArray();
 
-  for (const note of rows) {
-    if (note.notebookId === "") continue;
-    counts.set(note.notebookId, (counts.get(note.notebookId) ?? 0) + 1);
+  // Index keys only: `[notebookId+isTrashed]` answers the question without
+  // loading a single note body. The old version read every live note row and
+  // threw away everything but the foreign key.
+  const keys = (await db()
+    .notes.where("[isTrashed+notebookId]")
+    .between([0, Dexie.minKey], [0, Dexie.maxKey])
+    .keys()) as unknown as [number, string][];
+
+  for (const [, notebookId] of keys) {
+    if (notebookId === "") continue;
+    counts.set(notebookId, (counts.get(notebookId) ?? 0) + 1);
   }
 
   return counts;
@@ -131,7 +139,11 @@ export async function moveNotebook(
       siblings.map((notebook, i) => ({
         ...notebook,
         position: i,
-        updatedAt: notebook.id === id ? timestamp : notebook.updatedAt,
+        // LWW only pushes rows whose `updatedAt` moved. Stamping just the
+        // dragged row left every sibling's new position on this device, so two
+        // devices ended up with different orders after a pull.
+        updatedAt:
+          notebook.id === id || notebook.position !== i ? timestamp : notebook.updatedAt,
       })),
     );
   });

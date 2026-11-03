@@ -3,6 +3,7 @@ import { db } from "@/lib/db/db";
 import type { TombstoneRow } from "@/lib/db/types";
 import { toNotebookRow, toNoteRow } from "@/lib/db/convert";
 import { getSettings, setSetting } from "@/lib/db/repositories/settings";
+import { markSearchFullRebuild } from "@/lib/search/dirty";
 import type {
   Attachment,
   Note,
@@ -80,6 +81,8 @@ export async function wipeAllData(): Promise<void> {
       ]);
     },
   );
+
+  markSearchFullRebuild();
 }
 
 /** A tiny read model for the onboarding preview. */
@@ -254,6 +257,7 @@ export async function removeSampleData(): Promise<void> {
     await setSetting("lastNotebookId", null);
   }
   await setSetting("dataVersion", settings.dataVersion + 1);
+  markSearchFullRebuild();
 }
 
 /**
@@ -798,6 +802,8 @@ async function runSeed(): Promise<SeedResult | null> {
     tagIds: tagRows.map((tag) => tag.id),
     attachmentIds: attachmentRows.map((attachment) => attachment.id),
   });
+
+  markSearchFullRebuild();
   // A fresh database gets the tour. Restoring samples later clears this again.
   await setSetting("onboardingPending", true);
   if (byName.has("Inbox")) await setSetting("lastNotebookId", byName.get("Inbox")!.id);

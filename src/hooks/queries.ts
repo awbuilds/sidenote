@@ -2,7 +2,8 @@
 
 import { useQuery, useQueryClient, type UseQueryResult } from "@tanstack/react-query";
 import { listNotebooks, noteCountsByNotebook } from "@/lib/db/repositories/notebooks";
-import { listNotes, listTrashedNotes } from "@/lib/db/repositories/notes";
+import { countTrashedNotes, listNotes, listTrashedNotes } from "@/lib/db/repositories/notes";
+import { listRecentNotes } from "@/lib/db/repositories/note-index";
 import { backlinksFor, linkCounts, outgoingLinks } from "@/lib/db/repositories/links";
 import { listAllAttachments, type AttachmentSummary } from "@/lib/db/repositories/attachments";
 import { getSettings } from "@/lib/db/repositories/settings";
@@ -51,6 +52,24 @@ export function useNotes({ notebookId, includeTrashed = false }: NoteListQuery =
     queryKey: QUERY_KEYS.notes(notebookId ?? null, includeTrashed),
     queryFn: () => listNotes({ notebookId, includeTrashed }),
   });
+}
+
+/** The most recent notes, for the command palette — one indexed read. */
+export function useRecentNotes(limit: number, enabled = true): UseQueryResult<Note[]> {
+  return useQuery({
+    queryKey: QUERY_KEYS.recentNotes(limit),
+    queryFn: () => listRecentNotes(limit),
+    enabled,
+  });
+}
+
+/** A count, not a list: the sidebar badge does not need every trashed body. */
+export function useTrashedCount(): number {
+  const { data } = useQuery({
+    queryKey: QUERY_KEYS.trashCount,
+    queryFn: countTrashedNotes,
+  });
+  return data ?? 0;
 }
 
 export function useTrashedNotes(): UseQueryResult<Note[]> {

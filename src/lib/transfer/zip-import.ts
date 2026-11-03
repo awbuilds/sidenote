@@ -3,6 +3,7 @@ import { db } from "@/lib/db/db";
 import { toNoteRow, toNotebookRow } from "@/lib/db/convert";
 import { repairLocalIds } from "@/lib/db/migrate-ids";
 import { touchDataVersion } from "@/lib/db/repositories/settings";
+import { markSearchFullRebuild } from "@/lib/search/dirty";
 import { EXPORT_FORMAT_VERSION, type ExportData } from "./zip-export";
 import type { Note, Notebook } from "@/lib/db/types";
 
@@ -127,6 +128,7 @@ async function restoreFull(data: ExportData, zip: JSZip): Promise<ImportResult> 
   await repairLocalIds(database);
 
   await touchDataVersion();
+  markSearchFullRebuild();
 
   return {
     mode: "full",
@@ -255,6 +257,7 @@ async function restoreMarkdownOnly(zip: JSZip): Promise<ImportResult> {
     await database.notes.bulkPut(notes);
   });
   await touchDataVersion();
+  markSearchFullRebuild();
 
   return {
     mode: "markdown",

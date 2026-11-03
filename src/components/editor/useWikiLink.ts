@@ -3,8 +3,9 @@
 import { useEffect, useRef } from "react";
 import { isKnownTitle } from "@/lib/tiptap/wiki-link";
 import { useQuery } from "@tanstack/react-query";
-import { listNotes } from "@/lib/db/repositories/notes";
+import { listNoteTitleIndex } from "@/lib/db/repositories/note-index";
 import { setKnownTitles } from "@/lib/tiptap/wiki-link";
+import { QUERY_KEYS } from "@/hooks/query-keys";
 
 /**
  * The set of note titles, for resolving `[[wiki links]]`.
@@ -32,8 +33,8 @@ export function useTitleResolver(): {
   ready: boolean;
 } {
   const { data } = useQuery({
-    queryKey: ["notes", "titles"],
-    queryFn: () => listNotes(),
+    queryKey: QUERY_KEYS.noteTitles,
+    queryFn: () => listNoteTitleIndex(),
     // Titles are needed by every note, so this is deliberately not scoped to
     // one. Short stale time: a note created in another tab should start
     // resolving soon.

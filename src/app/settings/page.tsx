@@ -157,9 +157,10 @@ function SettingsView() {
         <h2 className="text-sm font-medium">Storage</h2>
         <StorageStatus />
         <p className="text-xs text-muted-foreground">
-          Version history keeps the last {settings?.versionLimit ?? 30} snapshots
-          per note, and drops anything older than {settings?.versionMaxAgeDays ?? 90}{" "}
-          days.
+          Automatic snapshots keep the last {settings?.versionLimit ?? 30}{" "}
+          checkpoints per note and are pruned after{" "}
+          {settings?.versionMaxAgeDays ?? 90} days. Named versions are kept
+          regardless of age.
         </p>
       </section>
 
@@ -176,6 +177,12 @@ function SettingsView() {
         <p className="text-sm text-muted-foreground">
           Sidenote is free and open source under the GNU AGPL-3.0. Copyright ©
           2026 Abhijith Warrier. The source is the same code running here.
+        </p>
+        <p className="font-mono text-xs text-muted-foreground">
+          v{process.env.NEXT_PUBLIC_APP_VERSION}
+          {process.env.NEXT_PUBLIC_COMMIT_SHA
+            ? ` · ${process.env.NEXT_PUBLIC_COMMIT_SHA.slice(0, 7)}`
+            : ""}
         </p>
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" size="sm" asChild>
@@ -206,6 +213,34 @@ function SettingsView() {
             </a>
           </Button>
         </div>
+        <p className="mt-3 text-xs text-muted-foreground">
+          <a
+            className="underline underline-offset-2 hover:text-foreground"
+            href="https://awbuilds.github.io/sidenote/privacy.html"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Privacy
+          </a>
+          {" · "}
+          <a
+            className="underline underline-offset-2 hover:text-foreground"
+            href="https://awbuilds.github.io/sidenote/terms.html"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Terms
+          </a>
+          {" · "}
+          <a
+            className="underline underline-offset-2 hover:text-foreground"
+            href="https://awbuilds.github.io/sidenote/accessibility.html"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Accessibility
+          </a>
+        </p>
       </section>
 
       <Brand className="mt-8 text-center" />

@@ -1,9 +1,10 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { QUERY_KEYS } from "./query-keys";
 import { useQuery } from "@tanstack/react-query";
 import { noteIdsForTag, pruneUnusedTags, tagsByNote } from "@/lib/db/repositories/tags";
-import { listNotes } from "@/lib/db/repositories/notes";
+import { liveNoteIds } from "@/lib/db/repositories/note-index";
 import type { NoteId, Tag } from "@/lib/db/types";
 
 /** The `?tag=` filter, or null. */
@@ -16,14 +17,15 @@ export interface TagSummary extends Tag {
 }
 
 /** Every tag in use, with a live note count. */
-export function useTagSummaries() {
+export function useTagSummaries(enabled = true) {
   return useQuery({
-    queryKey: ["tags", "summaries"],
+    queryKey: QUERY_KEYS.tagSummaries,
+    enabled,
     queryFn: async (): Promise<TagSummary[]> => {
-      const notes = await listNotes();
-      if (notes.length === 0) return [];
+      const noteIds = await liveNoteIds();
+      if (noteIds.length === 0) return [];
 
-      const linked = await tagsByNote(notes.map((note) => note.id));
+      const linked = await tagsByNote(noteIds);
       const counts = new Map<string, number>();
       for (const tags of linked.values()) {
         for (const tag of tags) counts.set(tag.id, (counts.get(tag.id) ?? 0) + 1);
@@ -44,7 +46,7 @@ export function useTagSummaries() {
 /** Note ids carrying a tag — drives filtering in the note list. */
 export function useTaggedNoteIds(tagId: string | null): NoteId[] | null {
   const { data } = useQuery({
-    queryKey: ["tags", tagId, "notes"],
+    queryKey: QUERY_KEYS.taggedNotes(tagId ?? ""),
     queryFn: () => noteIdsForTag(tagId as string),
     enabled: tagId !== null,
   });

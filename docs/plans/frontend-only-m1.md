@@ -1,7 +1,7 @@
 # M1 — Web Notes App (three-pane)
 
 **Date:** 2026-09-29
-**Workspace:** `/Users/Abhijith/RealWorldProjects/applywise` (wiped and rebuilt in place)
+**Workspace:** the project directory (wiped and rebuilt in place)
 **Status:** implemented; the self-hosted backend is live (§13)
 **Revision:** v3 — the filename is historical. Auth, LWW sync and public share
 links shipped against self-hosted Supabase; the sections below that describe the
@@ -11,7 +11,7 @@ frontend-only phase are kept as the record of how it was built.
 
 ## 1. Goal
 
-Delete the ApplyWise job-search app and replace it with a personal notes app:
+Replace the previous app with a personal notes app:
 a web-only knowledge base with a classic three-pane notes layout.
 
 **No third-party app code is copied.** We build the interaction model from
@@ -31,7 +31,7 @@ plugins · diagram notes · mobile/desktop/extension clients.
 
 | Decision | Choice |
 |---|---|
-| Location | Rebuild in `/Users/Abhijith/RealWorldProjects/applywise` |
+| Location | Rebuild in place |
 | Approach | Fresh build, three-pane UX, no copied code |
 | Data | **IndexedDB via Dexie v4.** No server, no auth, no env vars |
 | Framework | Next.js 16 App Router + TypeScript strict + Tailwind v4 |
@@ -44,7 +44,8 @@ plugins · diagram notes · mobile/desktop/extension clients.
 ### Verified environment
 
 Node `v26.8.2`, npm `11.19.1`, pnpm present, no bun, no global `shadcn`
-(install via `npx shadcn@latest`).
+(install globally with `npm i -g shadcn@latest`; `npx` fails in this repo —
+see `AGENTS.md`).
 
 Package versions resolved 2026-09-29:
 
@@ -328,9 +329,8 @@ chose hard delete. Permanently lost:
 ```
 app/  src/  next.config.ts  tsconfig.json  tsconfig.tsbuildinfo
 package.json  package-lock.json  vitest.config.ts  postcss.config.mjs
-next-env.d.ts  .kilo/  .next/  node_modules/
+next-env.d.ts  .next/  node_modules/
 AGENTS.md  CHANGELOG.md  README.md
-job_application_tracker_product_plan.md      ← 40 KB, unrecoverable
 docs/handoffs/*.md                            ← 3 notes, unrecoverable
 ```
 

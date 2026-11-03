@@ -16,7 +16,7 @@
   `0.0.1`. **Release:** [0.0.1](https://github.com/awbuilds/sidenote/releases/tag/0.0.1).
 - **Licence:** GNU AGPL-3.0, copyright Abhijith Warrier. GitHub detects
   `AGPL-3.0`.
-- **Protection:** ruleset `protect-main` (id 26386818) — pull request required,
+- **Protection:** ruleset `protect-main` — pull request required,
   0 required approvals (self-merge allowed), the `ci` check required, linear
   history, no force-push, no deletions, **no bypass actors**.
 - **CI:** `.github/workflows/ci.yml` — `npm ci`, typecheck, test, lint, build on
@@ -34,8 +34,7 @@
   no upload, no sync backend. Sync is self-host only.
 - **Warm Paper redesign:** kept **locally only**, on the `warm-paper-redesign`
   branch; it is not pushed to the new repository. The old repository, branches
-  and tags are archived at `~/sidenote-archive/2026-11-02/`
-  (`sidenote-full.bundle` and `warm-paper.bundle`).
+  and tags are archived outside this repository.
 
 ## What changed
 
@@ -69,16 +68,15 @@ export any notes worth keeping, then delete non-owner/test accounts (`auth.users
 deletes cascade to profiles, notes, notebooks, tags, attachments, versions and
 shares), or delete/pause the project if it was only used for testing.
 
-**Vercel is local-only as of 2026-11-03.** The project
-(`prj_xvYACQHMn8t0yplMYoOIWLJEI0DX`) is linked to `awbuilds/sidenote`, deploys
-`main` to production, has no `NEXT_PUBLIC_SUPABASE_*` variables, and the live
-deployment (`dpl_2H4d1MZZz2opnW5GoDWidzPhTwuq`, commit `61031d7`) was verified in
-a browser: `/auth` shows “Remote accounts are not configured in this build” and
+**Vercel is local-only as of 2026-11-03.** The project is linked to
+`awbuilds/sidenote`, deploys `main` to production, has no
+`NEXT_PUBLIC_SUPABASE_*` variables, and the live deployment (commit `61031d7`)
+was verified in a browser: `/auth` shows “Remote accounts are not configured in this build” and
 Settings shows “This build has no remote configured”.
 
 **Private Supabase ops were removed from the public tree on 2026-11-03.** The
 maintainer-specific runbook, promo-account script and smoke script are archived
-locally under `~/sidenote-archive/`; `docs/SELF-HOSTING.md` is the public guide.
+outside this repository; `docs/SELF-HOSTING.md` is the public guide.
 The repository was deleted and recreated to purge the old commits; the removed
 files, private domains, IP and paths are absent from the new history.
 

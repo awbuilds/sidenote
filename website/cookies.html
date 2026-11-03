@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cookie policy — Sidenote</title>
+  <meta name="description" content="Sidenote sets no cookies. This page lists the strictly necessary browser storage the site and app use, and how to clear it.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#f8f3e9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14120e" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="./assets/icon-512.png" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icon-512.png">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="canonical" href="https://awbuilds.github.io/sidenote/cookies.html">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Sidenote">
+  <meta property="og:title" content="Cookie policy — Sidenote">
+  <meta property="og:description" content="Sidenote sets no cookies. This page lists the strictly necessary browser storage the site and app use, and how to clear it.">
+  <meta property="og:url" content="https://awbuilds.github.io/sidenote/cookies.html">
+  <meta property="og:image" content="https://awbuilds.github.io/sidenote/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./">
+        <img src="./assets/icon-512.png" alt="" width="32" height="32">
+        <span>Sidenote</span>
+      </a>
+
+      <nav class="nav nav-desktop" aria-label="Primary">
+        <a href="./#features">Features</a>
+        <a href="./privacy.html">Privacy</a>
+        <a href="./#self-host">Self-host</a>
+        <a href="./#faq">FAQ</a>
+        <a href="https://github.com/awbuilds/sidenote">GitHub</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="button button-small" href="https://sidenoteapp.vercel.app">Open app</a>
+        <details class="nav-mobile">
+          <summary>Menu</summary>
+          <nav class="nav-mobile-panel" aria-label="Mobile">
+            <a href="./#features">Features</a>
+            <a href="./#privacy">Privacy</a>
+            <a href="./#self-host">Self-host</a>
+            <a href="./#faq">FAQ</a>
+            <a href="https://github.com/awbuilds/sidenote">GitHub</a>
+            <a href="./privacy.html">Privacy policy</a>
+            <a href="./terms.html">Terms of use</a>
+            <a href="./cookies.html">Cookies</a>
+            <a href="./security.html">Security</a>
+            <a href="./accessibility.html">Accessibility</a>
+            <a href="./legal.html">Legal notice</a>
+          </nav>
+        </details>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="page-head wrap">
+      <p class="eyebrow">Cookie policy</p>
+      <h1>No cookies. No pixels. No consent banner.</h1>
+      <p class="lede">The site and hosted app use only the browser storage they need to work. Here is every key, what it does, and how to remove it.</p>
+      <div class="policy-meta">
+        <span><strong>Effective:</strong> 3 November 2026</span>
+        <span><strong>Applies to:</strong> This website and the hosted app at sidenoteapp.vercel.app</span>
+        <span><strong>Contact:</strong> <a href="https://github.com/awbuilds/sidenote/security/advisories/new">private report</a></span>
+      </div>
+    </header>
+
+    <div class="legal-layout wrap">
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+            <li><a href="#summary">The short version</a></li>
+            <li><a href="#what-is-stored">What is stored, and why</a></li>
+            <li><a href="#third-party">Third-party storage</a></li>
+            <li><a href="#managing">How to clear it</a></li>
+            <li><a href="#consent">Why there is no consent banner</a></li>
+            <li><a href="#changes">Changes</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ol>
+      </nav>
+
+      <article class="prose">
+        <h2 id="summary">The short version</h2>
+<div class="note">
+          <p><strong>We do not use cookies.</strong> No advertising cookies, no
+          analytics cookies, no third-party cookies, no pixels. There is nothing
+          to consent to, so there is no cookie banner.</p>
+        </div>
+
+        <h2 id="what-is-stored">What is stored, and why</h2>
+<p>“Cookies” are small files a site asks the browser to send back on every
+        request. Sidenote does not set any. It does use browser storage that is
+        strictly necessary for the app to function:</p>
+        <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Storage</th><th>Key</th><th>Purpose</th><th>Lifetime</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Storage">localStorage</td>
+              <td data-label="Key"><code>sidenote:theme</code></td>
+              <td data-label="Purpose">Remembers light, dark or system so the first paint is not the wrong colour.</td>
+              <td data-label="Lifetime">Until you clear it</td>
+            </tr>
+            <tr>
+              <td data-label="Storage">localStorage</td>
+              <td data-label="Key"><code>sidenote:theme-pack</code></td>
+              <td data-label="Purpose">Remembers the visual pack (Warm Paper, Blue 2001, Glass 2009, Gel 2000).</td>
+              <td data-label="Lifetime">Until you clear it</td>
+            </tr>
+            <tr>
+              <td data-label="Storage">sessionStorage</td>
+              <td data-label="Key"><code>sidenote:companion-ran</code></td>
+              <td data-label="Purpose">Remembers that the companion already crossed the screen this session, so it does not repeat.</td>
+              <td data-label="Lifetime">Until the tab closes</td>
+            </tr>
+            <tr>
+              <td data-label="Storage">IndexedDB</td>
+              <td data-label="Key"><code>sidenote</code></td>
+              <td data-label="Purpose">Your notebooks, notes, tags, attachments, version history and settings.</td>
+              <td data-label="Lifetime">Until you delete them</td>
+            </tr>
+            <tr>
+              <td data-label="Storage">Cache Storage</td>
+              <td data-label="Key"><code>sidenote-shell-*</code>, <code>sidenote-assets-*</code></td>
+              <td data-label="Purpose">The app shell and static assets, so the app can launch offline.</td>
+              <td data-label="Lifetime">Until the service worker updates or you clear it</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <p>On a self-hosted deployment with Supabase, the Supabase client also
+        stores a session token in localStorage so you stay signed in. That is part
+        of the deployment's authentication, not a tracking cookie.</p>
+
+        <h2 id="third-party">Third-party storage</h2>
+<p>We do not embed third-party analytics, advertising, social widgets,
+        comment systems or fonts. The website is served by GitHub Pages and the
+        hosted app by Vercel; those providers may keep standard request logs for
+        security and delivery, as described in the
+        <a href="./privacy.html">privacy policy</a>. They do not receive your notes,
+        and we do not ask them to set advertising cookies.</p>
+
+        <h2 id="managing">How to clear it</h2>
+<p>You can remove the app's storage at any time:</p>
+        <ul>
+          <li><strong>In the app</strong> — Settings → Delete all data removes the
+          notes and settings; Settings → Backup lets you export first.</li>
+          <li><strong>In your browser</strong> — open the site's settings, find
+          “Cookies and site data” (or the equivalent), and clear data for
+          <code>sidenoteapp.vercel.app</code> and
+          <code>awbuilds.github.io</code>.</li>
+        </ul>
+        <p><strong>Clearing storage deletes your local notes.</strong> Export a ZIP
+        backup first if you want to keep them.</p>
+
+        <h2 id="consent">Why there is no consent banner</h2>
+<p>Under the ePrivacy rules, storage that is strictly necessary to provide
+        a service the user requested does not require consent. The theme value,
+        the notes database and the offline cache are all in that category. We do
+        not use anything else, so a banner would ask for consent we do not need.</p>
+        <p>If that ever changes, this page and the banner will change first.</p>
+
+        <h2 id="changes">Changes</h2>
+<p>We may update this page if the storage the app uses changes. The
+        effective date at the top reflects the current version.</p>
+
+        <h2 id="contact">Contact</h2>
+<p>Questions about cookies or storage: use the
+        <a href="https://github.com/awbuilds/sidenote/security/advisories/new">private report channel</a> or open an issue at
+        <a href="https://github.com/awbuilds/sidenote/issues">github.com/awbuilds/sidenote/issues</a>.</p>
+
+        <p class="back-link"><a href="./">← Back to Sidenote</a></p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="./">
+            <img src="./assets/icon-512.png" alt="" width="30" height="30">
+            <span>Sidenote</span>
+          </a>
+          <p>A private, local-first notes app. Free and open source under AGPL-3.0.</p>
+        </div>
+
+        <div class="footer-col">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="./#features">Features</a></li>
+            <li><a href="./#self-host">Self-host</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/CHANGELOG.md">Changelog</a></li>
+            <li><a href="https://sidenoteapp.vercel.app">Open app</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h2>Policies</h2>
+          <ul>
+            <li><a href="./privacy.html">Privacy</a></li>
+            <li><a href="./terms.html">Terms of use</a></li>
+            <li><a href="./cookies.html">Cookies</a></li>
+            <li><a href="./security.html">Security</a></li>
+            <li><a href="./accessibility.html">Accessibility</a></li>
+            <li><a href="./legal.html">Legal notice</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="https://github.com/awbuilds/sidenote">Source code</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/issues">Issues</a></li>
+            <li><a href="./legal.html#contact">Contact</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/CONTRIBUTING.md">Contributing</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/LICENSE">Licence</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Abhijith Warrier · AGPL-3.0</p>
+        <p class="promise">No cookies. No trackers. No account.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

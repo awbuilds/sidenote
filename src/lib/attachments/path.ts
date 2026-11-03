@@ -10,6 +10,11 @@ export const FREE_ATTACHMENT_BYTES = 50 * 1024 * 1024;
  * The server derives this from `(userId, id, fileName)` — the local attachment
  * record does not store a path.
  */
+/** Would storing `incomingBytes` more take the account past the budget? */
+export function exceedsAttachmentBudget(usedBytes: number, incomingBytes: number): boolean {
+  return usedBytes + incomingBytes > FREE_ATTACHMENT_BYTES;
+}
+
 export function attachmentStoragePath(userId: string, id: string, fileName: string): string {
   const safeName = fileName.replace(/[/\\]/g, "_") || "file";
   return `${userId}/${id}/${safeName}`;

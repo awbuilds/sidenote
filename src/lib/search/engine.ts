@@ -35,6 +35,28 @@ export function createIndex(): MiniSearch<SearchDoc> {
   return new MiniSearch<SearchDoc>(SEARCH_INDEX_OPTIONS);
 }
 
+/**
+ * Apply an incremental change to an existing index.
+ *
+ * Used by the worker for both a single-note save and a batched catch-up.
+ * `replace` throws for an id the index has never seen, so a new note must go
+ * through `add`; `add` throws for a duplicate, so the branch is required in
+ * both directions.
+ */
+export function applyUpdate(
+  index: MiniSearch<SearchDoc>,
+  docs: SearchDoc[],
+  removeIds: string[] = [],
+): void {
+  for (const id of removeIds) {
+    if (index.has(id)) index.discard(id);
+  }
+  for (const doc of docs) {
+    if (index.has(doc.id)) index.replace(doc);
+    else index.add(doc);
+  }
+}
+
 export function buildDocs(
   notes: { id: string; title: string; contentText: string; updatedAt: number }[],
 ): SearchDoc[] {

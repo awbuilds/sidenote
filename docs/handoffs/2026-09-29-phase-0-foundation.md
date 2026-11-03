@@ -5,7 +5,7 @@
 
 ## What happened
 
-ApplyWise (the previous job-search app in this folder) was deleted in full and
+The previous app in this folder was deleted in full and
 replaced with a local-first web notes app. The old tree, its 40 KB product
 plan, and its three handoff notes are **gone and unrecoverable** — the folder
 had no git history. `git init` ran before the wipe so that cannot recur.

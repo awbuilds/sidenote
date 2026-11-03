@@ -1,0 +1,35 @@
+name: Database tests
+
+# pgTAP coverage for the parts Vitest cannot reach: RLS, the share-ownership
+# trigger, the quota trigger and the security-definer readers.
+#
+# Path-filtered because the local Supabase stack pulls several Docker images;
+# running it on every docs-only pull request would be a poor trade.
+
+on:
+  pull_request:
+    paths:
+      - "supabase/**"
+      - "src/lib/sync/**"
+      - "src/lib/share/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: db-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  db:
+    name: db
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: supabase start
+      - run: supabase db reset
+      - run: supabase test db

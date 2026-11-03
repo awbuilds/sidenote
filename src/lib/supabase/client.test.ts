@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { supabaseHost } from "./client";
+import { __resetSupabaseClient, getSupabase, supabaseHost } from "./client";
 
 const saved = {
   url: process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -14,7 +14,10 @@ function restore(): void {
   else process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = saved.key;
 }
 
-afterEach(restore);
+afterEach(() => {
+  restore();
+  __resetSupabaseClient();
+});
 
 describe("supabaseHost", () => {
   it("is null when the deployment has no backend", () => {
@@ -33,5 +36,15 @@ describe("supabaseHost", () => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = "not a url";
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "public-anon-key";
     expect(supabaseHost()).toBe("not a url");
+  });
+});
+
+describe("getSupabase", () => {
+  it("resolves null without configuration, so local-only builds never load the library", async () => {
+    delete process.env.NEXT_PUBLIC_SUPABASE_URL;
+    delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    __resetSupabaseClient();
+
+    await expect(getSupabase()).resolves.toBeNull();
   });
 });

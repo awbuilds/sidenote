@@ -104,6 +104,10 @@ export interface NoteVersion {
   contentMarkdown: string;
   contentText: string;
   version: number;
+  /** Absent on rows written before named versions shipped; treat as "auto". */
+  kind?: "auto" | "manual";
+  /** Set only for a user-named checkpoint. */
+  label?: string;
   createdAt: number;
 }
 
@@ -223,6 +227,8 @@ export interface AppSettings {
   onboardingDismissed: boolean;
   /** Timestamp of the last successful ZIP export, for the checklist. */
   lastBackupAt: number | null;
+  /** `dataVersion` at that export, so "changes since" is exact rather than a guess. */
+  lastBackupDataVersion: number | null;
   /** Note list row density. */
   listDensity: ListDensity;
   /** Which companion pet is selected. */
@@ -253,6 +259,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   onboardingCompletedAt: null,
   onboardingDismissed: false,
   lastBackupAt: null,
+  lastBackupDataVersion: null,
   listDensity: "comfortable",
   companionId: DEFAULT_COMPANION,
   companionEnabled: true,

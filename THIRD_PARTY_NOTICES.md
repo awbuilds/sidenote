@@ -17,7 +17,6 @@ package remains the authoritative one.
 | `@tanstack/react-query` | MIT | <https://github.com/TanStack/query> |
 | `@tiptap/*` (core, react, starter-kit, pm, markdown, html and extensions) | MIT | <https://github.com/ueberdosis/tiptap> |
 | `class-variance-authority` | Apache-2.0 | <https://github.com/joe-bell/cva> |
-| `clsx` | MIT | <https://github.com/lukeed/clsx> |
 | `cmdk` | MIT | <https://github.com/pacocoursey/cmdk> |
 | `cn` | MIT | <https://github.com/shadcn-ui/cn> |
 | `dexie` | Apache-2.0 | <https://github.com/dexie/Dexie.js> |
@@ -29,8 +28,8 @@ package remains the authoritative one.
 | `next` | MIT | <https://github.com/vercel/next.js> |
 | `radix-ui` | MIT | <https://github.com/radix-ui/primitives> |
 | `react`, `react-dom` | MIT | <https://github.com/facebook/react> |
+| `shadcn` | MIT (the stylesheet `globals.css` imports) | <https://github.com/shadcn-ui/ui> |
 | `sonner` | MIT | <https://github.com/emilkowalski/sonner> |
-| `tailwind-merge` | MIT | <https://github.com/dcastil/tailwind-merge> |
 | `tw-animate-css` | MIT | <https://github.com/Wombosvideo/tw-animate-css> |
 
 The lockfile pins the full transitive dependency tree. Each package in that
@@ -80,7 +79,6 @@ the deployed application bundle except where noted above.
 | `vitest`, `@vitejs/plugin-react` | MIT |
 | `jsdom` | MIT |
 | `@testing-library/jest-dom`, `@testing-library/react`, `@testing-library/user-event` | MIT |
-| `shadcn` | MIT |
 | `@types/node`, `@types/react`, `@types/react-dom` | MIT |
 
 ## License texts

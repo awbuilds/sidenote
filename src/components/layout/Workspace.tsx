@@ -38,7 +38,7 @@ import { CompanionPet } from "@/components/companion/CompanionPet";
 import { DEFAULT_COMPANION } from "@/lib/companion";
 
 import { useBootstrap } from "@/hooks/useBootstrap";
-import { useNotebookTree, useSettings, useTrashedNotes } from "@/hooks/queries";
+import { useNotebookTree, useSettings, useTrashedCount } from "@/hooks/queries";
 import { Onboarding } from "@/components/onboarding/Onboarding";
 import { shouldShowOnboarding } from "@/lib/onboarding";
 import { flattenTree } from "@/lib/db/tree";
@@ -238,7 +238,7 @@ function NotebookSidebar({
   const router = useRouter();
   const pathname = usePathname();
   const { data: settings } = useSettings();
-  const { data: trashed } = useTrashedNotes();
+  const trashedCount = useTrashedCount();
 
   const [showTags, setShowTags] = useState(true);
 
@@ -342,7 +342,7 @@ function NotebookSidebar({
           <SidebarSection
             icon={<Trash2 className="size-4" />}
             label="Trash"
-            count={trashed?.length ?? 0}
+            count={trashedCount}
             active={pathname === "/trash"}
             onClick={() => {
               router.push("/trash");

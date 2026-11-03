@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { tagsByNote } from "@/lib/db/repositories/tags";
 import type { NoteId, Tag } from "@/lib/db/types";
+import { QUERY_KEYS } from "./query-keys";
 
 /**
  * Tags for a batch of notes, keyed by note id.
@@ -14,7 +15,7 @@ export function useTagsForNotes(noteIds: NoteId[]): Map<NoteId, Tag[]> {
   const key = [...noteIds].sort().join(",");
 
   const { data } = useQuery({
-    queryKey: ["tags", "for-notes", key],
+    queryKey: QUERY_KEYS.tagsForNotes(key),
     queryFn: () => tagsByNote(noteIds),
     // A new note id invalidates the batch; re-fetching on every render would
     // thrash the index.

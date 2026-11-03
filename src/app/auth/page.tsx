@@ -145,6 +145,28 @@ function AuthView() {
         </form>
       )}
 
+      <p className="mt-8 text-center text-xs text-muted-foreground">
+        By continuing you agree to Sidenote&apos;s{" "}
+        <a
+          href="https://awbuilds.github.io/sidenote/terms.html"
+          target="_blank"
+          rel="noreferrer"
+          className="underline underline-offset-2 hover:text-foreground"
+        >
+          terms of use
+        </a>{" "}
+        and{" "}
+        <a
+          href="https://awbuilds.github.io/sidenote/privacy.html"
+          target="_blank"
+          rel="noreferrer"
+          className="underline underline-offset-2 hover:text-foreground"
+        >
+          privacy policy
+        </a>
+        .
+      </p>
+
       <Brand className="mt-10 text-center" />
     </div>
   );

@@ -96,4 +96,9 @@ export interface SyncResult {
   pushed: number;
   pulled: number;
   deleted: number;
+  /**
+   * Non-fatal problems the pass worked around — currently an attachment that
+   * would exceed the 50 MB budget. The rest of the pass still runs.
+   */
+  warnings: string[];
 }

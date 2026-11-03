@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { attachmentStoragePath } from "./path";
+import {
+  FREE_ATTACHMENT_BYTES,
+  attachmentStoragePath,
+  exceedsAttachmentBudget,
+} from "./path";
 
 describe("attachmentStoragePath", () => {
   it("namespaces by user and attachment", () => {
@@ -13,5 +17,15 @@ describe("attachmentStoragePath", () => {
 
   it("falls back for an empty name", () => {
     expect(attachmentStoragePath("u", "a", "")).toBe("u/a/file");
+  });
+});
+
+describe("exceedsAttachmentBudget", () => {
+  it("allows a file that exactly fills the budget", () => {
+    expect(exceedsAttachmentBudget(FREE_ATTACHMENT_BYTES - 10, 10)).toBe(false);
+  });
+
+  it("refuses one byte over", () => {
+    expect(exceedsAttachmentBudget(FREE_ATTACHMENT_BYTES - 10, 11)).toBe(true);
   });
 });

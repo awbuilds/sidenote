@@ -20,7 +20,11 @@ recent handoff note in `docs/handoffs/` before starting work.
   `NEXT_PUBLIC_SUPABASE_*` vars enables sign-in and sync against the
   self-hosted stack; every remote path degrades to a no-op without them.
 - Routes: `/` (redirects to `/notes`), `/notes`, `/trash`, `/settings`,
-  `/auth` (optional sign-in), `/s/[token]` (public share links).
+  `/auth` (optional sign-in), `/s/[token]` (public share links), `/print/[noteId]`
+  (print/PDF view).
+- Public legal pages live in `website/` (privacy, terms, cookies, security,
+  accessibility, legal notice), deploy to GitHub Pages, and are linked from
+  Settings → About.
 - The product plan is `docs/plans/frontend-only-m1.md` (the filename is
   historical: the self-hosted backend is live — see §13).
 - Licensed **AGPL-3.0**. `main` is protected; changes land through pull
@@ -29,12 +33,13 @@ recent handoff note in `docs/handoffs/` before starting work.
 ## Build & verify
 
 ```bash
-npm install                 # npm 11 script allowlist is in package.json#allowScripts
+npm ci                      # npm 11 script allowlist is in package.json#allowScripts
 npm run typecheck           # next typegen && tsc --noEmit
 npm run test                # vitest run
 npm run lint                # eslint
 npm run dev                 # next dev (http://localhost:3000)
 npm run build               # next build
+npm run check:docs          # fails on host paths / deployment ids in public docs
 ```
 
 **All four of `typecheck`, `test`, `lint` and `build` must be clean before any
@@ -120,8 +125,28 @@ with `npm run dev` and the log in `.next/dev/logs/next-development.log` read.
   state, settings, and the trash view. Do not bury it.
 - **Notebook trees must not form cycles.** Any re-parent walks ancestors first
   and refuses a move that would place a notebook inside its own subtree.
-- **Version history is capped** (last 30 per note, plus a 90-day floor). Prune
-  on write or the database grows without limit.
+- **Version history is capped** (last 30 automatic snapshots per note, plus a
+  90-day floor; named versions are kept regardless of age). Prune on write or
+  the database grows without limit.
+- **Snapshots are not taken per autosave.** `src/lib/db/version-policy.ts`
+  decides: first edit, rename, or once every five minutes. Snapshot version
+  numbers come from `nextSnapshotVersion()` (max of the note counter and the
+  history), because a sync pull can move `notes.version` backwards and the
+  `[noteId+version]` index is unique — colliding there makes every later save
+  fail.
+- **Search indexing is explicit.** A write path that changes note content calls
+  `markSearchDirty`, `markSearchRemoved` or `markSearchFullRebuild` from
+  `src/lib/search/dirty.ts`. `useSearch` no longer reindexes on query-cache
+  events; a missed marker is only caught by the `dataVersion` safety net on
+  tab focus, so add the call with the write.
+- **Do not `listNotes()` to read titles or counts.** `listNotes` returns full
+  bodies. `src/lib/db/repositories/note-index.ts` reads titles, recent notes and
+  live ids through compound indexes without materialising `contentJson`; the
+  sidebar counts and the trash badge use counts, not lists.
+- **`@supabase/supabase-js` is loaded lazily.** `src/lib/supabase/config.ts`
+  holds `isRemoteEnabled`/`supabaseHost` and imports nothing heavy;
+  `getSupabase()` is async and dynamic-imports the library. Never import the
+  library statically outside `client.ts`, or every local-only page pays for it.
 
 ## Conventions & gotchas
 
@@ -144,6 +169,9 @@ with `npm run dev` and the log in `.next/dev/logs/next-development.log` read.
   Turbopack walks up to `$HOME` and warns about an unrelated `pnpm-lock.yaml`.
 - The `shadcn` CLI prompts even with `--yes`; pass `--no-reinstall` to `init`
   to avoid a hang.
+- `shadcn` is a **`dependencies`** entry, not a devDependency, because
+  `src/app/globals.css` imports `shadcn/tailwind.css`. Moving it back breaks
+  `npm ci --omit=dev` builds with an unresolved CSS import.
 - `@types/node` must stay `^26` to match the Node 26 runtime and satisfy
   vitest 5's peer range. vitest 3 has a published path-traversal advisory —
   do not downgrade.

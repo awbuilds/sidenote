@@ -17,7 +17,7 @@ import {
  *  - on sign-in,
  *  - when the tab becomes visible again,
  *  - when the network comes back,
- *  - every minute while visible,
+ *  - every 30 seconds while visible,
  *  - and after local mutations (`requestSync`, called from invalidation).
  *
  * Pulled rows bypass TanStack Query, so an applied pass invalidates caches.

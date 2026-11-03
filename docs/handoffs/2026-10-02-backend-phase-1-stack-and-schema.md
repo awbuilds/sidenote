@@ -7,10 +7,10 @@ verified end-to-end through the real API. App integration not started.
 
 ## What was built
 
-**Server (`/opt/supabase/docker`, tag `v1.26.08`)**
+**Server (self-hosted Supabase, tag `v1.26.08`)**
 
 - Compose project `sidenote-prod`, 11 containers named `sidenote-*`, all
-  healthy. Same pinned tag as the Bolt stacks, so every image was already
+  healthy. Same pinned tag as the other stack, so every image was already
   cached; no new image downloads.
 - Loopback-only ports: Kong `9020`/`9445`, pooler `5435`/`6545`. Host nginx
   vhost staged; **certbot pending a DNS record** for
@@ -23,7 +23,7 @@ verified end-to-end through the real API. App integration not started.
   tarball, 14-day retention) on cron at 03:15, restore drill performed.
 - Realtime container renamed to `sidenote-realtime` **and** Kong's
   `volumes/api/kong.yml` upstreams updated to match. See the ops runbook for
-  the `bolt-dev` bug this pattern caused there.
+  the same bug this pattern caused on the other stack.
 
 **Repo**
 

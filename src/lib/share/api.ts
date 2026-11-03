@@ -25,7 +25,13 @@ export function shareUrl(token: string): string {
 
 function friendly(message: string): string {
   if (message.toLowerCase().includes("sign in")) return "Sign in to create share links.";
-  if (message.toLowerCase().includes("foreign key")) {
+  // The ownership check reports a missing note rather than confirming that
+  // someone else's id exists; on a first share that usually means the note has
+  // not reached the server yet.
+  if (
+    message.toLowerCase().includes("note not found") ||
+    message.toLowerCase().includes("foreign key")
+  ) {
     return "This note has not synced yet — give it a moment and try again.";
   }
   return message;
@@ -35,7 +41,7 @@ export async function createShare(
   noteId: string,
   options: { password?: string; expiresAt?: number | null } = {},
 ): Promise<{ share?: ShareRecord; error?: string }> {
-  const client = getSupabase();
+  const client = await getSupabase();
   if (!client) return { error: "Sign in to create share links." };
 
   const password = options.password?.trim() ?? "";
@@ -64,12 +70,12 @@ export async function createShare(
 }
 
 export async function listShares(noteId: string): Promise<ShareRecord[]> {
-  const client = getSupabase();
+  const client = await getSupabase();
   if (!client) return [];
 
   const { data, error } = await client
     .from("shares")
-    .select("id, token, password_hash, expires_at, revoked_at, created_at")
+    .select("id, token, has_password, expires_at, revoked_at, created_at")
     .eq("note_id", noteId)
     .is("revoked_at", null)
     .order("created_at", { ascending: false });
@@ -79,13 +85,13 @@ export async function listShares(noteId: string): Promise<ShareRecord[]> {
     (row: {
       id: string;
       token: string;
-      password_hash: string | null;
+      has_password: boolean;
       expires_at: string | null;
       created_at: string;
     }) => ({
       id: row.id,
       token: row.token,
-      hasPassword: row.password_hash !== null,
+      hasPassword: row.has_password,
       expiresAt: row.expires_at === null ? null : Date.parse(row.expires_at),
       createdAt: Date.parse(row.created_at),
     }),
@@ -93,7 +99,7 @@ export async function listShares(noteId: string): Promise<ShareRecord[]> {
 }
 
 export async function revokeShare(id: string): Promise<{ error?: string }> {
-  const client = getSupabase();
+  const client = await getSupabase();
   if (!client) return { error: "Sign in to manage share links." };
 
   const { error } = await client
@@ -109,12 +115,12 @@ export interface ShareWithNote extends ShareRecord {
 
 /** Every active link this user owns, across notes — the settings view. */
 export async function listAllShares(): Promise<ShareWithNote[]> {
-  const client = getSupabase();
+  const client = await getSupabase();
   if (!client) return [];
 
   const { data, error } = await client
     .from("shares")
-    .select("id, token, password_hash, expires_at, created_at, notes(title)")
+    .select("id, token, has_password, expires_at, created_at, notes(title)")
     .is("revoked_at", null)
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
@@ -123,7 +129,7 @@ export async function listAllShares(): Promise<ShareWithNote[]> {
     (row: {
       id: string;
       token: string;
-      password_hash: string | null;
+      has_password: boolean;
       expires_at: string | null;
       created_at: string;
       notes: { title: string } | { title: string }[] | null;
@@ -132,7 +138,7 @@ export async function listAllShares(): Promise<ShareWithNote[]> {
       return {
         id: row.id,
         token: row.token,
-        hasPassword: row.password_hash !== null,
+        hasPassword: row.has_password,
         expiresAt: row.expires_at === null ? null : Date.parse(row.expires_at),
         createdAt: Date.parse(row.created_at),
         noteTitle: embedded?.title ?? "",
@@ -151,7 +157,7 @@ export async function fetchSharedNote(
   token: string,
   password?: string | null,
 ): Promise<SharedNoteLookup> {
-  const client = getSupabase();
+  const client = await getSupabase();
   if (!client) return { notFound: true };
 
   const { data, error } = await client.rpc("get_shared_note", {

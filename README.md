@@ -56,7 +56,8 @@ Settings → Backup.
 - **Code block languages** — set on the block, exported as a fenced block.
 - **Autosave** — debounced, flushed on tab close and on note switch. A failed
   save keeps the payload and offers Retry.
-- **Version history** — a snapshot per save, capped by count and age.
+- **Version history** — automatic snapshots on the first edit, on a rename and
+  at most every five minutes, plus named checkpoints; capped by count and age.
 - **Tags and search** — MiniSearch in a Web Worker, prefix matching, with the
   index persisted so page loads stay fast.
 - **Sorting** — by last edited, created or title, with pinning respected.
@@ -79,8 +80,10 @@ Settings → Backup.
 
 ## Running it
 
+Requires **Node 26** (see `.nvmrc`) and npm 11.
+
 ```bash
-npm install
+npm ci
 npm run dev      # http://localhost:3000
 ```
 
@@ -88,6 +91,7 @@ npm run dev      # http://localhost:3000
 |---|---|
 | `npm run typecheck` | `next typegen && tsc --noEmit` |
 | `npm run test` | Vitest |
+| `npm run test:db` | pgTAP for the Supabase schema (needs a local stack) |
 | `npm run lint` | ESLint |
 | `npm run build` | Production build |
 
@@ -155,8 +159,8 @@ Signing in is never required. When the Supabase env vars are present, the app
 gains an `/auth` page, a "Sign in to sync" entry in the sidebar, and a Sync
 section in settings; local writes are pushed with last-write-wins
 (`updated_at`, with a grace window), remote changes are pulled on focus, on
-reconnect, every minute, and after each mutation. Deletions propagate through
-local tombstones. If a remote edit overwrites a local note, the local content
+reconnect, every 30 seconds while the tab is visible, and after each mutation.
+Deletions propagate through local tombstones. If a remote edit overwrites a local note, the local content
 is preserved as a version snapshot first.
 
 **Attachments sync as bytes** through the private `attachments` bucket: a new
@@ -181,6 +185,18 @@ mobile/desktop apps.
 Read `CONTRIBUTING.md`. `main` is protected: every change lands through a pull
 request with a green CI run. Security reports go through `SECURITY.md`, never a
 public issue.
+
+## Privacy and policies
+
+The project website carries the full set of notices:
+[privacy](https://awbuilds.github.io/sidenote/privacy.html),
+[terms of use](https://awbuilds.github.io/sidenote/terms.html),
+[cookies](https://awbuilds.github.io/sidenote/cookies.html),
+[security](https://awbuilds.github.io/sidenote/security.html),
+[accessibility](https://awbuilds.github.io/sidenote/accessibility.html) and the
+[legal notice](https://awbuilds.github.io/sidenote/legal.html). In short: the
+hosted app is local-only, there are no cookies or trackers, and sync is
+optional and self-hosted.
 
 ## Licence
 

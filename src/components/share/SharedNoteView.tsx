@@ -99,7 +99,25 @@ export function SharedNoteView({ token }: { token: string }) {
         <Button asChild variant="outline" size="sm">
           <Link href="/">Try Sidenote</Link>
         </Button>
-        <Brand />
+        <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+          <a
+            href="https://awbuilds.github.io/sidenote/privacy.html"
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2 hover:text-foreground"
+          >
+            Privacy
+          </a>
+          <a
+            href="https://awbuilds.github.io/sidenote/terms.html"
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2 hover:text-foreground"
+          >
+            Terms
+          </a>
+          <Brand />
+        </div>
       </div>
     </Shell>
   );
