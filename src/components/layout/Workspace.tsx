@@ -103,7 +103,7 @@ export function Workspace() {
   }
 
   return (
-    <div className="flex h-dvh overflow-hidden bg-background">
+    <div className="flex h-dvh flex-col overflow-hidden bg-background">
       <CommandPalette />
       {focus && (
         <div className="fixed top-2 right-2 z-30">
