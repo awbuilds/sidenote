@@ -112,7 +112,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("font-sans", geist.variable, plexMono.variable)}
+      className={cn(geist.variable, plexMono.variable)}
     >
       <body className="antialiased">
         {/* Applies the stored theme before first paint so there is no flash of

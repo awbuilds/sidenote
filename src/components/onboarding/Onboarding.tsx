@@ -82,9 +82,9 @@ export function Onboarding() {
         </Button>
       </header>
 
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center px-6 py-6">
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center px-6 py-4 sm:py-6">
         {step === 1 && (
-          <section className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+          <section className="grid items-center gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
             <div>
               <p className="text-xs font-medium uppercase tracking-[0.18em] text-primary">
                 Welcome
@@ -113,9 +113,9 @@ export function Onboarding() {
               </ul>
             </div>
 
-            <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border bg-card p-8 text-center">
+            <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border bg-card p-6 text-center sm:p-8">
               <div className="companion-idle">
-                <CompanionAvatar id={companionId} className="size-28" />
+                <CompanionAvatar id={companionId} className="size-20 sm:size-28" />
               </div>
               <div>
                 <p className="text-sm font-medium">
@@ -302,7 +302,7 @@ export function Onboarding() {
         )}
       </main>
 
-      <footer className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-6 py-5">
+      <footer className="sticky bottom-0 z-10 mx-auto flex w-full max-w-5xl items-center justify-between gap-4 border-t bg-background/95 px-6 py-4 backdrop-blur">
         <div className="flex items-center gap-1.5" aria-label={`Step ${step} of ${STEPS}`}>
           {Array.from({ length: STEPS }, (_, index) => (
             <span

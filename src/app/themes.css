@@ -408,25 +408,25 @@ html[data-theme-pack="gel"].dark body {
 /* Tailwind bakes the radius scale into utilities in this setup, so token
    overrides alone leave cards looking like Warm Paper. These unlayered rules
    intentionally beat the utility layer; rounded-full is left alone. */
-[data-theme-pack="blue"] .rounded-sm,
-[data-theme-pack="blue"] .rounded-md,
-[data-theme-pack="blue"] .rounded-lg,
-[data-theme-pack="blue"] .rounded-xl,
-[data-theme-pack="blue"] .rounded-2xl {
+[data-theme-pack="blue"] .rounded-sm:not(:where([data-theme-preview] *)),
+[data-theme-pack="blue"] .rounded-md:not(:where([data-theme-preview] *)),
+[data-theme-pack="blue"] .rounded-lg:not(:where([data-theme-preview] *)),
+[data-theme-pack="blue"] .rounded-xl:not(:where([data-theme-preview] *)),
+[data-theme-pack="blue"] .rounded-2xl:not(:where([data-theme-preview] *)) {
   border-radius: 2px;
 }
 
-[data-theme-pack="glass"] .rounded-sm { border-radius: 4px; }
-[data-theme-pack="glass"] .rounded-md { border-radius: 6px; }
-[data-theme-pack="glass"] .rounded-lg { border-radius: 8px; }
-[data-theme-pack="glass"] .rounded-xl { border-radius: 12px; }
-[data-theme-pack="glass"] .rounded-2xl { border-radius: 14px; }
+[data-theme-pack="glass"] .rounded-sm:not(:where([data-theme-preview] *)) { border-radius: 4px; }
+[data-theme-pack="glass"] .rounded-md:not(:where([data-theme-preview] *)) { border-radius: 6px; }
+[data-theme-pack="glass"] .rounded-lg:not(:where([data-theme-preview] *)) { border-radius: 8px; }
+[data-theme-pack="glass"] .rounded-xl:not(:where([data-theme-preview] *)) { border-radius: 12px; }
+[data-theme-pack="glass"] .rounded-2xl:not(:where([data-theme-preview] *)) { border-radius: 14px; }
 
-[data-theme-pack="gel"] .rounded-sm { border-radius: 8px; }
-[data-theme-pack="gel"] .rounded-md { border-radius: 10px; }
-[data-theme-pack="gel"] .rounded-lg { border-radius: 14px; }
-[data-theme-pack="gel"] .rounded-xl { border-radius: 18px; }
-[data-theme-pack="gel"] .rounded-2xl { border-radius: 20px; }
+[data-theme-pack="gel"] .rounded-sm:not(:where([data-theme-preview] *)) { border-radius: 8px; }
+[data-theme-pack="gel"] .rounded-md:not(:where([data-theme-preview] *)) { border-radius: 10px; }
+[data-theme-pack="gel"] .rounded-lg:not(:where([data-theme-preview] *)) { border-radius: 14px; }
+[data-theme-pack="gel"] .rounded-xl:not(:where([data-theme-preview] *)) { border-radius: 18px; }
+[data-theme-pack="gel"] .rounded-2xl:not(:where([data-theme-preview] *)) { border-radius: 20px; }
 
 [data-theme-pack="blue"] ::selection {
   background: #0a5bd3;
@@ -453,3 +453,22 @@ html[data-theme-pack="gel"].dark body {
 [data-theme-pack="gel"].dark * {
   scrollbar-color: #3a4358 #171a21;
 }
+
+/* Inside a gallery preview, the preview's own pack owns the shape. */
+[data-theme-preview][data-theme-pack="blue"] .rounded-sm,
+[data-theme-preview][data-theme-pack="blue"] .rounded-md,
+[data-theme-preview][data-theme-pack="blue"] .rounded-lg,
+[data-theme-preview][data-theme-pack="blue"] .rounded-xl,
+[data-theme-preview][data-theme-pack="blue"] .rounded-2xl {
+  border-radius: 2px;
+}
+[data-theme-preview][data-theme-pack="glass"] .rounded-sm { border-radius: 4px; }
+[data-theme-preview][data-theme-pack="glass"] .rounded-md { border-radius: 6px; }
+[data-theme-preview][data-theme-pack="glass"] .rounded-lg { border-radius: 8px; }
+[data-theme-preview][data-theme-pack="glass"] .rounded-xl { border-radius: 12px; }
+[data-theme-preview][data-theme-pack="glass"] .rounded-2xl { border-radius: 14px; }
+[data-theme-preview][data-theme-pack="gel"] .rounded-sm { border-radius: 8px; }
+[data-theme-preview][data-theme-pack="gel"] .rounded-md { border-radius: 10px; }
+[data-theme-preview][data-theme-pack="gel"] .rounded-lg { border-radius: 14px; }
+[data-theme-preview][data-theme-pack="gel"] .rounded-xl { border-radius: 18px; }
+[data-theme-preview][data-theme-pack="gel"] .rounded-2xl { border-radius: 20px; }
