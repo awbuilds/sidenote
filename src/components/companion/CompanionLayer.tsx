@@ -6,9 +6,8 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import {
   COMPANION_RUN_EVENT,
   DEFAULT_COMPANION,
-  companionName,
 } from "@/lib/companion";
-import { CompanionAvatar } from "./CompanionAvatar";
+import { CompanionPet } from "./CompanionPet";
 
 const SESSION_KEY = "sidenote:companion-ran";
 
@@ -58,14 +57,17 @@ export function CompanionLayer() {
     <div
       key={run}
       className="companion-run"
-      onAnimationEnd={() => setRun(0)}
-      aria-hidden="true"
+      onAnimationEnd={(event) => {
+        // The pet's hop also bubbles an animationend; only the run itself
+        // should unmount the layer.
+        if (event.target === event.currentTarget) setRun(0);
+      }}
     >
       <span className="companion-bob">
-        <CompanionAvatar
+        <CompanionPet
           id={companionId}
-          className="size-14 drop-shadow-md"
-          label={companionName(companionId)}
+          avatarClassName="size-14 drop-shadow-md"
+          buttonClassName="p-1"
         />
       </span>
     </div>

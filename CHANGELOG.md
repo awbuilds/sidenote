@@ -14,7 +14,11 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Four theme packs — Warm Paper, Blue 2001, Glass 2009 and Gel 2000 — each with
   light and dark variants, plus a theme gallery with live three-pane previews.
 - Four original companion pets, with a picker, a sidebar avatar, and an optional
-  once-per-session run that honours `prefers-reduced-motion`.
+  once-per-session run that honours `prefers-reduced-motion`. The pet is
+  interactive: click it to make it hop and say a line.
+- A third-party notices file covering dependencies, fonts, icons and original
+  artwork, linked from the README, the website and Settings → About.
+- A `NOTICE` file recording the project copyright and AGPL-3.0-only license.
 - A generic self-hosting guide (`docs/SELF-HOSTING.md`) covering local-only,
   Supabase, Vercel, Docker and any Node host.
 - `Dockerfile`, `docker-compose.yml` and opt-in Next.js standalone output for

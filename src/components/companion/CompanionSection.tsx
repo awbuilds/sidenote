@@ -7,7 +7,7 @@ import { useUpdateSettings } from "@/hooks/mutations";
 import { DEFAULT_COMPANION } from "@/lib/companion";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { CompanionPicker } from "./CompanionPicker";
-import { CompanionAvatar } from "./CompanionAvatar";
+import { CompanionPet } from "./CompanionPet";
 
 /** Settings card for the optional companion. */
 export function CompanionSection() {
@@ -21,7 +21,12 @@ export function CompanionSection() {
     <section className="mt-4 space-y-3 rounded-lg border p-4">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
-          <CompanionAvatar id={companionId} className="size-8" />
+          <CompanionPet
+            id={companionId}
+            avatarClassName="size-8"
+            buttonClassName="p-1"
+            bubbleAlign="start"
+          />
           <div>
             <h2 className="text-sm font-medium">Companion</h2>
             <p className="text-xs text-muted-foreground">

@@ -395,3 +395,85 @@
     animation: none;
   }
 }
+
+/* The companion is a real button: the run layer is pointer-transparent, the
+   pet itself is not. */
+.companion-pet {
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 150ms ease, background-color 150ms ease;
+}
+.companion-pet:hover {
+  transform: translateY(-1px) scale(1.06);
+}
+.companion-pet:active {
+  transform: scale(0.96);
+}
+
+.companion-hop {
+  display: block;
+  animation: companion-hop 480ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes companion-hop {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  35% {
+    transform: translateY(-8px) rotate(-6deg);
+  }
+  65% {
+    transform: translateY(-3px) rotate(5deg);
+  }
+}
+
+.companion-bubble {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  z-index: 70;
+  width: max-content;
+  max-width: 220px;
+  transform: translateX(-50%);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 18%);
+  padding: 6px 10px;
+  font-size: 11px;
+  line-height: 1.35;
+  text-align: center;
+  pointer-events: none;
+}
+
+.companion-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--popover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .companion-hop {
+    animation: none;
+  }
+  .companion-pet,
+  .companion-pet:hover,
+  .companion-pet:active {
+    transition: none;
+    transform: none;
+  }
+}
+
+.companion-bubble-start {
+  left: 0;
+  transform: none;
+}
+.companion-bubble-start::after {
+  left: 14px;
+}

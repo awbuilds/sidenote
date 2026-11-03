@@ -74,7 +74,8 @@ Settings → Backup.
   light and dark variant. Packs change the palette, type, shape, controls and
   chrome, not just an accent colour.
 - **Companion** — four original pets. One can cross the screen once a session,
-  or stay off. It respects reduced-motion settings and never blocks a click.
+  or stay off. Click it to make it hop and say something; it respects
+  reduced-motion settings and never blocks a click.
 
 ## Running it
 
@@ -184,6 +185,10 @@ public issue.
 ## Licence
 
 Sidenote is free software, licensed under the **GNU Affero General Public
-License v3.0**. Copyright (C) 2026 Abhijith Warrier. See [LICENSE](LICENSE).
+License v3.0**. Copyright (C) 2026 Abhijith Warrier. See [LICENSE](LICENSE) and
+[NOTICE](NOTICE).
 Because the app is served over a network, the source is linked from
 Settings → About as well as from this repository.
+
+The fonts, icons, libraries and original artwork used by the app, with their
+licenses, are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

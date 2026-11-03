@@ -36,10 +36,11 @@ the tour.
 ### Companion
 
 Four original SVG pets (`fox`, `cat`, `owl`, `moss`) with a settings picker.
-The selected pet replaces the sidebar profile icon. When enabled it crosses the
-screen once per session, plus after the tour completes, and respects
-`prefers-reduced-motion`. It is fixed-position and `pointer-events: none`, so it
-cannot widen the page or block a click.
+The selected pet sits next to the sidebar profile link. When enabled it crosses
+the screen once per session, plus after the tour completes, and respects
+`prefers-reduced-motion`. It is interactive: clicking the sidebar pet, the tour
+pet or the running pet makes it hop and say a rotating line. The run layer stays
+pointer-transparent while the pet itself is a real button.
 
 ### Theme packs
 
@@ -59,7 +60,7 @@ theme provider instead of the unused `next-themes` one.
 
 ## Verification
 
-- `npm run typecheck`, `npm run test` (482 passed, 1 skipped), `npm run lint`,
+- `npm run typecheck`, `npm run test` (485 passed, 1 skipped), `npm run lint`,
   `npm run build` all green on `0.0.2`.
 - Browser flows (Maestro, Chromium):
   - fresh `localhost` origin → three-page tour → workspace
@@ -79,6 +80,12 @@ theme provider instead of the unused `next-themes` one.
   Settings showed the reduced-motion note.
 - The `.next/dev` log was read after each pass; stale conflict and JSX errors
   from intermediate edits were cleared by a restart.
+- A local-link test scans every Markdown and website HTML file and resolves
+  relative links and assets; it fails the suite on a missing target.
+- The companion interaction is covered by a component test (hop and rotating
+  lines), and `THIRD_PARTY_NOTICES.md` lists every direct runtime dependency,
+  the bundled fonts, icons and original artwork with their licenses. `NOTICE`
+  records the project copyright and the AGPL-3.0-only grant.
 
 ## Not done
 

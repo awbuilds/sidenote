@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, Check, HardDrive, Sparkles, Trash2, WifiOff } fr
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { ThemeGallery } from "@/components/theme/ThemeGallery";
-import { CompanionAvatar } from "@/components/companion/CompanionAvatar";
+import { CompanionPet } from "@/components/companion/CompanionPet";
 import { CompanionPicker } from "@/components/companion/CompanionPicker";
 import { InstallButton } from "@/hooks/usePwa";
 import { useInvalidateAll, useSamplePreview, useSettings } from "@/hooks/queries";
@@ -115,7 +115,11 @@ export function Onboarding() {
 
             <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border bg-card p-6 text-center sm:p-8">
               <div className="companion-idle">
-                <CompanionAvatar id={companionId} className="size-20 sm:size-28" />
+                <CompanionPet
+                  id={companionId}
+                  avatarClassName="size-20 sm:size-28"
+                  buttonClassName="p-2"
+                />
               </div>
               <div>
                 <p className="text-sm font-medium">

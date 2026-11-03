@@ -34,7 +34,7 @@ import { NewNoteButton } from "@/components/layout/NewNoteButton";
 import { TagSection } from "@/components/notes/TagSection";
 import { AccountButton } from "@/components/sync/AccountButton";
 import { Brand } from "@/components/Brand";
-import { CompanionAvatar } from "@/components/companion/CompanionAvatar";
+import { CompanionPet } from "@/components/companion/CompanionPet";
 import { DEFAULT_COMPANION } from "@/lib/companion";
 
 import { useBootstrap } from "@/hooks/useBootstrap";
@@ -384,22 +384,30 @@ function NotebookSidebar({
             </Link>
           </Button>
           <AccountButton variant="sidebar" />
-          <Button variant="ghost" size="sm" className="h-8 w-full justify-start gap-2" asChild>
-            <Link href="/settings">
-              {settings?.companionEnabled ? (
-                <CompanionAvatar
-                  id={settings.companionId ?? DEFAULT_COMPANION}
-                  className="size-4"
-                />
-              ) : (
-                <User className="size-4 opacity-70" />
-              )}
-              <span className="min-w-0 flex-1 truncate text-left">
-                {settings?.profileName?.trim() || "Profile"}
-              </span>
-              <Settings className="size-3.5 shrink-0 opacity-50" />
-            </Link>
-          </Button>
+          <div className="flex items-center gap-1">
+            {settings?.companionEnabled && (
+              <CompanionPet
+                id={settings.companionId ?? DEFAULT_COMPANION}
+                avatarClassName="size-5"
+                buttonClassName="size-8 shrink-0"
+                bubbleAlign="start"
+              />
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 min-w-0 flex-1 justify-start gap-2"
+              asChild
+            >
+              <Link href="/settings">
+                {!settings?.companionEnabled && <User className="size-4 opacity-70" />}
+                <span className="min-w-0 flex-1 truncate text-left">
+                  {settings?.profileName?.trim() || "Profile"}
+                </span>
+                <Settings className="size-3.5 shrink-0 opacity-50" />
+              </Link>
+            </Button>
+          </div>
         </div>
         <Brand className="px-1 pt-1" />
       </div>
