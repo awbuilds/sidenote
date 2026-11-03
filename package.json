@@ -1,6 +1,6 @@
 {
   "name": "sidenote",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A private, local-first notes and knowledge base with optional self-hosted sync.",
   "license": "AGPL-3.0-only",
   "repository": {

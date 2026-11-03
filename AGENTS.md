@@ -63,8 +63,8 @@ with `npm run dev` and the log in `.next/dev/logs/next-development.log` read.
 - `src/app/` — routes. `/` is a redirect; everything else is a client surface.
 - `src/components/ui/` — shadcn primitives. **Do not hand-edit**; re-run
   `shadcn add <name> --overwrite` instead.
-- `src/components/layout/`, `editor/`, `notebooks/`, `notes/`, `share/` —
-  feature components.
+- `src/components/layout/`, `editor/`, `notebooks/`, `notes/`, `share/`,
+  `sync/`, `onboarding/`, `companion/`, `theme/` — feature components.
 - `src/lib/db/` — Dexie schema and repositories. **The only place that talks to
   IndexedDB.**
 - `src/lib/` — `tiptap/`, `search/`, `image/`, `transfer/`, `storage/`,
@@ -104,6 +104,18 @@ with `npm run dev` and the log in `.next/dev/logs/next-development.log` read.
   no warning. Always request `navigator.storage.persist()`, surface
   `navigator.storage.estimate()` in settings, and catch `QuotaExceededError` on
   every write. Never let a write fail silently.
+- **Onboarding is gated by `settings.onboardingPending`.** The seeder sets it
+  for a fresh database, and the Settings replay sets it again. Never infer a
+  first run from “no notes”, and never show the destructive sample choice to an
+  existing database.
+- **Sample deletion is manifest-based.** `settings.sampleData` records the ids
+  the seeder created; `removeSampleData` deletes only those and keeps any
+  notebook that contains user content. Never clear the tables to remove samples.
+- **Theme has two axes.** `settings.theme` is `light | dark | system`;
+  `settings.themePack` is `paper | blue | glass | gel`. Both are mirrored in
+  localStorage so `THEME_INIT_SCRIPT` can set `class="dark"` and
+  `data-theme-pack` before paint. A new theme value that is not mirrored will
+  flash on reload.
 - **ZIP export is the user's only backup.** Surface it prominently — empty
   state, settings, and the trash view. Do not bury it.
 - **Notebook trees must not form cycles.** Any re-parent walks ancestors first

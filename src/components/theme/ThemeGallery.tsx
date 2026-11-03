@@ -37,7 +37,10 @@ function ThemePreview({ pack, dark }: ThemePreviewProps) {
           <div className="h-1 w-5/6 rounded-sm bg-muted-foreground/30" />
           <div className="mt-1.5 flex gap-1">
             <span className="h-2.5 w-7 rounded-sm bg-primary" />
-            <span className="h-2.5 w-5 rounded-sm border bg-secondary" />
+            <span
+              className="h-2.5 w-5 rounded-sm"
+              style={{ background: "var(--preview-accent)" }}
+            />
           </div>
         </div>
       </div>

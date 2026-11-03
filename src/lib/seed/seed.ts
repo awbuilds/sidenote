@@ -145,22 +145,10 @@ export async function removeSampleData(): Promise<void> {
       : await database.attachments.where("noteId").anyOf(noteIds).toArray();
   const deletedAt = Date.now();
 
-  const tombstones: TombstoneRow[] = [
+  const noteTombstones: TombstoneRow[] = [
     ...manifest.noteIds.map((id) => ({
       key: `notes:${id}`,
       table: "notes" as const,
-      ref: id,
-      deletedAt,
-    })),
-    ...manifest.notebookIds.map((id) => ({
-      key: `notebooks:${id}`,
-      table: "notebooks" as const,
-      ref: id,
-      deletedAt,
-    })),
-    ...manifest.tagIds.map((id) => ({
-      key: `tags:${id}`,
-      table: "tags" as const,
       ref: id,
       deletedAt,
     })),
@@ -185,7 +173,9 @@ export async function removeSampleData(): Promise<void> {
       database.tombstones,
     ],
     async () => {
-      if (tombstones.length > 0) await database.tombstones.bulkPut(tombstones);
+      if (noteTombstones.length > 0) {
+        await database.tombstones.bulkPut(noteTombstones);
+      }
 
       if (noteIds.length > 0) {
         await database.versions.where("noteId").anyOf(noteIds).delete();
@@ -219,7 +209,17 @@ export async function removeSampleData(): Promise<void> {
         const removable = manifest.notebookIds.filter(
           (id) => !used.has(id) && !hasUserChild.has(id),
         );
-        if (removable.length > 0) await database.notebooks.bulkDelete(removable);
+        if (removable.length > 0) {
+          await database.notebooks.bulkDelete(removable);
+          await database.tombstones.bulkPut(
+            removable.map((id) => ({
+              key: `notebooks:${id}`,
+              table: "notebooks" as const,
+              ref: id,
+              deletedAt,
+            })),
+          );
+        }
       }
 
       if (manifest.tagIds.length > 0) {
@@ -229,7 +229,17 @@ export async function removeSampleData(): Promise<void> {
           .toArray();
         const used = new Set(remainingLinks.map((link) => link.tagId));
         const removable = manifest.tagIds.filter((id) => !used.has(id));
-        if (removable.length > 0) await database.tags.bulkDelete(removable);
+        if (removable.length > 0) {
+          await database.tags.bulkDelete(removable);
+          await database.tombstones.bulkPut(
+            removable.map((id) => ({
+              key: `tags:${id}`,
+              table: "tags" as const,
+              ref: id,
+              deletedAt,
+            })),
+          );
+        }
       }
     },
   );

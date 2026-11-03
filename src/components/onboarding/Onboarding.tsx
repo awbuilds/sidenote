@@ -108,7 +108,7 @@ export function Onboarding() {
                 </li>
                 <li className="flex items-start gap-2">
                   <Sparkles className="mt-0.5 size-4 shrink-0 text-primary" />
-                  Optional sync only when you point it at your own Supabase.
+                  Optional sync when you self-host with your own Supabase.
                 </li>
               </ul>
             </div>

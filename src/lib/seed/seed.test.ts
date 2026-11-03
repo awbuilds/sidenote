@@ -216,6 +216,8 @@ describe("removeSampleData", () => {
 
     expect(await db().notebooks.get(inbox.id)).toBeDefined();
     expect(await db().notes.get(note.id)).toBeDefined();
+    const tombstones = await db().tombstones.toArray();
+    expect(tombstones.some((row) => row.ref === inbox.id)).toBe(false);
   });
 });
 

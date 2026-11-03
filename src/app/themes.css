@@ -9,6 +9,7 @@
 
 :root {
   --font-ui: var(--font-sans);
+  --preview-accent: #d9a05b;
 }
 
 /* Blue 2001 ---------------------------------------------------------- */
@@ -62,6 +63,7 @@
   --surface-container-highest: #bdd2ec;
   --amber-soft: #fdf0cf;
   --outline: #6f86a3;
+  --preview-accent: #7fb2f0;
 }
 
 [data-theme-pack="blue"].dark {
@@ -99,6 +101,7 @@
   --surface-container-highest: #244266;
   --amber-soft: #3a2d13;
   --outline: #7d95b5;
+  --preview-accent: #2b6fbf;
 }
 
 /* Glass 2009 --------------------------------------------------------- */
@@ -152,6 +155,7 @@
   --surface-container-highest: #c6dcf0;
   --amber-soft: #fdf1d8;
   --outline: #6b8299;
+  --preview-accent: #9ad4ff;
 }
 
 [data-theme-pack="glass"].dark {
@@ -189,6 +193,7 @@
   --surface-container-highest: #22405a;
   --amber-soft: #3a2d13;
   --outline: #8faec7;
+  --preview-accent: #3f8fc7;
 }
 
 /* Gel 2000 ----------------------------------------------------------- */
@@ -242,6 +247,7 @@
   --surface-container-highest: #c9d1e6;
   --amber-soft: #fdf1d8;
   --outline: #7d8497;
+  --preview-accent: #f2a3b8;
 }
 
 [data-theme-pack="gel"].dark {
@@ -279,6 +285,7 @@
   --surface-container-highest: #333b4f;
   --amber-soft: #3a2d13;
   --outline: #8b93a8;
+  --preview-accent: #b8607a;
 }
 
 /* ------------------------------------------------------------------ */
@@ -290,7 +297,7 @@ html[data-theme-pack="blue"] [data-slot="button"] {
 }
 html[data-theme-pack="blue"] [data-slot="button"][data-variant="default"] {
   border: 1px solid #084aa8;
-  background-image: linear-gradient(to bottom, #5aa2f2 0%, #0a5bd3 58%, #0849a5 100%);
+  background-image: linear-gradient(to bottom, #2a6fc4 0%, #0a5bd3 58%, #0849a5 100%);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 55%),
     0 1px 1px rgb(0 0 0 / 18%);
@@ -317,7 +324,7 @@ html[data-theme-pack="blue"] [data-slot="popover-content"] {
 
 html[data-theme-pack="glass"] [data-slot="button"][data-variant="default"] {
   border: 1px solid rgb(255 255 255 / 55%);
-  background-image: linear-gradient(to bottom, #8fd0ff 0%, #1c7ed6 55%, #1667ad 100%);
+  background-image: linear-gradient(to bottom, #1a6fb0 0%, #1667ad 60%, #145e9e 100%);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 65%),
     0 2px 10px rgb(28 126 214 / 35%);
@@ -349,8 +356,8 @@ html[data-theme-pack="gel"] [data-slot="button"] {
 html[data-theme-pack="gel"] [data-slot="button"][data-variant="default"] {
   border: 1px solid #0f5cc0;
   background-image:
-    linear-gradient(to bottom, rgb(255 255 255 / 60%), rgb(255 255 255 / 0%) 48%),
-    linear-gradient(to bottom, #63a8ff 0%, #1a73e8 55%, #155bb8 100%);
+    linear-gradient(to bottom, rgb(255 255 255 / 22%), rgb(255 255 255 / 0%) 48%),
+    linear-gradient(to bottom, #1a65c0 0%, #1f6fd0 55%, #155bb8 100%);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 70%),
     0 2px 6px rgb(26 115 232 / 35%);

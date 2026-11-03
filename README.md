@@ -67,6 +67,14 @@ Settings → Backup.
   ZIP backup. Import from that ZIP, or from an Evernote `.enex`.
 - **Installable** — PWA with an app-shell service worker, so it launches
   offline. Focus mode (⌘⇧F) and a command palette (⌘K).
+- **First-run tour** — three pages: what local-first means, a preview of the
+  sample notes with a keep-or-delete choice, and theme/companion setup. Only a
+  fresh database sees it; Settings can replay it.
+- **Theme packs** — Warm Paper, Blue 2001, Glass 2009 and Gel 2000, each with a
+  light and dark variant. Packs change the palette, type, shape, controls and
+  chrome, not just an accent colour.
+- **Companion** — four original pets. One can cross the screen once a session,
+  or stay off. It respects reduced-motion settings and never blocks a click.
 
 ## Running it
 
@@ -91,7 +99,7 @@ runtime. Anything client-side also needs `npm run dev` and a read of
 
 ```
 src/app/          routes. Everything is a client surface
-src/components/   layout · editor · notebooks · notes · settings · share · sync · ui
+src/components/   layout · editor · notebooks · notes · settings · share · sync · onboarding · companion · theme · ui
 src/lib/db/       Dexie schema and repositories — the only IndexedDB access
 src/lib/          tiptap · search · image · transfer · storage · seed · supabase · sync · share
 src/hooks/        queries (read) and mutations (write)
