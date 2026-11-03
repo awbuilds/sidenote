@@ -68,6 +68,7 @@ export function CompanionPet({
         type="button"
         onClick={pet}
         aria-label={`Pet ${name}`}
+        title={`Pet ${name}`}
         data-companion-pet={id}
         className={cn(
           "companion-pet inline-flex items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",

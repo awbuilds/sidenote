@@ -129,6 +129,9 @@ export function Onboarding() {
                   A small companion that crosses the screen once in a while. You
                   can turn it off, or pick another, at the end of the tour.
                 </p>
+                <p className="mt-2 text-[10px] uppercase tracking-wide text-muted-foreground/70">
+                  Click to say hello
+                </p>
               </div>
             </div>
           </section>
