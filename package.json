@@ -84,7 +84,7 @@
     "jsdom": "^28",
     "shadcn": "^4.21.0",
     "tailwindcss": "^4",
-    "typescript": "^5",
+    "typescript": "^7",
     "vitest": "^5.0.2"
   }
 }
