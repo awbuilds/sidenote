@@ -34,6 +34,8 @@ import { NewNoteButton } from "@/components/layout/NewNoteButton";
 import { TagSection } from "@/components/notes/TagSection";
 import { AccountButton } from "@/components/sync/AccountButton";
 import { Brand } from "@/components/Brand";
+import { CompanionAvatar } from "@/components/companion/CompanionAvatar";
+import { DEFAULT_COMPANION } from "@/lib/companion";
 
 import { useBootstrap } from "@/hooks/useBootstrap";
 import { useNotebookTree, useSettings, useTrashedNotes } from "@/hooks/queries";
@@ -366,7 +368,14 @@ function NotebookSidebar({
           <AccountButton variant="sidebar" />
           <Button variant="ghost" size="sm" className="h-8 w-full justify-start gap-2" asChild>
             <Link href="/settings">
-              <User className="size-4 opacity-70" />
+              {settings?.companionEnabled ? (
+                <CompanionAvatar
+                  id={settings.companionId ?? DEFAULT_COMPANION}
+                  className="size-4"
+                />
+              ) : (
+                <User className="size-4 opacity-70" />
+              )}
               <span className="min-w-0 flex-1 truncate text-left">
                 {settings?.profileName?.trim() || "Profile"}
               </span>
