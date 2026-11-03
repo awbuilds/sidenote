@@ -19,6 +19,7 @@ import { AccountSection } from "@/components/settings/AccountSection";
 import { SampleDataSection } from "@/components/settings/SampleDataSection";
 import { DeleteSection } from "@/components/settings/DeleteSection";
 import { SharesSection } from "@/components/settings/SharesSection";
+import { CompanionSection } from "@/components/companion/CompanionSection";
 import { Brand } from "@/components/Brand";
 import { useAuth } from "@/hooks/use-auth";
 import { useSettings } from "@/hooks/queries";
@@ -129,6 +130,8 @@ function SettingsView() {
           </div>
         </div>
       </section>
+
+      <CompanionSection />
 
       <AccountSection />
 

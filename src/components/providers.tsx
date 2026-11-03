@@ -7,6 +7,7 @@ import { ThemeProvider } from "./providers/theme-provider";
 import { SyncProvider } from "./sync/SyncProvider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
+import { CompanionLayer } from "@/components/companion/CompanionLayer";
 
 /**
  * TanStack Query against IndexedDB.
@@ -60,6 +61,7 @@ export function Providers({ children }: { children: ReactNode }) {
       <ThemeProvider>
         <TooltipProvider delayDuration={300}>{children}</TooltipProvider>
         <Toaster position="bottom-right" richColors closeButton />
+        <CompanionLayer />
       </ThemeProvider>
     </QueryClientProvider>
   );

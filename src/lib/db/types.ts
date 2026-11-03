@@ -1,4 +1,6 @@
 import type { JSONContent } from "@tiptap/core";
+import type { CompanionId } from "@/lib/companion";
+import { DEFAULT_COMPANION } from "@/lib/companion";
 import type { Theme } from "@/lib/theme";
 import { DEFAULT_THEME } from "@/lib/theme";
 import type { EditorFont, EditorLineHeight, EditorWidth } from "@/lib/typography";
@@ -197,6 +199,10 @@ export interface AppSettings {
   lastBackupAt: number | null;
   /** Note list row density. */
   listDensity: ListDensity;
+  /** Which companion pet is selected. */
+  companionId: CompanionId;
+  /** Whether the companion may run across the screen. */
+  companionEnabled: boolean;
   /** Editor reading column preferences. */
   editorFont: EditorFont;
   editorWidth: EditorWidth;
@@ -218,6 +224,8 @@ export const DEFAULT_SETTINGS: AppSettings = {
   onboardingDismissed: false,
   lastBackupAt: null,
   listDensity: "comfortable",
+  companionId: DEFAULT_COMPANION,
+  companionEnabled: true,
   editorFont: "sans",
   editorWidth: "medium",
   editorLineHeight: "normal",
