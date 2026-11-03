@@ -17,11 +17,16 @@ import { db } from "@/lib/db/db";
  */
 
 function Harness() {
-  const { setTheme, resolved } = useTheme();
+  const { setTheme, setPack, resolved, pack } = useTheme();
   return (
-    <button onClick={() => setTheme("light")} data-testid="light">
-      {resolved}
-    </button>
+    <>
+      <button onClick={() => setTheme("light")} data-testid="light">
+        {resolved}
+      </button>
+      <button onClick={() => setPack("gel")} data-testid="pack">
+        {pack}
+      </button>
+    </>
   );
 }
 
@@ -69,6 +74,27 @@ describe("ThemeProvider persistence", () => {
     expect(row?.value).toBe("light");
     // The mirror still drives the immediate UI update.
     expect(localStorage.getItem("sidenote:theme")).toBe("light");
+  });
+
+  it("persists the theme pack to the settings table", async () => {
+    render(
+      <ThemeProvider>
+        <Harness />
+      </ThemeProvider>,
+    );
+
+    await act(async () => {
+      screen.getByTestId("pack").click();
+    });
+    for (let i = 0; i < 50; i++) {
+      if ((await db().settings.get("themePack")) !== undefined) break;
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 10));
+      });
+    }
+
+    expect((await db().settings.get("themePack"))?.value).toBe("gel");
+    expect(localStorage.getItem("sidenote:theme-pack")).toBe("gel");
   });
 
   it("survives a reload: a fresh mount reads the persisted row, not the default", async () => {

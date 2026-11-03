@@ -3,8 +3,8 @@ import { Editor } from "@tiptap/core";
 import { buildExtensions } from "@/lib/tiptap/extensions";
 import { withTestDb } from "../db/test-helpers";
 import { db } from "../db/db";
-import { listNotebooks } from "../db/repositories/notebooks";
-import { listNotes, listTrashedNotes } from "../db/repositories/notes";
+import { createNotebook, listNotebooks } from "../db/repositories/notebooks";
+import { createNote, listNotes, listTrashedNotes } from "../db/repositories/notes";
 import { getSettings } from "../db/repositories/settings";
 import { buildNotebookTree } from "../db/tree";
 import { removeSampleData, restoreSampleData, seedIfEmpty, wipeAllData } from "./seed";
@@ -51,6 +51,15 @@ describe("seedIfEmpty", () => {
     expect(await db().tags.count()).toBeGreaterThan(0);
     expect(await db().noteTags.count()).toBeGreaterThan(0);
     expect(await db().attachments.count()).toBeGreaterThan(0);
+  });
+
+  it("records what it created and opens the first-run tour", async () => {
+    await seedIfEmpty();
+    const settings = await getSettings();
+    expect(settings.sampleData?.noteIds.length).toBeGreaterThan(0);
+    expect(settings.sampleData?.notebookIds.length).toBeGreaterThan(0);
+    expect(settings.onboardingPending).toBe(true);
+    expect(settings.onboardingCompletedAt).toBeNull();
   });
 
   it("links a tag to every note that mentions it, not only the first", async () => {
@@ -172,6 +181,41 @@ describe("removeSampleData", () => {
     expect((await getSettings()).seeded).toBe(true);
     expect(await seedIfEmpty()).toBeNull();
     expect(await db().notes.count()).toBe(0);
+  });
+
+  it("keeps notes and notebooks the user created", async () => {
+    await seedIfEmpty();
+    const notebook = await createNotebook({ name: "My notebook" });
+    const note = await createNote({
+      notebookId: notebook.id,
+      title: "My note",
+      contentJson: doc(pt("Do not delete me")),
+      contentMarkdown: "Do not delete me",
+      contentText: "Do not delete me",
+    });
+
+    await removeSampleData();
+
+    expect(await db().notes.get(note.id)).toBeDefined();
+    expect(await db().notebooks.get(notebook.id)).toBeDefined();
+    expect(await db().notes.count()).toBe(1);
+  });
+
+  it("keeps a sample notebook that holds a user note", async () => {
+    await seedIfEmpty();
+    const inbox = (await listNotebooks()).find((item) => item.name === "Inbox")!;
+    const note = await createNote({
+      notebookId: inbox.id,
+      title: "Kept",
+      contentJson: doc(pt("mine")),
+      contentMarkdown: "mine",
+      contentText: "mine",
+    });
+
+    await removeSampleData();
+
+    expect(await db().notebooks.get(inbox.id)).toBeDefined();
+    expect(await db().notes.get(note.id)).toBeDefined();
   });
 });
 

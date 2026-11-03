@@ -375,3 +375,23 @@
     animation: none;
   }
 }
+
+.companion-idle {
+  animation: companion-idle 3.2s ease-in-out infinite;
+}
+
+@keyframes companion-idle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .companion-idle {
+    animation: none;
+  }
+}

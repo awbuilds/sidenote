@@ -16,4 +16,5 @@ export const QUERY_KEYS = {
   outgoingLinks: (id: string) => ["note", id, "outgoing-links"] as const,
   linkCounts: (ids: string) => ["links", "counts", ids] as const,
   attachments: ["attachments"] as const,
+  samplePreview: ["sample-preview"] as const,
 };

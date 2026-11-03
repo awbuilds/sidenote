@@ -39,6 +39,8 @@ import { DEFAULT_COMPANION } from "@/lib/companion";
 
 import { useBootstrap } from "@/hooks/useBootstrap";
 import { useNotebookTree, useSettings, useTrashedNotes } from "@/hooks/queries";
+import { Onboarding } from "@/components/onboarding/Onboarding";
+import { shouldShowOnboarding } from "@/lib/onboarding";
 import { flattenTree } from "@/lib/db/tree";
 import { cn } from "@/lib/utils";
 import { WorkspaceSkeleton } from "./WorkspaceSkeleton";
@@ -54,6 +56,7 @@ import { useWorkspaceParams, UNFILED, type Pane } from "@/hooks/useWorkspacePara
 export function Workspace() {
   const { params, notebookFilter, setParam, selectNotebook, selectNote } = useWorkspaceParams();
   const bootstrap = useBootstrap();
+  const { data: rootSettings, isPending: settingsPending } = useSettings();
   const [focus] = useFocusMode();
   useServiceWorker();
 
@@ -80,8 +83,23 @@ export function Workspace() {
     return <BootstrapError error={bootstrap.error} onRetry={bootstrap.retry} />;
   }
 
-  if (bootstrap.state === "loading") {
+  if (bootstrap.state === "loading" || settingsPending) {
     return <WorkspaceSkeleton />;
+  }
+
+  // The settings query is mounted before the seed finishes. While the fresh
+  // row is being refetched, keep the skeleton up rather than flashing the
+  // workspace for a frame and then replacing it with the tour.
+  if (
+    bootstrap.seeded &&
+    rootSettings?.onboardingCompletedAt === null &&
+    !rootSettings.onboardingPending
+  ) {
+    return <WorkspaceSkeleton />;
+  }
+
+  if (rootSettings && shouldShowOnboarding(rootSettings)) {
+    return <Onboarding />;
   }
 
   return (

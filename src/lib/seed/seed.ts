@@ -3,7 +3,14 @@ import { db } from "@/lib/db/db";
 import type { TombstoneRow } from "@/lib/db/types";
 import { toNotebookRow, toNoteRow } from "@/lib/db/convert";
 import { getSettings, setSetting } from "@/lib/db/repositories/settings";
-import type { Attachment, Note, Notebook, SampleDataManifest, Tag } from "@/lib/db/types";
+import type {
+  Attachment,
+  Note,
+  NoteRow,
+  Notebook,
+  SampleDataManifest,
+  Tag,
+} from "@/lib/db/types";
 import { code, doc, docToText, h, image, ol, p, pt, quote, table, tasks, text, ul } from "./builders";
 
 /* ------------------------------------------------------------------ */
@@ -73,6 +80,55 @@ export async function wipeAllData(): Promise<void> {
       ]);
     },
   );
+}
+
+/** A tiny read model for the onboarding preview. */
+export interface SamplePreview {
+  notes: { id: string; title: string; excerpt: string; notebook: string }[];
+  noteCount: number;
+  notebookCount: number;
+  tagCount: number;
+  attachmentCount: number;
+}
+
+const EMPTY_PREVIEW: SamplePreview = {
+  notes: [],
+  noteCount: 0,
+  notebookCount: 0,
+  tagCount: 0,
+  attachmentCount: 0,
+};
+
+/** What the sample set currently looks like, for the first-run preview. */
+export async function getSamplePreview(): Promise<SamplePreview> {
+  const database = db();
+  const { sampleData } = await getSettings();
+  const manifest = sampleData ?? (await legacySampleManifest(database));
+  if (manifest === null || manifest.noteIds.length === 0) return EMPTY_PREVIEW;
+
+  const [noteRows, notebookRows] = await Promise.all([
+    database.notes.bulkGet(manifest.noteIds),
+    database.notebooks.bulkGet(manifest.notebookIds),
+  ]);
+  const live = noteRows.filter(
+    (row): row is NoteRow => row !== undefined && row.isTrashed === 0,
+  );
+  const notebookNames = new Map(
+    notebookRows.filter((row) => row !== undefined).map((row) => [row.id, row.name]),
+  );
+
+  return {
+    notes: live.slice(0, 3).map((row) => ({
+      id: row.id,
+      title: row.title,
+      excerpt: row.contentText.slice(0, 120),
+      notebook: notebookNames.get(row.notebookId) ?? "Unfiled",
+    })),
+    noteCount: live.length,
+    notebookCount: manifest.notebookIds.length,
+    tagCount: manifest.tagIds.length,
+    attachmentCount: manifest.attachmentIds.length,
+  };
 }
 
 /** Remove the sample content but keep the user's profile and preferences. */
@@ -148,13 +204,20 @@ export async function removeSampleData(): Promise<void> {
           .anyOf(manifest.notebookIds)
           .toArray();
         const used = new Set(remainingNotes.map((note) => note.notebookId));
+        const sampleNotebooks = new Set(manifest.notebookIds);
         const children = await database.notebooks
           .where("parentId")
           .anyOf(manifest.notebookIds)
           .toArray();
-        const hasChild = new Set(children.map((child) => child.parentId));
+        // A sample parent may still have a sample child; both are in the
+        // manifest and both should go. Only a *user-created* child keeps it.
+        const hasUserChild = new Set(
+          children
+            .filter((child) => !sampleNotebooks.has(child.id))
+            .map((child) => child.parentId),
+        );
         const removable = manifest.notebookIds.filter(
-          (id) => !used.has(id) && !hasChild.has(id),
+          (id) => !used.has(id) && !hasUserChild.has(id),
         );
         if (removable.length > 0) await database.notebooks.bulkDelete(removable);
       }
