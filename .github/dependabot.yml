@@ -1,10 +1,13 @@
+# Security updates and alerts remain enabled. Routine version-update PRs are
+# paused (limit 0) to keep the branch list to main + the release branch; raise
+# the limit to let Dependabot propose upgrades again.
 version: 2
 updates:
   - package-ecosystem: npm
     directory: "/"
     schedule:
       interval: weekly
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 0
     groups:
       minor-and-patch:
         patterns: ["*"]
@@ -14,3 +17,4 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
+    open-pull-requests-limit: 0
