@@ -1,8 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { seedIfEmpty } from "@/lib/seed/seed";
 import { getStorageUsage, requestPersistence, type StorageUsage } from "@/lib/storage/quota";
+import { QUERY_KEYS } from "./query-keys";
 
 export type BootstrapState = "loading" | "ready" | "error";
 
@@ -24,6 +26,7 @@ export interface BootstrapResult {
  * mode, disabled storage) is recoverable and a silent empty database is not.
  */
 export function useBootstrap(): BootstrapResult {
+  const client = useQueryClient();
   const [state, setState] = useState<BootstrapState>("loading");
   const [error, setError] = useState<Error | null>(null);
   const [seeded, setSeeded] = useState(false);
@@ -38,6 +41,12 @@ export function useBootstrap(): BootstrapResult {
         const result = await seedIfEmpty();
         if (cancelled) return;
         setSeeded(result !== null);
+        if (result !== null) {
+          // The settings query is typically mounted before the seed finishes,
+          // so its cached default would hide the pending onboarding flag.
+          await client.invalidateQueries({ queryKey: QUERY_KEYS.settings });
+          await client.invalidateQueries({ queryKey: QUERY_KEYS.samplePreview });
+        }
 
         // Ask once, then read. `persist()` is a user-trust signal the browser
         // may decline; we surface the answer rather than assuming it.
@@ -57,7 +66,7 @@ export function useBootstrap(): BootstrapResult {
     return () => {
       cancelled = true;
     };
-  }, [attempt]);
+  }, [attempt, client]);
 
   // Reset lives in the click handler, not the effect body — setting state
   // synchronously inside an effect causes a cascading render.

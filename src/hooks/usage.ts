@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { getSupabase, isRemoteEnabled } from "@/lib/supabase/client";
+import { QUERY_KEYS } from "./query-keys";
 
 /**
  * Bytes of synced attachments for this user. PostgREST does the sum server
@@ -12,12 +13,12 @@ export function useRemoteAttachmentUsage() {
   const auth = useAuth();
 
   return useQuery({
-    queryKey: ["attachment-usage", auth.userId],
+    queryKey: QUERY_KEYS.attachmentUsage(auth.userId),
     enabled: isRemoteEnabled() && auth.status === "signed-in",
     staleTime: 30_000,
     retry: false,
     queryFn: async () => {
-      const client = getSupabase();
+      const client = await getSupabase();
       if (!client || auth.userId === null) return 0;
 
       const { data, error } = await client

@@ -63,7 +63,11 @@ export function ShareDialog({
     }
   };
 
+  const trimmedPassword = password.trim();
+  const passwordTooShort = trimmedPassword !== "" && trimmedPassword.length < 8;
+
   const handleCreate = async () => {
+    if (passwordTooShort) return;
     setCreating(true);
     try {
       // The share row references the note server-side; make sure it exists
@@ -76,7 +80,7 @@ export function ShareDialog({
         SHARE_EXPIRY_OPTIONS.find((entry) => entry.value === DEFAULT_SHARE_EXPIRY)?.durationMs ??
         SHARE_EXPIRY_MAX_DAYS * 24 * 60 * 60 * 1000;
       const result = await create.mutateAsync({
-        password: password.trim() === "" ? undefined : password,
+        password: trimmedPassword === "" ? undefined : trimmedPassword,
         expiresAt: Date.now() + duration,
       });
       if (result.error) {
@@ -133,7 +137,14 @@ export function ShareDialog({
                   onChange={(event) => setPassword(event.target.value)}
                   placeholder="No password"
                   autoComplete="new-password"
+                  aria-invalid={passwordTooShort}
+                  aria-describedby={passwordTooShort ? "share-password-hint" : undefined}
                 />
+                {passwordTooShort && (
+                  <p id="share-password-hint" className="text-[11px] text-destructive">
+                    Use at least 8 characters.
+                  </p>
+                )}
               </div>
               <div className="space-y-1.5">
                 <Label>Expiry</Label>
@@ -152,7 +163,11 @@ export function ShareDialog({
               </div>
             </div>
 
-            <Button className="w-full" onClick={() => void handleCreate()} disabled={creating}>
+            <Button
+              className="w-full"
+              onClick={() => void handleCreate()}
+              disabled={creating || passwordTooShort}
+            >
               {creating && <Loader2 className="size-4 animate-spin" />}
               Create link
             </Button>

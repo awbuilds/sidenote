@@ -18,6 +18,7 @@ import { useSetNoteTags } from "@/hooks/mutations";
 import { tagsForNote } from "@/lib/db/repositories/tags";
 import { useQuery } from "@tanstack/react-query";
 import type { NoteId } from "@/lib/db/types";
+import { QUERY_KEYS } from "@/hooks/query-keys";
 
 /**
  * Tag chips in the editor's title bar.
@@ -33,7 +34,7 @@ export function TagChips({ noteId }: { noteId: NoteId }) {
   const setTags = useSetNoteTags();
 
   const { data: tags } = useQuery({
-    queryKey: ["note", noteId, "tags"],
+    queryKey: QUERY_KEYS.noteTags(noteId),
     queryFn: () => tagsForNote(noteId),
   });
 

@@ -216,6 +216,10 @@ export async function remapNonUuidIds(database: NotesDatabase): Promise<RemapRes
     }
   }
 
+  // The persisted search index is keyed by note id; every id just changed, so
+  // a restored index would point at rows that no longer exist.
+  await database.searchIndex.clear();
+
   return { remapped, sanitized };
 }
 
@@ -241,6 +245,7 @@ export async function repairLocalIds(database: NotesDatabase): Promise<RemapResu
       database.noteLinks,
       database.tombstones,
       database.settings,
+      database.searchIndex,
     ],
     () => remapNonUuidIds(database),
   );

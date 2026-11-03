@@ -12,6 +12,24 @@
 
 export type Theme = "light" | "dark" | "system";
 
+/** Visual language, orthogonal to light/dark. */
+export type ThemePack = "paper" | "blue" | "glass" | "gel";
+
+export interface ThemePackOption {
+  id: ThemePack;
+  name: string;
+  blurb: string;
+}
+
+export const THEME_PACKS: ThemePackOption[] = [
+  { id: "paper", name: "Warm Paper", blurb: "Warm, quiet, and made for reading." },
+  { id: "blue", name: "Blue 2001", blurb: "Bevels, gradients, and Tahoma." },
+  { id: "glass", name: "Glass 2009", blurb: "Translucent surfaces and soft light." },
+  { id: "gel", name: "Gel 2000", blurb: "Glossy controls and pinstripes." },
+];
+
+export const DEFAULT_THEME_PACK: ThemePack = "paper";
+
 /**
  * What is actually on screen, which is always a concrete theme.
  *
@@ -21,6 +39,7 @@ export type Theme = "light" | "dark" | "system";
 export type ResolvedTheme = "light" | "dark";
 
 export const THEME_STORAGE_KEY = "sidenote:theme";
+export const THEME_PACK_STORAGE_KEY = "sidenote:theme-pack";
 
 /**
  * What a first-time visitor gets: the true-black dark theme.
@@ -51,6 +70,35 @@ export function isTheme(value: unknown): value is Theme {
 export function normalizeTheme(value: unknown): Theme | null {
   if (value === "amoled") return "dark";
   return isTheme(value) ? value : null;
+}
+
+export function isThemePack(value: unknown): value is ThemePack {
+  return value === "paper" || value === "blue" || value === "glass" || value === "gel";
+}
+
+/** Coerce a stored pack, falling back to the default for unknown values. */
+export function normalizeThemePack(value: unknown): ThemePack {
+  return isThemePack(value) ? value : DEFAULT_THEME_PACK;
+}
+
+export function readStoredThemePack(): ThemePack | null {
+  if (typeof localStorage === "undefined") return null;
+  try {
+    const value = localStorage.getItem(THEME_PACK_STORAGE_KEY);
+    return value === null ? null : normalizeThemePack(value);
+  } catch {
+    return null;
+  }
+}
+
+export function writeStoredThemePack(pack: ThemePack): void {
+  if (typeof localStorage === "undefined") return;
+  try {
+    localStorage.setItem(THEME_PACK_STORAGE_KEY, pack);
+  } catch {
+    // Private mode or a full quota. Not fatal — the attribute is still applied.
+  }
+  notifyThemeChanged();
 }
 
 export function readStoredTheme(): Theme | null {
@@ -84,13 +132,14 @@ export function resolveTheme(theme: Theme): ResolvedTheme {
   return theme;
 }
 
-/** Apply the theme to the document and mirror it for the pre-paint script. */
-export function applyTheme(theme: Theme): ResolvedTheme {
+/** Apply the theme and pack to the document and mirror the theme. */
+export function applyTheme(theme: Theme, pack: ThemePack = DEFAULT_THEME_PACK): ResolvedTheme {
   const resolved = resolveTheme(theme);
 
   if (typeof document !== "undefined") {
     const root = document.documentElement;
     root.classList.toggle("dark", resolved === "dark");
+    root.setAttribute("data-theme-pack", pack);
     // `amoled` was the old name of this palette; a lingering class from before
     // the rename no longer matches anything, but clear it anyway.
     root.classList.remove("amoled");
@@ -120,10 +169,13 @@ export const THEME_INIT_SCRIPT = `(function(){try{
 var t=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});
 if(t==='amoled'){t='dark';}
 if(t===null||t===''){t=${JSON.stringify(DEFAULT_THEME)};}
+var p=localStorage.getItem(${JSON.stringify(THEME_PACK_STORAGE_KEY)});
+if(p!=='paper'&&p!=='blue'&&p!=='glass'&&p!=='gel'){p=${JSON.stringify(DEFAULT_THEME_PACK)};}
 var d=t==='dark'||(t!=='light'&&window.matchMedia('(prefers-color-scheme: dark)').matches);
 var r=document.documentElement;
 r.classList.toggle('dark',d);
 r.classList.remove('amoled');
+r.setAttribute('data-theme-pack',p);
 r.style.colorScheme=d?'dark':'light';
 }catch(e){}})();`;
 

@@ -18,7 +18,7 @@ export interface AuthActionResult {
 }
 
 export async function signInWithPassword(email: string, password: string): Promise<AuthActionResult> {
-  const client = getSupabase();
+  const client = await getSupabase();
   if (!client) return { error: "Remote accounts are not configured in this build." };
   const { error } = await client.auth.signInWithPassword({ email, password });
   return { error: error ? friendly(error.message) : null };
@@ -42,7 +42,7 @@ export interface SignUpResult extends AuthActionResult {
 }
 
 export async function signUpWithPassword(email: string, password: string): Promise<SignUpResult> {
-  const client = getSupabase();
+  const client = await getSupabase();
   if (!client) return { error: "Remote accounts are not configured in this build.", needsConfirmation: false };
   const redirectTo = authRedirectUrl();
   const { data, error } = await client.auth.signUp({
@@ -57,5 +57,6 @@ export async function signUpWithPassword(email: string, password: string): Promi
 }
 
 export async function signOutRemote(): Promise<void> {
-  await getSupabase()?.auth.signOut();
+  const client = await getSupabase();
+  await client?.auth.signOut();
 }

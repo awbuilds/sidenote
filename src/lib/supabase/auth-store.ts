@@ -44,14 +44,15 @@ function start(): void {
   if (started) return;
   started = true;
 
-  const client = getSupabase();
-  if (!client) {
-    replace({ status: "disabled", email: null, userId: null });
-    return;
-  }
+  void getSupabase().then((client) => {
+    if (!client) {
+      replace({ status: "disabled", email: null, userId: null });
+      return;
+    }
 
-  void client.auth.getSession().then(({ data }) => applySession(data.session));
-  client.auth.onAuthStateChange((_event, session) => applySession(session));
+    void client.auth.getSession().then(({ data }) => applySession(data.session));
+    client.auth.onAuthStateChange((_event, session) => applySession(session));
+  });
 }
 
 export function subscribeAuth(listener: () => void): () => void {

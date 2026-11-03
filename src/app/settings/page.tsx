@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -13,17 +14,17 @@ import {
 } from "@/components/ui/select";
 import { Providers } from "@/components/providers";
 import { StorageStatus } from "@/components/layout/StorageStatus";
-import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { ThemeGallery } from "@/components/theme/ThemeGallery";
 import { BackupSection } from "@/components/settings/BackupSection";
 import { AccountSection } from "@/components/settings/AccountSection";
 import { SampleDataSection } from "@/components/settings/SampleDataSection";
 import { DeleteSection } from "@/components/settings/DeleteSection";
 import { SharesSection } from "@/components/settings/SharesSection";
+import { CompanionSection } from "@/components/companion/CompanionSection";
 import { Brand } from "@/components/Brand";
 import { useAuth } from "@/hooks/use-auth";
 import { useSettings } from "@/hooks/queries";
 import { useUpdateSettings } from "@/hooks/mutations";
-import { useTheme } from "@/components/providers/theme-provider";
 import { settingsSubtitle, toCopyAccountState } from "@/lib/copy";
 import {
   EDITOR_FONT_LABELS,
@@ -44,8 +45,8 @@ import {
 function SettingsView() {
   const { data: settings } = useSettings();
   const updateSettings = useUpdateSettings();
-  const { theme } = useTheme();
   const auth = useAuth();
+  const router = useRouter();
 
   return (
     <div className="mx-auto w-full max-w-2xl px-6 py-8">
@@ -63,9 +64,25 @@ function SettingsView() {
 
       <section className="mt-6 space-y-2 rounded-lg border p-4">
         <h2 className="text-sm font-medium">Appearance</h2>
-        <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <span className="text-sm text-muted-foreground">Currently {theme}</span>
+        <ThemeGallery />
+
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t pt-3">
+          <div>
+            <p className="text-sm">Welcome tour</p>
+            <p className="text-xs text-muted-foreground">
+              Replay the three-page introduction. Sample deletion stays in Settings.
+            </p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={async () => {
+              await updateSettings.mutateAsync({ onboardingPending: true });
+              router.push("/notes");
+            }}
+          >
+            Show again
+          </Button>
         </div>
 
         <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -130,6 +147,8 @@ function SettingsView() {
         </div>
       </section>
 
+      <CompanionSection />
+
       <AccountSection />
 
       <SharesSection />
@@ -138,9 +157,10 @@ function SettingsView() {
         <h2 className="text-sm font-medium">Storage</h2>
         <StorageStatus />
         <p className="text-xs text-muted-foreground">
-          Version history keeps the last {settings?.versionLimit ?? 30} snapshots
-          per note, and drops anything older than {settings?.versionMaxAgeDays ?? 90}{" "}
-          days.
+          Automatic snapshots keep the last {settings?.versionLimit ?? 30}{" "}
+          checkpoints per note and are pruned after{" "}
+          {settings?.versionMaxAgeDays ?? 90} days. Named versions are kept
+          regardless of age.
         </p>
       </section>
 
@@ -155,8 +175,14 @@ function SettingsView() {
       <section className="mt-4 space-y-2 rounded-lg border p-4">
         <h2 className="text-sm font-medium">About</h2>
         <p className="text-sm text-muted-foreground">
-          Sidenote is free and open source under the GNU AGPL-3.0. The source is
-          the same code running here.
+          Sidenote is free and open source under the GNU AGPL-3.0. Copyright ©
+          2026 Abhijith Warrier. The source is the same code running here.
+        </p>
+        <p className="font-mono text-xs text-muted-foreground">
+          v{process.env.NEXT_PUBLIC_APP_VERSION}
+          {process.env.NEXT_PUBLIC_COMMIT_SHA
+            ? ` · ${process.env.NEXT_PUBLIC_COMMIT_SHA.slice(0, 7)}`
+            : ""}
         </p>
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" size="sm" asChild>
@@ -177,7 +203,44 @@ function SettingsView() {
               Licence
             </a>
           </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a
+              href="https://github.com/awbuilds/sidenote/blob/main/THIRD_PARTY_NOTICES.md"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Third-party notices
+            </a>
+          </Button>
         </div>
+        <p className="mt-3 text-xs text-muted-foreground">
+          <a
+            className="underline underline-offset-2 hover:text-foreground"
+            href="https://awbuilds.github.io/sidenote/privacy.html"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Privacy
+          </a>
+          {" · "}
+          <a
+            className="underline underline-offset-2 hover:text-foreground"
+            href="https://awbuilds.github.io/sidenote/terms.html"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Terms
+          </a>
+          {" · "}
+          <a
+            className="underline underline-offset-2 hover:text-foreground"
+            href="https://awbuilds.github.io/sidenote/accessibility.html"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Accessibility
+          </a>
+        </p>
       </section>
 
       <Brand className="mt-8 text-center" />

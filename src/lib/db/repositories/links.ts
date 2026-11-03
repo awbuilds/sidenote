@@ -1,6 +1,7 @@
 import { db } from "../db";
 import { fromNoteLinkRow, fromNoteRow, toNoteLinkRow } from "../convert";
 import { linkTitles } from "@/lib/links/wiki";
+import { listNoteTitleIndex } from "./note-index";
 import type { Note, NoteId, NoteLink, NoteLinkRow } from "../types";
 
 /**
@@ -17,7 +18,7 @@ const LIVE = { isTrashed: 0 } as const;
 
 /** Title -> id, lowercased for case-insensitive matching. */
 async function titleIndex(): Promise<Map<string, NoteId>> {
-  const rows = await db().notes.where("isTrashed").equals(LIVE.isTrashed).toArray();
+  const rows = await listNoteTitleIndex();
   const index = new Map<string, NoteId>();
   for (const row of rows) {
     const title = row.title.trim().toLowerCase();
@@ -111,13 +112,17 @@ export async function linkCounts(
     counts.set(id, entry);
   };
 
-  const links = await db().noteLinks.toArray();
-  const scope = new Set(noteIds);
-  for (const link of links) {
-    if (scope.has(link.sourceId)) bump(link.sourceId, "outgoing");
-    // An unresolved link has targetId "", which is never in scope.
-    if (link.targetId !== "" && scope.has(link.targetId)) bump(link.targetId, "incoming");
-  }
+  // Both directions use their index. The old version read the whole
+  // `noteLinks` table and filtered in JS, so the cost scaled with the library
+  // rather than with the visible rows.
+  const [outgoing, incoming] = await Promise.all([
+    db().noteLinks.where("sourceId").anyOf(noteIds).toArray(),
+    db().noteLinks.where("targetId").anyOf(noteIds).toArray(),
+  ]);
+
+  for (const link of outgoing) bump(link.sourceId, "outgoing");
+  // An unresolved link has targetId "", which `anyOf` never matches.
+  for (const link of incoming) bump(link.targetId, "incoming");
 
   return counts;
 }

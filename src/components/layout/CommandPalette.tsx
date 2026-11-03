@@ -15,7 +15,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
-import { useNotes, useNotebookTree } from "@/hooks/queries";
+import { useNotebookTree, useRecentNotes } from "@/hooks/queries";
 import { useCreateNotebook, useCreateNote } from "@/hooks/mutations";
 import { useWorkspaceParams } from "@/hooks/useWorkspaceParams";
 import { useTagSummaries } from "@/hooks/useTags";
@@ -44,14 +44,16 @@ export function CommandPalette() {
   const router = useRouter();
   const { params, setParam, selectNote, selectNotebook } = useWorkspaceParams();
   const { setTheme } = useTheme();
-  const { data: notes } = useNotes();
+  // Only fetched when the palette is open — the workspace should not read
+  // note rows for a dialog nobody has opened yet.
+  const { data: notes } = useRecentNotes(12, open);
   const { data: tree } = useNotebookTree();
-  const { data: tags } = useTagSummaries();
+  const { data: tags } = useTagSummaries(open);
   const createNote = useCreateNote();
   const createNotebook = useCreateNotebook();
 
   const notebooks = useMemo(() => (tree ? flattenTree(tree) : []), [tree]);
-  const recent = useMemo(() => (notes ?? []).slice(0, 12), [notes]);
+  const recent = notes ?? [];
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {

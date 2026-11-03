@@ -68,7 +68,12 @@ In the Supabase dashboard → Authentication:
 
 ### 2.4 Configure the app
 
-Set these two variables in the **build** environment:
+Set these two variables in the **build** environment. Locally, copy the
+example file and fill it in:
+
+```bash
+cp .env.example .env.local
+```
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co

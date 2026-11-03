@@ -17,6 +17,9 @@ import {
   parseAttachmentRef,
   parseNoteTagRef,
 } from "@/lib/db/repositories/tombstones";
+import { noteContentDiffers } from "./compare";
+import { markSearchDirty } from "@/lib/search/dirty";
+import { exceedsAttachmentBudget } from "@/lib/attachments/path";
 import type { SyncAdapter, SyncResult } from "./types";
 
 /**
@@ -37,7 +40,7 @@ import type { SyncAdapter, SyncResult } from "./types";
 const GRACE_MS = 1000;
 
 export async function reconcile(adapter: SyncAdapter): Promise<SyncResult> {
-  const result: SyncResult = { pushed: 0, pulled: 0, deleted: 0 };
+  const result: SyncResult = { pushed: 0, pulled: 0, deleted: 0, warnings: [] };
 
   await syncProfile(adapter);
   result.deleted += await flushTombstones(adapter);
@@ -119,6 +122,7 @@ export async function reconcile(adapter: SyncAdapter): Promise<SyncResult> {
       for (const note of remote) {
         await rebuildLinksForNote(note.id, note.content_text);
       }
+      markSearchDirty(remote.map((note) => note.id));
       result.pulled += remote.length;
     }
 
@@ -133,12 +137,24 @@ export async function reconcile(adapter: SyncAdapter): Promise<SyncResult> {
     }
   }
 
-  /* Attachments: metadata + bytes. After notes, because the FK must exist. */
-  {
+  /* Attachments: metadata + bytes. After notes, because the FK must exist.
+   *
+   * A failure here must not abort the pass: an over-budget library used to
+   * throw out of `reconcile`, so notes and tags stopped syncing entirely and
+   * every tick retried the same rejected upload. The attachment phase now
+   * degrades to a warning and the rest of the pass completes. */
+  try {
     const attachments = await syncAttachments(adapter);
     result.pushed += attachments.pushed;
     result.pulled += attachments.pulled;
     result.deleted += attachments.deleted;
+    result.warnings.push(...attachments.warnings);
+  } catch (error) {
+    result.warnings.push(
+      error instanceof Error
+        ? `Attachments did not sync: ${error.message}`
+        : "Attachments did not sync.",
+    );
   }
 
   /* Join rows last: both endpoints exist remotely by now. */
@@ -196,16 +212,6 @@ async function flushTombstones(adapter: SyncAdapter): Promise<number> {
   return deleted;
 }
 
-/** Does the remote copy actually carry different content from local? */
-function noteContentDiffers(local: NoteRow, remote: { title: string; content_json: unknown; content_text: string; is_trashed: boolean }): boolean {
-  return (
-    local.title !== remote.title ||
-    local.contentText !== remote.content_text ||
-    local.isTrashed !== (remote.is_trashed ? 1 : 0) ||
-    JSON.stringify(local.contentJson) !== JSON.stringify(remote.content_json)
-  );
-}
-
 /**
  * Keep the local loser of a conflict as a version snapshot so the force of a
  * pull never destroys work. Snapshot versions are written behind the current
@@ -225,6 +231,7 @@ async function preserveAsVersions(notes: NoteRow[]): Promise<void> {
         contentMarkdown: note.contentMarkdown,
         contentText: note.contentText,
         version: highest + 1,
+        kind: "auto",
         createdAt: Date.now(),
       });
     }
@@ -271,7 +278,7 @@ async function alignNoteStamps(rows: NoteRow[], stamps: Map<string, number>): Pr
  */
 async function syncAttachments(
   adapter: SyncAdapter,
-): Promise<{ pushed: number; pulled: number; deleted: number }> {
+): Promise<{ pushed: number; pulled: number; deleted: number; warnings: string[] }> {
   const database = db();
   const [local, remote] = await Promise.all([
     database.attachments.toArray(),
@@ -283,6 +290,15 @@ async function syncAttachments(
   let pushed = 0;
   let pulled = 0;
   let deleted = 0;
+  const warnings: string[] = [];
+
+  // What the server already counts against the budget. Uploading a file the
+  // server will reject wastes the bytes and wedges the next tick; skip it and
+  // say so instead.
+  let usedBytes = remote.reduce(
+    (total, row) => (row.deleted_at === null ? total + row.size_bytes : total),
+    0,
+  );
 
   for (const row of remote) {
     if (row.deleted_at !== null && localIds.has(row.id)) {
@@ -310,6 +326,14 @@ async function syncAttachments(
 
   for (const row of local) {
     if (remoteById.has(row.id)) continue;
+
+    if (exceedsAttachmentBudget(usedBytes, row.size)) {
+      warnings.push(
+        `"${row.fileName}" stayed on this device: the 50 MB attachment budget is full.`,
+      );
+      continue;
+    }
+
     await adapter.uploadAttachment(
       {
         id: row.id,
@@ -324,10 +348,11 @@ async function syncAttachments(
       },
       row.data,
     );
+    usedBytes += row.size;
     pushed += 1;
   }
 
-  return { pushed, pulled, deleted };
+  return { pushed, pulled, deleted, warnings };
 }
 
 /**

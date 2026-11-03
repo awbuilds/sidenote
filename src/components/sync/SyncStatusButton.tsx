@@ -63,9 +63,10 @@ export function SyncStatusButton({ variant = "icon" }: { variant?: "icon" | "rai
 
   const subline =
     state === "saved"
-      ? status.lastSyncedAt === null
-        ? "Everything is up to date."
-        : `Last synced ${relativeTime(status.lastSyncedAt)}`
+      ? (status.message ??
+        (status.lastSyncedAt === null
+          ? "Everything is up to date."
+          : `Last synced ${relativeTime(status.lastSyncedAt)}`))
       : state === "syncing"
         ? "Pulling your latest changes."
         : state === "error"

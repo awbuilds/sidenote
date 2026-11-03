@@ -1,6 +1,8 @@
 import type { JSONContent } from "@tiptap/core";
-import type { Theme } from "@/lib/theme";
-import { DEFAULT_THEME } from "@/lib/theme";
+import type { CompanionId } from "@/lib/companion";
+import { DEFAULT_COMPANION } from "@/lib/companion";
+import type { Theme, ThemePack } from "@/lib/theme";
+import { DEFAULT_THEME, DEFAULT_THEME_PACK } from "@/lib/theme";
 import type { EditorFont, EditorLineHeight, EditorWidth } from "@/lib/typography";
 
 export type NotebookId = string;
@@ -102,6 +104,10 @@ export interface NoteVersion {
   contentMarkdown: string;
   contentText: string;
   version: number;
+  /** Absent on rows written before named versions shipped; treat as "auto". */
+  kind?: "auto" | "manual";
+  /** Set only for a user-named checkpoint. */
+  label?: string;
   createdAt: number;
 }
 
@@ -171,6 +177,24 @@ export type NoteRow = Omit<Note, "isPinned" | "isTrashed" | "notebookId"> & {
 /* Settings keys                                                      */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Ids of the rows created by the sample seeder.
+ *
+ * Sample content is ordinary data once written, so there is no column that
+ * says "this came from the seed". Recording the ids at seed time is what lets
+ * "remove sample data" delete only what it created — a title-matching heuristic
+ * would eventually delete a user's note called "Roadmap".
+ *
+ * Null means this database has no tracked sample content: either it was seeded
+ * before the manifest existed or the samples were already removed.
+ */
+export interface SampleDataManifest {
+  noteIds: NoteId[];
+  notebookIds: NotebookId[];
+  tagIds: TagId[];
+  attachmentIds: AttachmentId[];
+}
+
 export interface AppSettings {
   profileName: string;
   /**
@@ -181,6 +205,8 @@ export interface AppSettings {
    * the data layer, so pointing at it adds no dependency edge.
    */
   theme: Theme;
+  /** Visual language, independent of light/dark. */
+  themePack: ThemePack;
   /** Hide the notebook and list panes, leaving only the editor. */
   focusMode: boolean;
   /** Max retained snapshots per note before pruning. */
@@ -191,12 +217,24 @@ export interface AppSettings {
   /** Bumped whenever note content changes; invalidates the search index. */
   dataVersion: number;
   seeded: boolean;
+  /** Ids created by the sample seeder; null when nothing is tracked. */
+  sampleData: SampleDataManifest | null;
+  /** First-run tour is pending for this browser. */
+  onboardingPending: boolean;
+  /** When the tour was completed or skipped; null until then. */
+  onboardingCompletedAt: number | null;
   /** First-run getting-started card; once dismissed it stays gone. */
   onboardingDismissed: boolean;
   /** Timestamp of the last successful ZIP export, for the checklist. */
   lastBackupAt: number | null;
+  /** `dataVersion` at that export, so "changes since" is exact rather than a guess. */
+  lastBackupDataVersion: number | null;
   /** Note list row density. */
   listDensity: ListDensity;
+  /** Which companion pet is selected. */
+  companionId: CompanionId;
+  /** Whether the companion may run across the screen. */
+  companionEnabled: boolean;
   /** Editor reading column preferences. */
   editorFont: EditorFont;
   editorWidth: EditorWidth;
@@ -209,15 +247,22 @@ export const DEFAULT_SETTINGS: AppSettings = {
   profileName: "",
   /** See `DEFAULT_THEME` — only a brand-new database ever sees this. */
   theme: DEFAULT_THEME,
+  themePack: DEFAULT_THEME_PACK,
   focusMode: false,
   versionLimit: 30,
   versionMaxAgeDays: 90,
   lastNotebookId: null,
   dataVersion: 0,
   seeded: false,
+  sampleData: null,
+  onboardingPending: false,
+  onboardingCompletedAt: null,
   onboardingDismissed: false,
   lastBackupAt: null,
+  lastBackupDataVersion: null,
   listDensity: "comfortable",
+  companionId: DEFAULT_COMPANION,
+  companionEnabled: true,
   editorFont: "sans",
   editorWidth: "medium",
   editorLineHeight: "normal",

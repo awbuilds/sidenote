@@ -1,0 +1,474 @@
+/* ------------------------------------------------------------------ */
+/* Theme packs                                                         */
+/* ------------------------------------------------------------------ */
+
+/* The packs are deliberately *era-inspired*, not operating-system clones:
+   original palettes, system font stacks and CSS shapes, no vendor assets.
+   Every pack defines the same token set as Warm Paper so components never
+   fall through to a different theme's values. */
+
+:root {
+  --font-ui: var(--font-sans);
+  --preview-accent: #d9a05b;
+}
+
+/* Blue 2001 ---------------------------------------------------------- */
+[data-theme-pack="blue"]:is(html, [data-theme-preview]) {
+  --font-ui: Tahoma, Verdana, "Segoe UI", sans-serif;
+  --radius: 2px;
+  --radius-sm: 0px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius-2xl: 2px;
+  --radius-3xl: 2px;
+  --radius-4xl: 2px;
+
+  --background: #eef3fa;
+  --foreground: #14263f;
+  --card: #f8fbff;
+  --card-foreground: #14263f;
+  --popover: #ffffff;
+  --popover-foreground: #14263f;
+  --primary: #0a5bd3;
+  --primary-foreground: #ffffff;
+  --secondary: #dbe7f7;
+  --secondary-foreground: #14263f;
+  --muted: #e4ecf8;
+  --muted-foreground: #465a75;
+  --accent: #cfe0f8;
+  --accent-foreground: #14263f;
+  --destructive: #b42318;
+  --destructive-foreground: #ffffff;
+  --border: #9db6d6;
+  --input: #ffffff;
+  --ring: #0a5bd3;
+  --chart-1: #0a5bd3;
+  --chart-2: #3f8bea;
+  --chart-3: #6f86a3;
+  --chart-4: #465a75;
+  --chart-5: #14263f;
+  --sidebar: #dce9f9;
+  --sidebar-foreground: #14263f;
+  --sidebar-primary: #0a5bd3;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #c8dcf5;
+  --sidebar-accent-foreground: #14263f;
+  --sidebar-border: #9db6d6;
+  --sidebar-ring: #0a5bd3;
+  --surface-container-lowest: #eef3fa;
+  --surface-container-low: #e4ecf8;
+  --surface-container: #dbe7f7;
+  --surface-container-high: #cdddf2;
+  --surface-container-highest: #bdd2ec;
+  --amber-soft: #fdf0cf;
+  --outline: #6f86a3;
+  --preview-accent: #7fb2f0;
+}
+
+[data-theme-pack="blue"].dark {
+  --background: #0a1628;
+  --foreground: #e6eefb;
+  --card: #12233c;
+  --card-foreground: #e6eefb;
+  --popover: #12233c;
+  --popover-foreground: #e6eefb;
+  --primary: #4d9aff;
+  --primary-foreground: #04101f;
+  --secondary: #1b3352;
+  --secondary-foreground: #e6eefb;
+  --muted: #1b3352;
+  --muted-foreground: #9fb4d0;
+  --accent: #244266;
+  --accent-foreground: #e6eefb;
+  --destructive: #ff6b5e;
+  --destructive-foreground: #1a0805;
+  --border: #2c4a6e;
+  --input: #0f1f35;
+  --ring: #4d9aff;
+  --sidebar: #0e1d33;
+  --sidebar-foreground: #e6eefb;
+  --sidebar-primary: #4d9aff;
+  --sidebar-primary-foreground: #04101f;
+  --sidebar-accent: #1b3352;
+  --sidebar-accent-foreground: #e6eefb;
+  --sidebar-border: #2c4a6e;
+  --sidebar-ring: #4d9aff;
+  --surface-container-lowest: #081221;
+  --surface-container-low: #0f1f35;
+  --surface-container: #12233c;
+  --surface-container-high: #1b3352;
+  --surface-container-highest: #244266;
+  --amber-soft: #3a2d13;
+  --outline: #7d95b5;
+  --preview-accent: #2b6fbf;
+}
+
+/* Glass 2009 --------------------------------------------------------- */
+[data-theme-pack="glass"]:is(html, [data-theme-preview]) {
+  --font-ui: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --radius: 8px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 14px;
+  --radius-3xl: 9999px;
+  --radius-4xl: 9999px;
+
+  --background: #edf4fb;
+  --foreground: #132435;
+  --card: rgb(255 255 255 / 78%);
+  --card-foreground: #132435;
+  --popover: rgb(255 255 255 / 92%);
+  --popover-foreground: #132435;
+  --primary: #1c7ed6;
+  --primary-foreground: #ffffff;
+  --secondary: #dcebf8;
+  --secondary-foreground: #132435;
+  --muted: #e2eef9;
+  --muted-foreground: #4a6076;
+  --accent: #d3e7f7;
+  --accent-foreground: #132435;
+  --destructive: #c0392b;
+  --destructive-foreground: #ffffff;
+  --border: rgb(84 120 150 / 28%);
+  --input: rgb(255 255 255 / 82%);
+  --ring: #38a1e8;
+  --chart-1: #1c7ed6;
+  --chart-2: #56a8e8;
+  --chart-3: #6b8299;
+  --chart-4: #4a6076;
+  --chart-5: #132435;
+  --sidebar: rgb(226 239 250 / 82%);
+  --sidebar-foreground: #132435;
+  --sidebar-primary: #1c7ed6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgb(211 231 247 / 85%);
+  --sidebar-accent-foreground: #132435;
+  --sidebar-border: rgb(84 120 150 / 20%);
+  --sidebar-ring: #38a1e8;
+  --surface-container-lowest: #edf4fb;
+  --surface-container-low: #e4eef9;
+  --surface-container: #dbe9f6;
+  --surface-container-high: #d1e3f3;
+  --surface-container-highest: #c6dcf0;
+  --amber-soft: #fdf1d8;
+  --outline: #6b8299;
+  --preview-accent: #9ad4ff;
+}
+
+[data-theme-pack="glass"].dark {
+  --background: #0b1622;
+  --foreground: #e8f2fb;
+  --card: rgb(20 35 50 / 74%);
+  --card-foreground: #e8f2fb;
+  --popover: rgb(21 38 55 / 94%);
+  --popover-foreground: #e8f2fb;
+  --primary: #5ab0f0;
+  --primary-foreground: #04121f;
+  --secondary: #17324a;
+  --secondary-foreground: #e8f2fb;
+  --muted: #17324a;
+  --muted-foreground: #9db8d0;
+  --accent: #204664;
+  --accent-foreground: #e8f2fb;
+  --destructive: #ff7b6e;
+  --destructive-foreground: #1a0805;
+  --border: rgb(150 190 220 / 22%);
+  --input: rgb(11 22 34 / 85%);
+  --ring: #5ab0f0;
+  --sidebar: rgb(13 27 41 / 86%);
+  --sidebar-foreground: #e8f2fb;
+  --sidebar-primary: #5ab0f0;
+  --sidebar-primary-foreground: #04121f;
+  --sidebar-accent: rgb(32 70 100 / 80%);
+  --sidebar-accent-foreground: #e8f2fb;
+  --sidebar-border: rgb(150 190 220 / 18%);
+  --sidebar-ring: #5ab0f0;
+  --surface-container-lowest: #08111b;
+  --surface-container-low: #0f2030;
+  --surface-container: #142636;
+  --surface-container-high: #1b3246;
+  --surface-container-highest: #22405a;
+  --amber-soft: #3a2d13;
+  --outline: #8faec7;
+  --preview-accent: #3f8fc7;
+}
+
+/* Gel 2000 ----------------------------------------------------------- */
+[data-theme-pack="gel"]:is(html, [data-theme-preview]) {
+  --font-ui: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+  --radius: 12px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 18px;
+  --radius-3xl: 9999px;
+  --radius-4xl: 9999px;
+
+  --background: #f2f3f8;
+  --foreground: #1d2333;
+  --card: #ffffff;
+  --card-foreground: #1d2333;
+  --popover: #ffffff;
+  --popover-foreground: #1d2333;
+  --primary: #1a73e8;
+  --primary-foreground: #ffffff;
+  --secondary: #e4e7f1;
+  --secondary-foreground: #1d2333;
+  --muted: #e9ecf4;
+  --muted-foreground: #5a6175;
+  --accent: #dde3f2;
+  --accent-foreground: #1d2333;
+  --destructive: #c0392b;
+  --destructive-foreground: #ffffff;
+  --border: #b9c0d4;
+  --input: #ffffff;
+  --ring: #1a73e8;
+  --chart-1: #1a73e8;
+  --chart-2: #5aa2ff;
+  --chart-3: #8b93a8;
+  --chart-4: #5a6175;
+  --chart-5: #1d2333;
+  --sidebar: #e7eaf4;
+  --sidebar-foreground: #1d2333;
+  --sidebar-primary: #1a73e8;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #d5dbec;
+  --sidebar-accent-foreground: #1d2333;
+  --sidebar-border: #b9c0d4;
+  --sidebar-ring: #1a73e8;
+  --surface-container-lowest: #f2f3f8;
+  --surface-container-low: #e9ecf4;
+  --surface-container: #dfe3ee;
+  --surface-container-high: #d5dbec;
+  --surface-container-highest: #c9d1e6;
+  --amber-soft: #fdf1d8;
+  --outline: #7d8497;
+  --preview-accent: #f2a3b8;
+}
+
+[data-theme-pack="gel"].dark {
+  --background: #171a21;
+  --foreground: #eef1f8;
+  --card: #22262f;
+  --card-foreground: #eef1f8;
+  --popover: #22262f;
+  --popover-foreground: #eef1f8;
+  --primary: #5aa2ff;
+  --primary-foreground: #071424;
+  --secondary: #2a3040;
+  --secondary-foreground: #eef1f8;
+  --muted: #2a3040;
+  --muted-foreground: #a4adc2;
+  --accent: #333b4f;
+  --accent-foreground: #eef1f8;
+  --destructive: #ff7b6e;
+  --destructive-foreground: #1a0805;
+  --border: #3a4358;
+  --input: #1b1f28;
+  --ring: #5aa2ff;
+  --sidebar: #1c2029;
+  --sidebar-foreground: #eef1f8;
+  --sidebar-primary: #5aa2ff;
+  --sidebar-primary-foreground: #071424;
+  --sidebar-accent: #2a3040;
+  --sidebar-accent-foreground: #eef1f8;
+  --sidebar-border: #3a4358;
+  --sidebar-ring: #5aa2ff;
+  --surface-container-lowest: #13161c;
+  --surface-container-low: #1c2029;
+  --surface-container: #22262f;
+  --surface-container-high: #2a3040;
+  --surface-container-highest: #333b4f;
+  --amber-soft: #3a2d13;
+  --outline: #8b93a8;
+  --preview-accent: #b8607a;
+}
+
+/* ------------------------------------------------------------------ */
+/* Component skins                                                     */
+/* ------------------------------------------------------------------ */
+
+html[data-theme-pack="blue"] [data-slot="button"] {
+  border-radius: 2px;
+}
+html[data-theme-pack="blue"] [data-slot="button"][data-variant="default"] {
+  border: 1px solid #084aa8;
+  background-image: linear-gradient(to bottom, #2a6fc4 0%, #0a5bd3 58%, #0849a5 100%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 55%),
+    0 1px 1px rgb(0 0 0 / 18%);
+  text-shadow: 0 1px 1px rgb(0 0 0 / 28%);
+}
+html[data-theme-pack="blue"].dark [data-slot="button"][data-variant="default"] {
+  border-color: #2b6fbf;
+  background-image: linear-gradient(to bottom, #2e6fbd 0%, #17457f 100%);
+}
+html[data-theme-pack="blue"] [data-slot="input"],
+html[data-theme-pack="blue"] [data-slot="textarea"],
+html[data-theme-pack="blue"] [data-slot="select-trigger"] {
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 12%);
+}
+html[data-theme-pack="blue"] [data-slot="dialog-content"],
+html[data-theme-pack="blue"] [data-slot="dropdown-menu-content"],
+html[data-theme-pack="blue"] [data-slot="select-content"],
+html[data-theme-pack="blue"] [data-slot="popover-content"] {
+  border-radius: 3px;
+  border: 1px solid #6f92be;
+  box-shadow: 3px 3px 10px rgb(10 30 60 / 25%);
+}
+
+html[data-theme-pack="glass"] [data-slot="button"][data-variant="default"] {
+  border: 1px solid rgb(255 255 255 / 55%);
+  background-image: linear-gradient(to bottom, #1a6fb0 0%, #1667ad 60%, #145e9e 100%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 65%),
+    0 2px 10px rgb(28 126 214 / 35%);
+}
+html[data-theme-pack="glass"].dark [data-slot="button"][data-variant="default"] {
+  border-color: rgb(150 210 255 / 35%);
+  background-image: linear-gradient(to bottom, #3f8fc7 0%, #1c5f94 100%);
+}
+html[data-theme-pack="glass"] [data-slot="dialog-content"],
+html[data-theme-pack="glass"] [data-slot="dropdown-menu-content"],
+html[data-theme-pack="glass"] [data-slot="select-content"],
+html[data-theme-pack="glass"] [data-slot="popover-content"] {
+  backdrop-filter: blur(18px) saturate(1.15);
+  border-color: rgb(255 255 255 / 55%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 60%),
+    0 12px 40px rgb(18 60 100 / 22%);
+}
+html[data-theme-pack="glass"].dark [data-slot="dialog-content"],
+html[data-theme-pack="glass"].dark [data-slot="dropdown-menu-content"],
+html[data-theme-pack="glass"].dark [data-slot="select-content"],
+html[data-theme-pack="glass"].dark [data-slot="popover-content"] {
+  border-color: rgb(150 190 220 / 25%);
+}
+
+html[data-theme-pack="gel"] [data-slot="button"] {
+  border-radius: 9999px;
+}
+html[data-theme-pack="gel"] [data-slot="button"][data-variant="default"] {
+  border: 1px solid #0f5cc0;
+  background-image:
+    linear-gradient(to bottom, rgb(255 255 255 / 22%), rgb(255 255 255 / 0%) 48%),
+    linear-gradient(to bottom, #1a65c0 0%, #1f6fd0 55%, #155bb8 100%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 70%),
+    0 2px 6px rgb(26 115 232 / 35%);
+}
+html[data-theme-pack="gel"].dark [data-slot="button"][data-variant="default"] {
+  border-color: #2f6fb5;
+  background-image:
+    linear-gradient(to bottom, rgb(255 255 255 / 22%), rgb(255 255 255 / 0%) 48%),
+    linear-gradient(to bottom, #3f7fc4 0%, #1d4f86 100%);
+}
+html[data-theme-pack="gel"] [data-slot="input"],
+html[data-theme-pack="gel"] [data-slot="textarea"],
+html[data-theme-pack="gel"] [data-slot="select-trigger"] {
+  border-radius: 9999px;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
+}
+html[data-theme-pack="gel"] [data-slot="textarea"] {
+  border-radius: 12px;
+}
+html[data-theme-pack="gel"] [data-slot="dialog-content"],
+html[data-theme-pack="gel"] [data-slot="dropdown-menu-content"],
+html[data-theme-pack="gel"] [data-slot="select-content"],
+html[data-theme-pack="gel"] [data-slot="popover-content"] {
+  border-radius: 14px;
+  box-shadow: 0 14px 40px rgb(20 30 60 / 22%);
+}
+
+/* Pinstripes are the one bit of chrome a token cannot express. */
+html[data-theme-pack="gel"] body {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgb(0 0 0 / 2.5%) 0,
+    rgb(0 0 0 / 2.5%) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+html[data-theme-pack="gel"].dark body {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgb(255 255 255 / 2.5%) 0,
+    rgb(255 255 255 / 2.5%) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* Tailwind bakes the radius scale into utilities in this setup, so token
+   overrides alone leave cards looking like Warm Paper. These unlayered rules
+   intentionally beat the utility layer; rounded-full is left alone. */
+[data-theme-pack="blue"] .rounded-sm:not(:where([data-theme-preview] *)),
+[data-theme-pack="blue"] .rounded-md:not(:where([data-theme-preview] *)),
+[data-theme-pack="blue"] .rounded-lg:not(:where([data-theme-preview] *)),
+[data-theme-pack="blue"] .rounded-xl:not(:where([data-theme-preview] *)),
+[data-theme-pack="blue"] .rounded-2xl:not(:where([data-theme-preview] *)) {
+  border-radius: 2px;
+}
+
+[data-theme-pack="glass"] .rounded-sm:not(:where([data-theme-preview] *)) { border-radius: 4px; }
+[data-theme-pack="glass"] .rounded-md:not(:where([data-theme-preview] *)) { border-radius: 6px; }
+[data-theme-pack="glass"] .rounded-lg:not(:where([data-theme-preview] *)) { border-radius: 8px; }
+[data-theme-pack="glass"] .rounded-xl:not(:where([data-theme-preview] *)) { border-radius: 12px; }
+[data-theme-pack="glass"] .rounded-2xl:not(:where([data-theme-preview] *)) { border-radius: 14px; }
+
+[data-theme-pack="gel"] .rounded-sm:not(:where([data-theme-preview] *)) { border-radius: 8px; }
+[data-theme-pack="gel"] .rounded-md:not(:where([data-theme-preview] *)) { border-radius: 10px; }
+[data-theme-pack="gel"] .rounded-lg:not(:where([data-theme-preview] *)) { border-radius: 14px; }
+[data-theme-pack="gel"] .rounded-xl:not(:where([data-theme-preview] *)) { border-radius: 18px; }
+[data-theme-pack="gel"] .rounded-2xl:not(:where([data-theme-preview] *)) { border-radius: 20px; }
+
+[data-theme-pack="blue"] ::selection {
+  background: #0a5bd3;
+  color: #ffffff;
+}
+[data-theme-pack="glass"] ::selection {
+  background: #1c7ed6;
+  color: #ffffff;
+}
+[data-theme-pack="gel"] ::selection {
+  background: #1a73e8;
+  color: #ffffff;
+}
+
+[data-theme-pack="blue"] * {
+  scrollbar-color: #7fa7d8 #e4ecf8;
+}
+[data-theme-pack="blue"].dark * {
+  scrollbar-color: #2c4a6e #0a1628;
+}
+[data-theme-pack="gel"] * {
+  scrollbar-color: #8b93a8 #e9ecf4;
+}
+[data-theme-pack="gel"].dark * {
+  scrollbar-color: #3a4358 #171a21;
+}
+
+/* Inside a gallery preview, the preview's own pack owns the shape. */
+[data-theme-preview][data-theme-pack="blue"] .rounded-sm,
+[data-theme-preview][data-theme-pack="blue"] .rounded-md,
+[data-theme-preview][data-theme-pack="blue"] .rounded-lg,
+[data-theme-preview][data-theme-pack="blue"] .rounded-xl,
+[data-theme-preview][data-theme-pack="blue"] .rounded-2xl {
+  border-radius: 2px;
+}
+[data-theme-preview][data-theme-pack="glass"] .rounded-sm { border-radius: 4px; }
+[data-theme-preview][data-theme-pack="glass"] .rounded-md { border-radius: 6px; }
+[data-theme-preview][data-theme-pack="glass"] .rounded-lg { border-radius: 8px; }
+[data-theme-preview][data-theme-pack="glass"] .rounded-xl { border-radius: 12px; }
+[data-theme-preview][data-theme-pack="glass"] .rounded-2xl { border-radius: 14px; }
+[data-theme-preview][data-theme-pack="gel"] .rounded-sm { border-radius: 8px; }
+[data-theme-preview][data-theme-pack="gel"] .rounded-md { border-radius: 10px; }
+[data-theme-preview][data-theme-pack="gel"] .rounded-lg { border-radius: 14px; }
+[data-theme-preview][data-theme-pack="gel"] .rounded-xl { border-radius: 18px; }
+[data-theme-preview][data-theme-pack="gel"] .rounded-2xl { border-radius: 20px; }

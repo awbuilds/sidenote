@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Security — Sidenote</title>
+  <meta name="description" content="How to report a vulnerability in Sidenote, what is in scope, and the practices behind the app.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#f8f3e9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14120e" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="./assets/icon-512.png" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icon-512.png">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="canonical" href="https://awbuilds.github.io/sidenote/security.html">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Sidenote">
+  <meta property="og:title" content="Security — Sidenote">
+  <meta property="og:description" content="How to report a vulnerability in Sidenote, what is in scope, and the practices behind the app.">
+  <meta property="og:url" content="https://awbuilds.github.io/sidenote/security.html">
+  <meta property="og:image" content="https://awbuilds.github.io/sidenote/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./">
+        <img src="./assets/icon-512.png" alt="" width="32" height="32">
+        <span>Sidenote</span>
+      </a>
+
+      <nav class="nav nav-desktop" aria-label="Primary">
+        <a href="./#features">Features</a>
+        <a href="./privacy.html">Privacy</a>
+        <a href="./#self-host">Self-host</a>
+        <a href="./#faq">FAQ</a>
+        <a href="https://github.com/awbuilds/sidenote">GitHub</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="button button-small" href="https://sidenoteapp.vercel.app">Open app</a>
+        <details class="nav-mobile">
+          <summary>Menu</summary>
+          <nav class="nav-mobile-panel" aria-label="Mobile">
+            <a href="./#features">Features</a>
+            <a href="./#privacy">Privacy</a>
+            <a href="./#self-host">Self-host</a>
+            <a href="./#faq">FAQ</a>
+            <a href="https://github.com/awbuilds/sidenote">GitHub</a>
+            <a href="./privacy.html">Privacy policy</a>
+            <a href="./terms.html">Terms of use</a>
+            <a href="./cookies.html">Cookies</a>
+            <a href="./security.html">Security</a>
+            <a href="./accessibility.html">Accessibility</a>
+            <a href="./legal.html">Legal notice</a>
+          </nav>
+        </details>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="page-head wrap">
+      <p class="eyebrow">Security</p>
+      <h1>Report privately. We will not shoot the messenger.</h1>
+      <p class="lede">Sidenote is local-first and open source. If you find a security problem, please report it privately so it can be fixed before it is public.</p>
+      <div class="policy-meta">
+        <span><strong>Effective:</strong> 3 November 2026</span>
+        <span><strong>Applies to:</strong> The Sidenote codebase, website and hosted app</span>
+        <span><strong>Contact:</strong> <a href="https://github.com/awbuilds/sidenote/security/advisories/new">private report</a></span>
+      </div>
+    </header>
+
+    <div class="legal-layout wrap">
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+            <li><a href="#reporting">Reporting a vulnerability</a></li>
+            <li><a href="#supported">Supported versions</a></li>
+            <li><a href="#scope">In scope</a></li>
+            <li><a href="#out-of-scope">Out of scope</a></li>
+            <li><a href="#safe-harbour">Safe harbour</a></li>
+            <li><a href="#practices">What we do</a></li>
+            <li><a href="#bounty">No bug bounty</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ol>
+      </nav>
+
+      <article class="prose">
+        <h2 id="reporting">Reporting a vulnerability</h2>
+<p>Please use GitHub's private vulnerability reporting:</p>
+        <p><a href="https://github.com/awbuilds/sidenote/security/advisories/new">Open a private security advisory →</a></p>
+        <p>Include the version or commit, a description of the issue, and a minimal
+        reproduction. Do not open a public issue for a vulnerability. We aim to
+        acknowledge a report within a few days and to keep you informed while it is
+        investigated.</p>
+        <p>The same channel is used for privacy and legal requests; mark the report
+        so it reaches the right place.</p>
+
+        <h2 id="supported">Supported versions</h2>
+<p>The <code>main</code> branch is the supported version. Tagged releases
+        are supported for the lifetime of their release branch. If you run an older
+        fork or a modified deployment, update it before reporting an issue that may
+        already be fixed.</p>
+
+        <h2 id="scope">In scope</h2>
+<ul>
+          <li>the browser client, editor and local database layer;</li>
+          <li>the sync engine and the Supabase adapter;</li>
+          <li>the Postgres schema, row-level security policies and database
+          functions in <code>supabase/migrations/</code>;</li>
+          <li>public share links, including password, expiry and revocation
+          handling;</li>
+          <li>the service worker and the PWA install path;</li>
+          <li>the website's own code and configuration.</li>
+        </ul>
+
+        <h2 id="out-of-scope">Out of scope</h2>
+<ul>
+          <li>vulnerabilities in a self-hosted Supabase deployment that are not
+          caused by this repository's migrations or client code;</li>
+          <li>reports that require a compromised browser profile or physical device
+          access;</li>
+          <li>denial of service against your own self-hosted instance;</li>
+          <li>social engineering, phishing or physical attacks;</li>
+          <li>missing hardening headers with no demonstrated impact.</li>
+        </ul>
+
+        <h2 id="safe-harbour">Safe harbour</h2>
+<p>We support good-faith security research. If you act in good faith, avoid
+        privacy violations, data destruction and service disruption, and give us a
+        reasonable chance to fix the issue before disclosure, we will not pursue
+        legal action or report you to law enforcement for that research. Coordinate
+        public disclosure with us.</p>
+
+        <h2 id="practices">What we do</h2>
+<ul>
+          <li><strong>No server-side note store</strong> on the hosted app, so there
+          is no central database of notes to breach.</li>
+          <li><strong>Row-level security</strong> on every synced table, plus
+          ownership checks on share links and attachment quotas.</li>
+          <li><strong>HTTPS</strong> everywhere, with response hardening headers and
+          a report-only content security policy.</li>
+          <li><strong>Open source</strong> under AGPL-3.0, with CI and CodeQL on
+          the repository, plus Dependabot security alerts.</li>
+          <li><strong>No analytics, advertising or third-party scripts</strong> in
+          the app or on the site.</li>
+          <li><strong>Breach response.</strong> If a breach affecting personal data
+          occurs, we will notify affected users and the relevant authority as the
+          law requires.</li>
+        </ul>
+
+        <h2 id="bounty">No bug bounty</h2>
+<p>This is an individual open-source project with no paid bounty programme.
+        We are happy to credit a reporter in the release notes if they wish.</p>
+
+        <h2 id="contact">Contact</h2>
+<p>Security reports: <a href="https://github.com/awbuilds/sidenote/security/advisories/new">private advisory</a>. The full
+        policy is also in
+        <a href="https://github.com/awbuilds/sidenote/blob/main/SECURITY.md">SECURITY.md</a> in the
+        repository.</p>
+
+        <p class="back-link"><a href="./">← Back to Sidenote</a></p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="./">
+            <img src="./assets/icon-512.png" alt="" width="30" height="30">
+            <span>Sidenote</span>
+          </a>
+          <p>A private, local-first notes app. Free and open source under AGPL-3.0.</p>
+        </div>
+
+        <div class="footer-col">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="./#features">Features</a></li>
+            <li><a href="./#self-host">Self-host</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/CHANGELOG.md">Changelog</a></li>
+            <li><a href="https://sidenoteapp.vercel.app">Open app</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h2>Policies</h2>
+          <ul>
+            <li><a href="./privacy.html">Privacy</a></li>
+            <li><a href="./terms.html">Terms of use</a></li>
+            <li><a href="./cookies.html">Cookies</a></li>
+            <li><a href="./security.html">Security</a></li>
+            <li><a href="./accessibility.html">Accessibility</a></li>
+            <li><a href="./legal.html">Legal notice</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="https://github.com/awbuilds/sidenote">Source code</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/issues">Issues</a></li>
+            <li><a href="./legal.html#contact">Contact</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/CONTRIBUTING.md">Contributing</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/LICENSE">Licence</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Abhijith Warrier · AGPL-3.0</p>
+        <p class="promise">No cookies. No trackers. No account.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

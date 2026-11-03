@@ -3,12 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Privacy — Sidenote</title>
-  <meta name="description" content="How Sidenote handles your data: local-first by default, optional sync to a server you control, no analytics or third parties.">
-  <meta name="theme-color" content="#faf7f0">
+  <title>Privacy policy — Sidenote</title>
+  <meta name="description" content="How Sidenote handles data: notes stay in your browser, the hosted app has no account or analytics, and sync is optional and self-hosted.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#f8f3e9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14120e" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="./assets/icon-512.png" type="image/png">
   <link rel="apple-touch-icon" href="./assets/icon-512.png">
   <link rel="stylesheet" href="./styles.css">
+  <link rel="canonical" href="https://awbuilds.github.io/sidenote/privacy.html">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Sidenote">
+  <meta property="og:title" content="Privacy policy — Sidenote">
+  <meta property="og:description" content="How Sidenote handles data: notes stay in your browser, the hosted app has no account or analytics, and sync is optional and self-hosted.">
+  <meta property="og:url" content="https://awbuilds.github.io/sidenote/privacy.html">
+  <meta property="og:image" content="https://awbuilds.github.io/sidenote/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -16,91 +28,359 @@
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="./">
-        <img src="./assets/icon-512.png" alt="" width="30" height="30">
+        <img src="./assets/icon-512.png" alt="" width="32" height="32">
         <span>Sidenote</span>
       </a>
-      <nav class="nav" aria-label="Primary">
+
+      <nav class="nav nav-desktop" aria-label="Primary">
         <a href="./#features">Features</a>
-        <a href="./#privacy">Privacy</a>
+        <a href="./privacy.html" aria-current="page">Privacy</a>
         <a href="./#self-host">Self-host</a>
+        <a href="./#faq">FAQ</a>
         <a href="https://github.com/awbuilds/sidenote">GitHub</a>
-        <a class="button button-small" href="https://sidenoteapp.vercel.app">Open app</a>
       </nav>
+
+      <div class="nav-actions">
+        <a class="button button-small" href="https://sidenoteapp.vercel.app">Open app</a>
+        <details class="nav-mobile">
+          <summary>Menu</summary>
+          <nav class="nav-mobile-panel" aria-label="Mobile">
+            <a href="./#features">Features</a>
+            <a href="./#privacy">Privacy</a>
+            <a href="./#self-host">Self-host</a>
+            <a href="./#faq">FAQ</a>
+            <a href="https://github.com/awbuilds/sidenote">GitHub</a>
+            <a href="./privacy.html">Privacy policy</a>
+            <a href="./terms.html">Terms of use</a>
+            <a href="./cookies.html">Cookies</a>
+            <a href="./security.html">Security</a>
+            <a href="./accessibility.html">Accessibility</a>
+            <a href="./legal.html">Legal notice</a>
+          </nav>
+        </details>
+      </div>
     </div>
   </header>
 
-  <main id="main" class="wrap page">
-    <p class="eyebrow">Privacy</p>
-    <h1>Sidenote and your data.</h1>
-    <p class="updated">Last updated: 2 November 2026</p>
+  <main id="main">
+    <header class="page-head wrap">
+      <p class="eyebrow">Privacy policy</p>
+      <h1>Your notes are yours. Here is exactly what that means.</h1>
+      <p class="lede">The hosted app keeps your notes in your browser. This policy explains the small amount of data that still touches a server, and the rights you have.</p>
+      <div class="policy-meta">
+        <span><strong>Effective:</strong> 3 November 2026</span>
+        <span><strong>Applies to:</strong> This website and the hosted app at sidenoteapp.vercel.app</span>
+        <span><strong>Contact:</strong> <a href="https://github.com/awbuilds/sidenote/security/advisories/new">private report</a></span>
+      </div>
+    </header>
 
-    <h2>Local-first by default</h2>
-    <p>
-      Sidenote stores your notebooks, notes, tags, attachments, versions, and
-      settings in your browser's IndexedDB. With no server configured, the app
-      makes no network request of its own and works with no network at all.
-    </p>
+    <div class="legal-layout wrap">
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+            <li><a href="#who-we-are">Who we are</a></li>
+            <li><a href="#summary">The short version</a></li>
+            <li><a href="#website">This website</a></li>
+            <li><a href="#app">The hosted app</a></li>
+            <li><a href="#sync">Optional sync and self-hosting</a></li>
+            <li><a href="#shares">Share links</a></li>
+            <li><a href="#storage">Cookies and browser storage</a></li>
+            <li><a href="#legal-bases">Why we process data</a></li>
+            <li><a href="#rights">Your rights</a></li>
+            <li><a href="#transfers">International transfers</a></li>
+            <li><a href="#hosting-providers">Hosting providers</a></li>
+            <li><a href="#retention">Retention</a></li>
+            <li><a href="#security">Security</a></li>
+            <li><a href="#children">Children</a></li>
+            <li><a href="#changes">Changes to this policy</a></li>
+            <li><a href="#contact">Contact and complaints</a></li>
+        </ol>
+      </nav>
 
-    <h2>Optional sync</h2>
-    <p>
-      Sidenote is local-first. The hosted app at
-      <a href="https://sidenoteapp.vercel.app">sidenoteapp.vercel.app</a> is
-      local-only: it has no sync backend, so notes stay in your browser and are
-      never uploaded. If you self-host Sidenote with your own Supabase instance,
-      signing in sends your notes and their metadata to that instance so they can
-      be restored on another device. The operator of that instance is whoever
-      runs the deployment.
-    </p>
+      <article class="prose">
+        <h2 id="who-we-are">Who we are</h2>
+<p><strong>Sidenote</strong> is an open-source notes app maintained by
+        <strong>Abhijith Warrier</strong>, an individual developer (referred to as
+        “we”, “us” or “the operator”). This policy covers the project website at
+        <a href="https://awbuilds.github.io/sidenote/">awbuilds.github.io/sidenote</a>
+        and the hosted app at
+        <a href="https://sidenoteapp.vercel.app">sidenoteapp.vercel.app</a>.</p>
+        <p>It does not cover a self-hosted deployment run by someone else. If you
+        use a Sidenote deployment operated by another person or organisation,
+        that operator is the controller for the data on their server and their
+        privacy policy applies.</p>
 
-    <h2>Share links</h2>
-    <p>
-      A share link you create is public to anyone who has the URL, optionally
-      protected by a password and an expiry date. The shared note is served from
-      the configured Supabase instance. Do not share a note containing
-      information you do not want to leave your control.
-    </p>
+        <h2 id="summary">The short version</h2>
+<div class="note">
+          <p><strong>The short version.</strong> The hosted app stores your notes
+          in your browser, not on a server. We have no account system, no
+          analytics, no advertising and no cookies. The only server-side
+          processing is standard request logging by our hosting providers.</p>
+        </div>
 
-    <h2>No third parties</h2>
-    <p>
-      Sidenote has no analytics, advertising, crash reporting, error-reporting
-      service, or AI provider. It does not load fonts or scripts from a CDN.
-      The only outward connections are:
-    </p>
-    <ul>
-      <li>the Supabase instance configured for sync and share links, if any;</li>
-      <li>the origin serving the app's own assets and service worker.</li>
-    </ul>
+        <h2 id="website">This website</h2>
+<p>The website is a set of static pages hosted on <strong>GitHub Pages</strong>.
+        It has no forms, no login, no comments and no newsletter. It does not set
+        cookies and does not load analytics or third-party scripts.</p>
+        <p>GitHub, as the hosting provider, may process standard technical data
+        when it serves a page — such as your IP address, user agent, the requested
+        URL and the time of the request — to deliver the page and protect the
+        service. We do not receive that data in a form that identifies you, and we
+        do not combine it with anything else. GitHub's handling is described in
+        the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement">GitHub
+        Privacy Statement</a>.</p>
 
-    <h2>Your controls</h2>
-    <p>
-      You can export a ZIP backup at any time from Settings → Backup, remove
-      sample data, sign out, or delete all local data. If you use sync, the
-      operator of that Supabase instance controls the server-side copy; there is
-      no hidden copy anywhere else.
-    </p>
+        <h2 id="app">The hosted app</h2>
+<p>The hosted app is a static Next.js application served by
+        <strong>Vercel</strong>. It has no account system and no sync backend.
+        When you write a note, it is stored in your browser's IndexedDB on your
+        device. It is not uploaded to us, and we cannot read it.</p>
+        <p>The app does not include analytics, advertising, crash reporting,
+        session recording, heatmaps or AI features. It does not load fonts,
+        scripts or images from third-party domains at runtime; its assets are
+        served from the same origin. Vercel may process standard request logs
+        (IP address, user agent, requested URL, timestamp) for delivery, security
+        and abuse prevention, under the
+        <a href="https://vercel.com/legal/privacy-policy">Vercel Privacy Policy</a>.
+        We do not use those logs to build profiles.</p>
+        <p>If you export a ZIP, Markdown, HTML or PDF, the file is created on your
+        device and saved wherever you choose. Printing uses your browser's print
+        dialog. None of it passes through us.</p>
 
-    <h2>Contact</h2>
-    <p>
-      Questions or concerns: open an issue at
-      <a href="https://github.com/awbuilds/sidenote/issues">github.com/awbuilds/sidenote</a>.
-      For security reports, use the private advisory flow in
-      <a href="https://github.com/awbuilds/sidenote/blob/main/SECURITY.md">SECURITY.md</a>.
-    </p>
+        <h2 id="sync">Optional sync and self-hosting</h2>
+<p>Sync is optional and is not enabled on the hosted app. It exists only
+        when a deployment is configured with its own Supabase instance (the two
+        <code>NEXT_PUBLIC_SUPABASE_*</code> variables). In that case:</p>
+        <ul>
+          <li>the person or organisation running the deployment is the
+          <strong>controller</strong> of the synced data, not the Sidenote
+          project;</li>
+          <li>signing in creates an account on that Supabase instance, and notes,
+          notebooks, tags and attachment bytes are stored there so they can reach
+          your other devices;</li>
+          <li>the operator of that deployment is responsible for its privacy
+          policy, retention, access controls and lawful basis.</li>
+        </ul>
+        <p>If you self-host Sidenote for other people, you must publish your own
+        privacy notice and handle their data in line with the law that applies to
+        you.</p>
+
+        <h2 id="shares">Share links</h2>
+<p>Share links are available only on a deployment with a backend. When you
+        create one, the note is served from that deployment's Supabase instance to
+        anyone who has the URL. A password and an expiry date are optional, and the
+        link can be revoked.</p>
+        <p>You choose what to share. Do not create a public link to a note
+        containing information you do not want to leave your control. The operator
+        of the deployment — not the Sidenote project — is responsible for the
+        shared copy.</p>
+
+        <h2 id="storage">Cookies and browser storage</h2>
+<p>We do not set cookies. The site and app use browser storage that is
+        strictly necessary for them to work:</p>
+        <ul>
+          <li><strong>localStorage</strong> — two small values remembering your
+          theme and theme pack, so the page does not flash the wrong colours
+          before it loads;</li>
+          <li><strong>sessionStorage</strong> — one flag remembering that the
+          companion already crossed the screen in this tab, so it does not
+          repeat;</li>
+          <li><strong>IndexedDB</strong> — your notebooks, notes, tags,
+          attachments, version history and settings, stored on your device;</li>
+          <li><strong>Cache Storage</strong> — the app shell cached by the service
+          worker so the app can start offline.</li>
+        </ul>
+        <p>None of this is used for advertising, profiling or cross-site tracking,
+        and none of it is sent to us. Because it is strictly necessary, no consent
+        banner is shown. The <a href="./cookies.html">cookie policy</a> explains
+        how to clear it.</p>
+
+        <h2 id="legal-bases">Why we process data</h2>
+<p>Where the EU or UK GDPR applies, we rely on the following bases:</p>
+        <div class="table-wrap">
+        <table>
+          <thead><tr><th>Processing</th><th>Basis</th></tr></thead>
+          <tbody>
+            <tr>
+              <td data-label="Processing">Standard request logs kept by GitHub Pages or Vercel to deliver and protect the site</td>
+              <td data-label="Basis">Legitimate interests (Art. 6(1)(f)) — running a secure, available service</td>
+            </tr>
+            <tr>
+              <td data-label="Processing">Notes and settings stored in your browser</td>
+              <td data-label="Basis">Not processing by us: the data stays on your device under your control</td>
+            </tr>
+            <tr>
+              <td data-label="Processing">Optional sync and share links on a self-hosted deployment</td>
+              <td data-label="Basis">Chosen by that deployment's operator, usually contract or consent</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <p>We do not process special-category data, do not make automated
+        decisions about you, and do not sell or share personal data for
+        advertising.</p>
+
+        <h2 id="rights">Your rights</h2>
+<p>Depending on where you live, you may have rights to access, correct,
+        delete, restrict or port your personal data, and to object to processing.
+        Because the hosted app keeps your notes on your device, you can exercise
+        most of these directly:</p>
+        <ul>
+          <li><strong>Access and portability</strong> — export a ZIP from
+          Settings → Backup.</li>
+          <li><strong>Erasure</strong> — delete notes, empty the trash, or delete
+          all data in Settings.</li>
+          <li><strong>Rectification</strong> — edit any note or setting.</li>
+        </ul>
+        <p>For anything held in hosting logs, or for a request that needs a human
+        response, use the <a href="https://github.com/awbuilds/sidenote/security/advisories/new">private contact channel</a>. We may
+        need to verify that a request relates to you; because we hold almost no
+        personal data, we may be able to confirm that we hold nothing to
+        disclose.</p>
+        <p>We do not track you across sites, so there is nothing for a “Do Not
+        Track” or Global Privacy Control signal to switch off. We honour both by
+        design. We do not send marketing, and we do not sell or share personal
+        data.</p>
+        <p>Where processing is based on consent, you can withdraw it at any time;
+        withdrawal does not affect processing that already happened.</p>
+        <p><strong>EU/UK:</strong> you can complain to your local supervisory
+        authority; in the UK, the Information Commissioner's Office (ICO).
+        <strong>California:</strong> you have the rights to know, delete, correct
+        and opt out of sale or sharing; we do not sell or share personal
+        information, and we will not discriminate against you for exercising a
+        right. <strong>India:</strong> under the Digital Personal Data Protection
+        Act, 2023, you may request access, correction or erasure and raise a
+        grievance through the contact channel.</p>
+
+        <h2 id="transfers">International transfers</h2>
+<p>The website and hosted app are served by GitHub Pages and Vercel, which
+        are based in the United States. Request data may be transferred to and
+        processed there under those providers' data processing terms and standard
+        contractual clauses. We do not transfer note content, because the hosted
+        app does not send it to us.</p>
+        <p>If you use a self-hosted deployment, the location of its Supabase
+        instance is chosen by its operator.</p>
+
+        <h2 id="hosting-providers">Hosting providers</h2>
+        <p>These are the only providers involved in serving the hosted site and
+        app. We do not use them for analytics or advertising.</p>
+        <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Provider</th><th>Service</th><th>What it may process</th><th>Location</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Provider">GitHub (GitHub Pages)</td>
+              <td data-label="Service">Website hosting</td>
+              <td data-label="What it may process">Standard request logs: IP address, user agent, URL, time.</td>
+              <td data-label="Location">United States</td>
+            </tr>
+            <tr>
+              <td data-label="Provider">Vercel</td>
+              <td data-label="Service">Hosted app hosting</td>
+              <td data-label="What it may process">Standard request logs: IP address, user agent, URL, time.</td>
+              <td data-label="Location">United States</td>
+            </tr>
+            <tr>
+              <td data-label="Provider">Supabase (self-hosted by you)</td>
+              <td data-label="Service">Optional sync and share links</td>
+              <td data-label="What it may process">Account, notes, attachments — only on a deployment you configure.</td>
+              <td data-label="Location">Your choice</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <p>If you self-host, your Supabase instance is under your control and is
+        not a subprocessor of ours. We do not receive your notes from it.</p>
+
+        <h2 id="retention">Retention</h2>
+<p>Local notes and settings remain in your browser until you delete them
+        or clear the site's storage. Hosting logs are retained by GitHub and Vercel
+        under their own policies; we do not keep a separate copy. We do not have
+        an account database to retain.</p>
+
+        <h2 id="security">Security</h2>
+<p>The site is served over HTTPS. The hosted app has no server-side note
+        store to breach. The code is open source and the sync path is protected by
+        row-level security in Postgres. More detail, and how to report a
+        vulnerability, is on the <a href="./security.html">security page</a>.</p>
+
+        <h2 id="children">Children</h2>
+<p>Sidenote is a general-purpose productivity tool, not a service directed
+        at children. The hosted app has no account and collects no age data. If you
+        are below the digital age of consent where you live, please use it with a
+        parent or guardian.</p>
+
+        <h2 id="changes">Changes to this policy</h2>
+<p>We may update this policy as the project changes. The effective date at
+        the top always reflects the current version, and material changes are noted
+        in the <a href="https://github.com/awbuilds/sidenote/blob/main/CHANGELOG.md">changelog</a> and the
+        repository history.</p>
+
+        <h2 id="contact">Contact and complaints</h2>
+<p>For privacy questions or requests, use the
+        <a href="https://github.com/awbuilds/sidenote/security/advisories/new">private report channel</a> and mark the report
+        “Privacy request”. For general, non-sensitive questions, open an issue at
+        <a href="https://github.com/awbuilds/sidenote/issues">github.com/awbuilds/sidenote/issues</a>.</p>
+        <p>The operator is an individual maintainer. A postal address is available
+        on request through the private channel for legal correspondence.</p>
+
+        <p class="back-link"><a href="./">← Back to Sidenote</a></p>
+      </article>
+    </div>
   </main>
 
   <footer class="site-footer">
-    <div class="wrap footer-inner">
-      <a class="brand" href="./">
-        <img src="./assets/icon-512.png" alt="" width="26" height="26">
-        <span>Sidenote</span>
-      </a>
-      <nav class="footer-links" aria-label="Footer">
-        <a href="https://github.com/awbuilds/sidenote">Source</a>
-        <a href="./privacy.html">Privacy</a>
-        <a href="https://github.com/awbuilds/sidenote/blob/main/LICENSE">Licence</a>
-        <a href="https://github.com/awbuilds/sidenote/blob/main/docs/SELF-HOSTING.md">Docs</a>
-      </nav>
-      <p>© 2026 Abhijith Warrier · AGPL-3.0</p>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="./">
+            <img src="./assets/icon-512.png" alt="" width="30" height="30">
+            <span>Sidenote</span>
+          </a>
+          <p>A private, local-first notes app. Free and open source under AGPL-3.0.</p>
+        </div>
+
+        <div class="footer-col">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="./#features">Features</a></li>
+            <li><a href="./#self-host">Self-host</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/CHANGELOG.md">Changelog</a></li>
+            <li><a href="https://sidenoteapp.vercel.app">Open app</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h2>Policies</h2>
+          <ul>
+            <li><a href="./privacy.html">Privacy</a></li>
+            <li><a href="./terms.html">Terms of use</a></li>
+            <li><a href="./cookies.html">Cookies</a></li>
+            <li><a href="./security.html">Security</a></li>
+            <li><a href="./accessibility.html">Accessibility</a></li>
+            <li><a href="./legal.html">Legal notice</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="https://github.com/awbuilds/sidenote">Source code</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/issues">Issues</a></li>
+            <li><a href="./legal.html#contact">Contact</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/CONTRIBUTING.md">Contributing</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/LICENSE">Licence</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Abhijith Warrier · AGPL-3.0</p>
+        <p class="promise">No cookies. No trackers. No account.</p>
+      </div>
     </div>
   </footer>
 </body>

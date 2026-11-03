@@ -193,15 +193,23 @@ export function createSupabaseAdapter(client: SupabaseClient, userId: string): S
 
     async uploadAttachment(row, bytes) {
       const path = attachmentStoragePath(userId, row.id, row.file_name);
-      const { error: uploadError } = await client.storage
-        .from("attachments")
-        .upload(path, bytes, { contentType: row.mime, upsert: true });
-      if (uploadError) throw new Error(uploadError.message);
 
+      // Metadata first: the quota trigger lives on this insert, so an
+      // over-budget row is rejected before its bytes reach the bucket.
       const { error } = await client
         .from("attachments")
         .upsert({ ...row, path, user_id: userId }, { onConflict: "id" });
       if (error) throw new Error(error.message);
+
+      const { error: uploadError } = await client.storage
+        .from("attachments")
+        .upload(path, bytes, { contentType: row.mime, upsert: true });
+      if (uploadError) {
+        // The row exists but has no bytes; leave it and the next pass would
+        // consider the file synced forever. Undo it so the upload is retried.
+        await client.from("attachments").delete().eq("id", row.id);
+        throw new Error(uploadError.message);
+      }
     },
 
     async downloadAttachment(path) {

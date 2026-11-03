@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accessibility — Sidenote</title>
+  <meta name="description" content="Sidenote&#x27;s accessibility commitment, the measures taken on the website and app, and how to report a barrier.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#f8f3e9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14120e" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="./assets/icon-512.png" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icon-512.png">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="canonical" href="https://awbuilds.github.io/sidenote/accessibility.html">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Sidenote">
+  <meta property="og:title" content="Accessibility — Sidenote">
+  <meta property="og:description" content="Sidenote&#x27;s accessibility commitment, the measures taken on the website and app, and how to report a barrier.">
+  <meta property="og:url" content="https://awbuilds.github.io/sidenote/accessibility.html">
+  <meta property="og:image" content="https://awbuilds.github.io/sidenote/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./">
+        <img src="./assets/icon-512.png" alt="" width="32" height="32">
+        <span>Sidenote</span>
+      </a>
+
+      <nav class="nav nav-desktop" aria-label="Primary">
+        <a href="./#features">Features</a>
+        <a href="./privacy.html">Privacy</a>
+        <a href="./#self-host">Self-host</a>
+        <a href="./#faq">FAQ</a>
+        <a href="https://github.com/awbuilds/sidenote">GitHub</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="button button-small" href="https://sidenoteapp.vercel.app">Open app</a>
+        <details class="nav-mobile">
+          <summary>Menu</summary>
+          <nav class="nav-mobile-panel" aria-label="Mobile">
+            <a href="./#features">Features</a>
+            <a href="./#privacy">Privacy</a>
+            <a href="./#self-host">Self-host</a>
+            <a href="./#faq">FAQ</a>
+            <a href="https://github.com/awbuilds/sidenote">GitHub</a>
+            <a href="./privacy.html">Privacy policy</a>
+            <a href="./terms.html">Terms of use</a>
+            <a href="./cookies.html">Cookies</a>
+            <a href="./security.html">Security</a>
+            <a href="./accessibility.html">Accessibility</a>
+            <a href="./legal.html">Legal notice</a>
+          </nav>
+        </details>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="page-head wrap">
+      <p class="eyebrow">Accessibility</p>
+      <h1>A notebook should be usable by everyone who needs one.</h1>
+      <p class="lede">We aim for WCAG 2.2 Level AA on the website and the app. This page records what has been done, what is still imperfect, and how to tell us about a barrier.</p>
+      <div class="policy-meta">
+        <span><strong>Effective:</strong> 3 November 2026</span>
+        <span><strong>Applies to:</strong> This website and the hosted app at sidenoteapp.vercel.app</span>
+        <span><strong>Contact:</strong> <a href="https://github.com/awbuilds/sidenote/security/advisories/new">private report</a></span>
+      </div>
+    </header>
+
+    <div class="legal-layout wrap">
+      <nav class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+            <li><a href="#commitment">Our commitment</a></li>
+            <li><a href="#measures">What we have done</a></li>
+            <li><a href="#known-limitations">Known limitations</a></li>
+            <li><a href="#feedback">Tell us about a barrier</a></li>
+            <li><a href="#enforcement">Enforcement</a></li>
+            <li><a href="#date">Statement date</a></li>
+        </ol>
+      </nav>
+
+      <article class="prose">
+        <h2 id="commitment">Our commitment</h2>
+<p>Sidenote is a small, independent project, not a large organisation with
+        a formal accessibility programme. We still treat accessibility as part of
+        quality: the site and app are built with semantic HTML, keyboard access and
+        readable contrast, and we fix reported barriers as time allows. This page
+        is an honest statement of where we are, not a certification.</p>
+
+        <h2 id="measures">What we have done</h2>
+<ul>
+          <li>Semantic landmarks, a skip link and a visible focus ring on every
+          interactive element.</li>
+          <li>Keyboard access to navigation, dialogs, the command palette, the
+          editor toolbar and the note list.</li>
+          <li>Text contrast on this site meets WCAG AA in both the light and
+          dark palettes; the app's palettes are designed to the same target. The
+          site follows your system colour scheme.</li>
+          <li>Respect for <code>prefers-reduced-motion</code>: the companion and
+          other motion are reduced or turned off.</li>
+          <li>Responsive layout that reflows at 320 CSS pixels on this site and
+          at phone widths in the app.</li>
+          <li>Descriptive alt text for meaningful images; decorative images are
+          marked empty.</li>
+          <li>Form controls with visible labels or accessible names, and status
+          messages announced with live regions.</li>
+          <li>No autoplaying media, no flashing content and no time limits on
+          writing.</li>
+        </ul>
+
+        <h2 id="known-limitations">Known limitations</h2>
+<ul>
+          <li>The rich-text editor is the most complex surface. Some screen-reader
+          and browser combinations may announce toolbar state inconsistently.</li>
+          <li>Notebook reordering supports drag-and-drop; move and reorder actions
+          are also available through menus and dialogs, but the drag interaction
+          itself is not keyboard-operable.</li>
+          <li>LaTeX and table content can be difficult to navigate with a screen
+          reader; the raw Markdown view is an alternative.</li>
+          <li>PDF output depends on the browser's print engine, so its tagging and
+          reading order vary.</li>
+          <li>The site and app have not yet had an independent accessibility
+          audit.</li>
+        </ul>
+
+        <h2 id="feedback">Tell us about a barrier</h2>
+<p>If something blocks you, please open an issue labelled
+        <strong>accessibility</strong> at
+        <a href="https://github.com/awbuilds/sidenote/issues">github.com/awbuilds/sidenote/issues</a> with the
+        page, the browser or assistive technology, and what you expected. For
+        anything sensitive, use the <a href="https://github.com/awbuilds/sidenote/security/advisories/new">private channel</a>.</p>
+        <p>We aim to respond within ten working days and to fix confirmed barriers
+        in the next release where feasible.</p>
+
+        <h2 id="enforcement">Enforcement</h2>
+<p>This is a free, individual project without a formal accessibility
+        officer or a complaints tribunal. If a response does not resolve your
+        concern, say so in the same thread and we will escalate it within the
+        project. Nothing here limits any right you have under applicable
+        accessibility law.</p>
+
+        <h2 id="date">Statement date</h2>
+<p>This statement was prepared on 3 November 2026 and describes the website
+        and hosted app at that date.</p>
+
+        <p class="back-link"><a href="./">← Back to Sidenote</a></p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="./">
+            <img src="./assets/icon-512.png" alt="" width="30" height="30">
+            <span>Sidenote</span>
+          </a>
+          <p>A private, local-first notes app. Free and open source under AGPL-3.0.</p>
+        </div>
+
+        <div class="footer-col">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="./#features">Features</a></li>
+            <li><a href="./#self-host">Self-host</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/CHANGELOG.md">Changelog</a></li>
+            <li><a href="https://sidenoteapp.vercel.app">Open app</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h2>Policies</h2>
+          <ul>
+            <li><a href="./privacy.html">Privacy</a></li>
+            <li><a href="./terms.html">Terms of use</a></li>
+            <li><a href="./cookies.html">Cookies</a></li>
+            <li><a href="./security.html">Security</a></li>
+            <li><a href="./accessibility.html">Accessibility</a></li>
+            <li><a href="./legal.html">Legal notice</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h2>Project</h2>
+          <ul>
+            <li><a href="https://github.com/awbuilds/sidenote">Source code</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/issues">Issues</a></li>
+            <li><a href="./legal.html#contact">Contact</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/CONTRIBUTING.md">Contributing</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/LICENSE">Licence</a></li>
+            <li><a href="https://github.com/awbuilds/sidenote/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Abhijith Warrier · AGPL-3.0</p>
+        <p class="promise">No cookies. No trackers. No account.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

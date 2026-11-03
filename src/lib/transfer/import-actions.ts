@@ -7,6 +7,7 @@ import { createNotebook } from "@/lib/db/repositories/notebooks";
 import { createNote } from "@/lib/db/repositories/notes";
 import { setNoteTags } from "@/lib/db/repositories/tags";
 import { touchDataVersion } from "@/lib/db/repositories/settings";
+import { markSearchFullRebuild } from "@/lib/search/dirty";
 import { fromMarkdown, toMarkdown } from "@/lib/tiptap/markdown";
 import { docToText } from "@/lib/tiptap/doc";
 import { parseEnexNotebooks } from "./enex";
@@ -77,6 +78,7 @@ export async function importEnex(file: File): Promise<EnexImportResult> {
   }
 
   await touchDataVersion();
+  markSearchFullRebuild();
 
   const summary = `Imported ${createdNotes.length} note${createdNotes.length === 1 ? "" : "s"} from Evernote.`;
   toast.success(summary, {

@@ -13,6 +13,7 @@ import {
 } from "./repositories/notebooks";
 import { createNote, listNotes, listTrashedNotes, countTrashedNotes } from "./repositories/notes";
 import { buildNotebookTree } from "./tree";
+import { db } from "./db";
 
 withTestDb();
 
@@ -82,6 +83,27 @@ describe("moveNotebook", () => {
   it("refuses to make a notebook its own parent", async () => {
     const a = await createNotebook({ name: "A" });
     await expect(moveNotebook(a.id, a.id)).rejects.toThrow(NotebookCycleError);
+  });
+
+  it("stamps every sibling whose position changed, so the order syncs", async () => {
+    const a = await createNotebook({ name: "A" });
+    await createNotebook({ name: "B" });
+    await createNotebook({ name: "C" });
+
+    // Backdate every row so a fresh stamp is observable without depending on
+    // millisecond clock resolution.
+    await db().notebooks.toCollection().modify({ updatedAt: 1 });
+
+    await moveNotebook(a.id, null, 2);
+
+    const rows = await db().notebooks.toArray();
+    expect(rows).toHaveLength(3);
+    expect(rows.every((row) => row.updatedAt > 1)).toBe(true);
+    expect([...rows].sort((x, y) => x.position - y.position).map((row) => row.name)).toEqual([
+      "B",
+      "C",
+      "A",
+    ]);
   });
 
   it("moves to the root", async () => {

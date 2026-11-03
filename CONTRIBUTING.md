@@ -41,6 +41,20 @@ If you touched `src/lib/db/`, the save path, images, or transfer code, read the
 storage invariants in [AGENTS.md](AGENTS.md) first. They are not style
 preferences; they are why the backup path is trustworthy.
 
+### Database tests (optional backend)
+
+The Postgres schema, RLS policies and share/attachment triggers have a pgTAP
+suite under `supabase/tests/`. It needs Docker and the Supabase CLI:
+
+```bash
+supabase start
+supabase db reset
+npm run test:db
+```
+
+CI runs the same suite for pull requests that touch `supabase/`, `src/lib/sync/`
+or `src/lib/share/`. Run it locally before changing a policy or a trigger.
+
 ## Pull requests
 
 - Branch from `main`, keep the change scoped, and include a test for logic
@@ -56,3 +70,13 @@ preferences; they are why the backup path is trustworthy.
 
 By contributing you agree that your contribution is licensed under the
 GNU AGPL-3.0, the licence of this repository.
+
+## Releasing
+
+1. Bump `package.json` and add a `CHANGELOG.md` section for the version.
+2. Land the change through a pull request with a green `ci` run.
+3. Tag the merge commit (`git tag -a vX.Y.Z -m "X.Y.Z"`) and publish a GitHub
+   release that links the changelog section.
+4. Vercel deploys `main`; the Docker image builds from the same commit. Both
+   read the optional `NEXT_PUBLIC_SUPABASE_*` values at build time, so a
+   deployment with sync enabled needs its own rebuild.

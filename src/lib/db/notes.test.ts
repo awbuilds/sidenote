@@ -1,11 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
 import { withTestDb } from "./test-helpers";
-import { createNotebook } from "./repositories/notebooks";
+import { createNotebook, deleteNotebook } from "./repositories/notebooks";
 import { setSetting } from "./repositories/settings";
 import { addAttachment } from "./repositories/attachments";
 import {
   countTrashedNotes,
   createNote,
+  createVersion,
   emptyTrash,
   getNote,
   listNotes,
@@ -250,5 +251,103 @@ describe("togglePin", () => {
     const note = await createNote({});
     expect(await togglePin(note.id)).toBe(true);
     expect(await togglePin(note.id)).toBe(false);
+  });
+});
+
+describe("snapshot cadence", () => {
+  it("does not snapshot every autosave of an unchanged title", async () => {
+    const note = await createNote({ title: "Stable" });
+
+    for (let i = 0; i < 10; i++) {
+      await saveNoteContent(note.id, { title: "Stable", ...patch(`body ${i}`) });
+    }
+
+    const versions = await listVersions(note.id);
+    // Only the state before the first save — the rest of the burst is inside
+    // the five-minute interval.
+    expect(versions).toHaveLength(1);
+    expect(versions[0].version).toBe(1);
+  });
+
+  it("snapshots a rename immediately", async () => {
+    const note = await createNote({ title: "Old name" });
+    await saveNoteContent(note.id, { title: "Old name", ...patch("one") });
+    await saveNoteContent(note.id, { title: "New name", ...patch("two") });
+
+    const versions = await listVersions(note.id);
+    expect(versions.map((version) => version.title)).toContain("Old name");
+  });
+
+  it("survives a version counter moved backwards by a sync pull", async () => {
+    const note = await createNote({ title: "start" });
+    for (let i = 0; i < 5; i++) {
+      await saveNoteContent(note.id, { title: `t${i}`, ...patch(`b${i}`) });
+    }
+
+    // What `fromRemoteNote` does when the remote row wins with an older
+    // counter: the local note now claims a version the history already holds.
+    await db().notes.update(note.id, { version: 2 });
+
+    const saved = await saveNoteContent(note.id, {
+      title: "after pull",
+      ...patch("after pull"),
+    });
+
+    expect(saved.version).toBeGreaterThan(6);
+    const numbers = (await listVersions(note.id)).map((version) => version.version);
+    expect(new Set(numbers).size).toBe(numbers.length);
+  });
+
+  it("keeps a named version past the automatic count cap", async () => {
+    await setSetting("versionLimit", 2);
+    const note = await createNote({ title: "start" });
+    await saveNoteContent(note.id, { title: "one", ...patch("one") });
+
+    const named = await createVersion(note.id, "Before the rewrite");
+    expect(named.kind).toBe("manual");
+    expect(named.label).toBe("Before the rewrite");
+
+    for (let i = 0; i < 6; i++) {
+      await saveNoteContent(note.id, { title: `t${i}`, ...patch(`b${i}`) });
+    }
+
+    const versions = await listVersions(note.id);
+    expect(versions.some((version) => version.id === named.id)).toBe(true);
+    expect(versions.filter((version) => version.kind !== "manual")).toHaveLength(2);
+  });
+
+  it("always snapshots the pre-restore state", async () => {
+    const note = await createNote({ title: "original" });
+    await saveNoteContent(note.id, { title: "second", ...patch("second") });
+    await saveNoteContent(note.id, { title: "third", ...patch("third") });
+
+    const original = (await listVersions(note.id)).find(
+      (version) => version.title === "original",
+    );
+    expect(original).toBeDefined();
+
+    const before = await listVersions(note.id);
+    await restoreVersion(note.id, original!.version);
+    const after = await listVersions(note.id);
+
+    expect(after.length).toBeGreaterThan(before.length);
+    expect(after.some((version) => version.title === "third")).toBe(true);
+  });
+});
+
+describe("restore after a notebook delete", () => {
+  it("puts an orphaned note back in Unfiled", async () => {
+    const work = await createNotebook({ name: "Work" });
+    const note = await createNote({ notebookId: work.id, title: "orphan" });
+
+    await deleteNotebook(work.id);
+    // The trash path leaves the reference behind; the notebook is gone.
+    expect((await getNote(note.id))!.notebookId).toBe(work.id);
+
+    await restoreNotes([note.id]);
+
+    const restored = await getNote(note.id);
+    expect(restored!.notebookId).toBeNull();
+    expect((await listNotes({ notebookId: null })).map((row) => row.id)).toContain(note.id);
   });
 });

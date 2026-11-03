@@ -20,7 +20,11 @@ recent handoff note in `docs/handoffs/` before starting work.
   `NEXT_PUBLIC_SUPABASE_*` vars enables sign-in and sync against the
   self-hosted stack; every remote path degrades to a no-op without them.
 - Routes: `/` (redirects to `/notes`), `/notes`, `/trash`, `/settings`,
-  `/auth` (optional sign-in), `/s/[token]` (public share links).
+  `/auth` (optional sign-in), `/s/[token]` (public share links), `/print/[noteId]`
+  (print/PDF view).
+- Public legal pages live in `website/` (privacy, terms, cookies, security,
+  accessibility, legal notice), deploy to GitHub Pages, and are linked from
+  Settings → About.
 - The product plan is `docs/plans/frontend-only-m1.md` (the filename is
   historical: the self-hosted backend is live — see §13).
 - Licensed **AGPL-3.0**. `main` is protected; changes land through pull
@@ -29,12 +33,13 @@ recent handoff note in `docs/handoffs/` before starting work.
 ## Build & verify
 
 ```bash
-npm install                 # npm 11 script allowlist is in package.json#allowScripts
+npm ci                      # npm 11 script allowlist is in package.json#allowScripts
 npm run typecheck           # next typegen && tsc --noEmit
 npm run test                # vitest run
 npm run lint                # eslint
 npm run dev                 # next dev (http://localhost:3000)
 npm run build               # next build
+npm run check:docs          # fails on host paths / deployment ids in public docs
 ```
 
 **All four of `typecheck`, `test`, `lint` and `build` must be clean before any
@@ -50,7 +55,7 @@ with `npm run dev` and the log in `.next/dev/logs/next-development.log` read.
 
 ## Stack
 
-- Next.js 16.3, React 19.2, TypeScript 5, Tailwind CSS 4.
+- Next.js 16.4, React 19.2, TypeScript 5, Tailwind CSS 4.
 - shadcn/ui on **Radix** primitives, `style: radix-nova` preset, neutral base.
   `cn` is imported from the `cn` package (`src/lib/utils.ts` re-exports it) —
   it is a compiled clsx + tailwind-merge replacement, **not** a local helper.
@@ -63,8 +68,8 @@ with `npm run dev` and the log in `.next/dev/logs/next-development.log` read.
 - `src/app/` — routes. `/` is a redirect; everything else is a client surface.
 - `src/components/ui/` — shadcn primitives. **Do not hand-edit**; re-run
   `shadcn add <name> --overwrite` instead.
-- `src/components/layout/`, `editor/`, `notebooks/`, `notes/`, `share/` —
-  feature components.
+- `src/components/layout/`, `editor/`, `notebooks/`, `notes/`, `share/`,
+  `sync/`, `onboarding/`, `companion/`, `theme/` — feature components.
 - `src/lib/db/` — Dexie schema and repositories. **The only place that talks to
   IndexedDB.**
 - `src/lib/` — `tiptap/`, `search/`, `image/`, `transfer/`, `storage/`,
@@ -104,15 +109,53 @@ with `npm run dev` and the log in `.next/dev/logs/next-development.log` read.
   no warning. Always request `navigator.storage.persist()`, surface
   `navigator.storage.estimate()` in settings, and catch `QuotaExceededError` on
   every write. Never let a write fail silently.
+- **Onboarding is gated by `settings.onboardingPending`.** The seeder sets it
+  for a fresh database, and the Settings replay sets it again. Never infer a
+  first run from “no notes”, and never show the destructive sample choice to an
+  existing database.
+- **Sample deletion is manifest-based.** `settings.sampleData` records the ids
+  the seeder created; `removeSampleData` deletes only those and keeps any
+  notebook that contains user content. Never clear the tables to remove samples.
+- **Theme has two axes.** `settings.theme` is `light | dark | system`;
+  `settings.themePack` is `paper | blue | glass | gel`. Both are mirrored in
+  localStorage so `THEME_INIT_SCRIPT` can set `class="dark"` and
+  `data-theme-pack` before paint. A new theme value that is not mirrored will
+  flash on reload.
 - **ZIP export is the user's only backup.** Surface it prominently — empty
   state, settings, and the trash view. Do not bury it.
 - **Notebook trees must not form cycles.** Any re-parent walks ancestors first
   and refuses a move that would place a notebook inside its own subtree.
-- **Version history is capped** (last 30 per note, plus a 90-day floor). Prune
-  on write or the database grows without limit.
+- **Version history is capped** (last 30 automatic snapshots per note, plus a
+  90-day floor; named versions are kept regardless of age). Prune on write or
+  the database grows without limit.
+- **Snapshots are not taken per autosave.** `src/lib/db/version-policy.ts`
+  decides: first edit, rename, or once every five minutes. Snapshot version
+  numbers come from `nextSnapshotVersion()` (max of the note counter and the
+  history), because a sync pull can move `notes.version` backwards and the
+  `[noteId+version]` index is unique — colliding there makes every later save
+  fail.
+- **Search indexing is explicit.** A write path that changes note content calls
+  `markSearchDirty`, `markSearchRemoved` or `markSearchFullRebuild` from
+  `src/lib/search/dirty.ts`. `useSearch` no longer reindexes on query-cache
+  events; a missed marker is only caught by the `dataVersion` safety net on
+  tab focus, so add the call with the write.
+- **Do not `listNotes()` to read titles or counts.** `listNotes` returns full
+  bodies. `src/lib/db/repositories/note-index.ts` reads titles, recent notes and
+  live ids through compound indexes without materialising `contentJson`; the
+  sidebar counts and the trash badge use counts, not lists.
+- **`@supabase/supabase-js` is loaded lazily.** `src/lib/supabase/config.ts`
+  holds `isRemoteEnabled`/`supabaseHost` and imports nothing heavy;
+  `getSupabase()` is async and dynamic-imports the library. Never import the
+  library statically outside `client.ts`, or every local-only page pays for it.
 
 ## Conventions & gotchas
 
+- **Any new dependency, font, icon set or piece of artwork must be added to
+  `THIRD_PARTY_NOTICES.md`.** The app is AGPL-3.0-only; the notices file is how
+  the project keeps its attribution honest.
+- **Relative links in the docs and website are tested.** `src/lib/docs-links.test.ts`
+  walks every Markdown and website HTML file; moving a page or asset without
+  updating its links fails the suite.
 - **npm 11 rejects `--allow-scripts` in project installs.** If a tool shells out
   to `npm install` and dies with `EALLOWSCRIPTS`, it is running under `npx`,
   which injects `npm_config_*` from `~/.npmrc`. Run the CLI **globally**
@@ -126,6 +169,9 @@ with `npm run dev` and the log in `.next/dev/logs/next-development.log` read.
   Turbopack walks up to `$HOME` and warns about an unrelated `pnpm-lock.yaml`.
 - The `shadcn` CLI prompts even with `--yes`; pass `--no-reinstall` to `init`
   to avoid a hang.
+- `shadcn` is a **`dependencies`** entry, not a devDependency, because
+  `src/app/globals.css` imports `shadcn/tailwind.css`. Moving it back breaks
+  `npm ci --omit=dev` builds with an unresolved CSS import.
 - `@types/node` must stay `^26` to match the Node 26 runtime and satisfy
   vitest 5's peer range. vitest 3 has a published path-traversal advisory —
   do not downgrade.
@@ -192,7 +238,7 @@ with `npm run dev` and the log in `.next/dev/logs/next-development.log` read.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
-# This is NOT the Next.js you know
+## This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
 

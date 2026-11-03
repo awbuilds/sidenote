@@ -38,7 +38,7 @@ body:
       options:
         - Local (no Supabase env vars)
         - Self-hosted Supabase (sync/share enabled)
-        - The hosted demo at sidenoteapp.vercel.app
+        - The hosted app at sidenoteapp.vercel.app
     validations:
       required: true
   - type: input

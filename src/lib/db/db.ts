@@ -126,6 +126,26 @@ export class NotesDatabase extends Dexie {
       .upgrade(async () => {
         await remapNonUuidIds(this);
       });
+
+    // v6 adds an index-only projection for note titles. Dexie cannot select a
+    // field, so `orderBy("[isTrashed+title+id]").keys()` is how the title
+    // resolver and the wiki-link index read thousands of titles without
+    // materialising every note body. Index creation only — no row rewrite.
+    this.version(6).stores({
+      notebooks: "id, parentId, position, updatedAt",
+      notes:
+        "id, notebookId, isTrashed, isPinned, updatedAt, createdAt, " +
+        "[notebookId+isTrashed], [isTrashed+updatedAt], [notebookId+isPinned], " +
+        "[isTrashed+title+id], [isTrashed+notebookId]",
+      tags: "id, name, createdAt",
+      noteTags: "id, noteId, tagId, &[noteId+tagId]",
+      attachments: "id, noteId, createdAt",
+      versions: "id, noteId, version, createdAt, &[noteId+version]",
+      settings: "key",
+      searchIndex: "key",
+      noteLinks: "id, sourceId, targetId, targetTitle, &[sourceId+targetId]",
+      tombstones: "key, table, deletedAt",
+    });
   }
 }
 

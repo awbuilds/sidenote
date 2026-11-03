@@ -114,7 +114,7 @@ export async function runSyncNow(): Promise<SyncResult | null> {
 export async function runSync(): Promise<SyncResult | null> {
   if (running) return running;
 
-  const client = getSupabase();
+  const client = await getSupabase();
   if (!client) {
     setSyncStatus({ phase: "disabled" });
     return null;
@@ -133,7 +133,11 @@ export async function runSync(): Promise<SyncResult | null> {
       failures = 0;
       blockedUntil = 0;
       repairedThisLoad = false;
-      setSyncStatus({ phase: "idle", lastSyncedAt: Date.now(), message: null });
+      setSyncStatus({
+        phase: "idle",
+        lastSyncedAt: Date.now(),
+        message: result.warnings[0] ?? null,
+      });
       applied?.(result);
       return result;
     } catch (error) {

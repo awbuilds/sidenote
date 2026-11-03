@@ -28,7 +28,8 @@ import { importFromArchive, type ImportResult } from "@/lib/transfer/zip-import"
 import { importEnex, readImportFile } from "@/lib/transfer/import-actions";
 import { useUpdateSettings } from "@/hooks/mutations";
 import { useSettings } from "@/hooks/queries";
-import { pluralize } from "@/lib/format";
+import { pluralize, relativeTime } from "@/lib/format";
+import { backupHealth } from "@/lib/backup";
 
 /**
  * Backup and restore controls.
@@ -40,6 +41,7 @@ export function BackupSection() {
   const client = useQueryClient();
   const updateSettings = useUpdateSettings();
   const { data: settings } = useSettings();
+  const health = settings === undefined ? null : backupHealth(settings);
 
   const zipInput = useRef<HTMLInputElement>(null);
   const enexInput = useRef<HTMLInputElement>(null);
@@ -52,7 +54,10 @@ export function BackupSection() {
     try {
       const { blob, manifest } = await exportAll();
       downloadBlob(blob, defaultArchiveName());
-      updateSettings.mutate({ lastBackupAt: Date.now() });
+      updateSettings.mutate({
+        lastBackupAt: Date.now(),
+        lastBackupDataVersion: settings?.dataVersion ?? 0,
+      });
       toast.success("Backup downloaded", {
         description: `${pluralize(manifest.counts.notes, "note")}, ${manifest.counts.attachments} attachment(s), ${manifest.counts.notebooks} notebook(s).`,
       });
@@ -110,6 +115,20 @@ export function BackupSection() {
           <Download className="size-4" />
           {busy === "export" ? "Preparing…" : "Download backup"}
         </Button>
+
+        {health !== null && (
+          <p className="mt-3 text-xs text-muted-foreground" aria-live="polite">
+            {health.state === "none"
+              ? "No backup yet — a cleared browser cannot be recovered without one."
+              : health.state === "fresh"
+                ? `Last backup ${relativeTime(settings!.lastBackupAt!)} ago.`
+                : `Last backup ${relativeTime(settings!.lastBackupAt!)} ago${
+                    health.changesSince === null
+                      ? ""
+                      : ` · ${health.changesSince} change${health.changesSince === 1 ? "" : "s"} since`
+                  }. Export a fresh one.`}
+          </p>
+        )}
       </section>
 
       <section className="rounded-lg border p-4">

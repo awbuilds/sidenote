@@ -1,4 +1,5 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { isRemoteEnabled, supabaseConfig, supabaseHost } from "./config";
 
 /**
  * Browser Supabase client.
@@ -10,49 +11,41 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
  *
  * Returns `null` when the two public env vars are absent, which is a supported
  * state — the app is local-first and every remote code path is optional.
- */
-let cached: SupabaseClient | null = null;
-
-export function supabaseConfig(): { url: string; anonKey: string } | null {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anonKey) return null;
-  return { url, anonKey };
-}
-
-export function isRemoteEnabled(): boolean {
-  return supabaseConfig() !== null;
-}
-
-/**
- * Host of the configured Supabase instance, for honest sign-in copy.
  *
- * The URL is public (the anon key is too), so showing it tells the user which
- * server their notes will reach before they sign in.
+ * `@supabase/supabase-js` is imported dynamically. It used to be a static
+ * import, which put ~105 KB gzip of GoTrue client on every route including
+ * local-only builds that can never use it. `import type` is erased, so this
+ * module stays tiny and the library is fetched only when a remote call is
+ * actually made.
  */
-export function supabaseHost(): string | null {
-  const config = supabaseConfig();
-  if (!config) return null;
-  try {
-    return new URL(config.url).host;
-  } catch {
-    return config.url;
-  }
+
+export { isRemoteEnabled, supabaseHost };
+
+let cached: Promise<SupabaseClient | null> | null = null;
+
+export async function getSupabase(): Promise<SupabaseClient | null> {
+  if (cached) return cached;
+
+  cached = (async () => {
+    const config = supabaseConfig();
+    if (!config) return null;
+
+    const { createClient } = await import("@supabase/supabase-js");
+    return createClient(config.url, config.anonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        // Email confirmation links return with tokens in the URL fragment;
+        // the client must parse them on load or the user lands signed out.
+        detectSessionInUrl: true,
+      },
+    });
+  })();
+
+  return cached;
 }
 
-export function getSupabase(): SupabaseClient | null {
-  if (cached) return cached;
-  const config = supabaseConfig();
-  if (!config) return null;
-
-  cached = createClient(config.url, config.anonKey, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      // Email confirmation links return with tokens in the URL fragment;
-      // the client must parse them on load or the user lands signed out.
-      detectSessionInUrl: true,
-    },
-  });
-  return cached;
+/** Test seam: forget the cached client after env changes. */
+export function __resetSupabaseClient(): void {
+  cached = null;
 }

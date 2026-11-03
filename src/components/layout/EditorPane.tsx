@@ -14,6 +14,7 @@ import {
   PenLine,
   Pin,
   PinOff,
+  Printer,
   Share2,
   X,
 } from "lucide-react";
@@ -270,6 +271,14 @@ export function EditorPane({
             <DropdownMenuItem onSelect={() => void exportNoteAsHtml(note)}>
               <Download className="size-4" />
               Export as HTML
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() =>
+                window.open(`/print/${note.id}`, "_blank", "noopener,noreferrer")
+              }
+            >
+              <Printer className="size-4" />
+              Print / PDF
             </DropdownMenuItem>
             {shareEnabled && (
               <DropdownMenuItem onSelect={() => setShareOpen(true)}>
