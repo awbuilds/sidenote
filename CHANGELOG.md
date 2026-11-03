@@ -8,8 +8,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-- The hosted demo is intended to be local-first; sync is enabled only when a
-  deployment is configured with its own Supabase.
+- The hosted demo is local-only: no account, no upload, no sync backend. Sync is
+  enabled only when a deployment is configured with its own Supabase.
 - The maintainer-specific Supabase ops runbook and account scripts were removed
   from the public repository; `docs/SELF-HOSTING.md` is the public guide.
 

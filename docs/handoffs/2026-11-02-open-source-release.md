@@ -30,8 +30,8 @@
   `website/`, deployed by `.github/workflows/pages.yml`; the repository homepage
   points at it. Pages was enabled after the first push, so the deployment was
   re-run; verify the URL returns 200.
-- **Live app:** <https://sidenoteapp.vercel.app> — local-first; the public demo
-  is meant to have no sync backend, and sync is self-host only.
+- **Live app:** <https://sidenoteapp.vercel.app> — **local-only**: no account,
+  no upload, no sync backend. Sync is self-host only.
 - **Warm Paper redesign:** kept **locally only**, on the `warm-paper-redesign`
   branch; it is not pushed to the new repository. The old repository, branches
   and tags are archived at `~/sidenote-archive/2026-11-02/`
@@ -64,17 +64,23 @@
 
 ## Outstanding
 
-**Vercel still deploys the old `0.1.1` branch.** The live app at
-`sidenoteapp.vercel.app` needs the project's **Production Branch set to `main`**
-and its Git integration reconnected to `awbuilds/sidenote`. Also **remove the two
-`NEXT_PUBLIC_SUPABASE_*` variables** from the production environment so the
-public demo stays local-only; sync is self-host only. These steps need the
-Vercel dashboard; no token or CLI is available in this environment.
+Nothing blocking. The private Supabase data cleanup remains a maintainer task:
+export any notes worth keeping, then delete non-owner/test accounts (`auth.users`
+deletes cascade to profiles, notes, notebooks, tags, attachments, versions and
+shares), or delete/pause the project if it was demo-only.
+
+**Vercel is local-only as of 2026-11-03.** The project
+(`prj_xvYACQHMn8t0yplMYoOIWLJEI0DX`) is linked to `awbuilds/sidenote`, deploys
+`main` to production, has no `NEXT_PUBLIC_SUPABASE_*` variables, and the live
+deployment (`dpl_2H4d1MZZz2opnW5GoDWidzPhTwuq`, commit `61031d7`) was verified in
+a browser: `/auth` shows “Remote accounts are not configured in this build” and
+Settings shows “This build has no remote configured”.
 
 **Private Supabase ops were removed from the public tree on 2026-11-03.** The
 maintainer-specific runbook, promo-account script and smoke script are archived
 locally under `~/sidenote-archive/`; `docs/SELF-HOSTING.md` is the public guide.
-The git history was rewritten to redact the private domains, IP and paths.
+The repository was deleted and recreated to purge the old commits; the removed
+files, private domains, IP and paths are absent from the new history.
 
 ## Notes for the next session
 
@@ -84,7 +90,8 @@ The git history was rewritten to redact the private domains, IP and paths.
 - The local `warm-paper-redesign` branch is a separate line based on old
   history. Do not push or merge it blindly; porting its layout onto the current
   sync/share shell is a deliberate task.
-- Dependabot version updates will return on their weekly schedule. Review them;
-  the initial batch was closed only to keep the 0.0.1 reset clean.
+- Dependabot version-update PRs are **paused** (`open-pull-requests-limit: 0`) so
+  the branch list stays `main` + `0.0.1`; security updates remain enabled. Raise
+  the limit to re-enable routine upgrades.
 - The public demo is local-only. If a deployment wants sync, it must set its own
   `NEXT_PUBLIC_SUPABASE_*` variables at build time and apply the migrations.
