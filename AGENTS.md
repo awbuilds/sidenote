@@ -50,7 +50,7 @@ with `npm run dev` and the log in `.next/dev/logs/next-development.log` read.
 
 ## Stack
 
-- Next.js 16.3, React 19.2, TypeScript 5, Tailwind CSS 4.
+- Next.js 16.4, React 19.2, TypeScript 5, Tailwind CSS 4.
 - shadcn/ui on **Radix** primitives, `style: radix-nova` preset, neutral base.
   `cn` is imported from the `cn` package (`src/lib/utils.ts` re-exports it) —
   it is a compiled clsx + tailwind-merge replacement, **not** a local helper.

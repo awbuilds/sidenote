@@ -174,8 +174,8 @@ function SettingsView() {
       <section className="mt-4 space-y-2 rounded-lg border p-4">
         <h2 className="text-sm font-medium">About</h2>
         <p className="text-sm text-muted-foreground">
-          Sidenote is free and open source under the GNU AGPL-3.0. The source is
-          the same code running here.
+          Sidenote is free and open source under the GNU AGPL-3.0. Copyright ©
+          2026 Abhijith Warrier. The source is the same code running here.
         </p>
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" size="sm" asChild>
@@ -194,6 +194,15 @@ function SettingsView() {
               rel="noreferrer"
             >
               Licence
+            </a>
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a
+              href="https://github.com/awbuilds/sidenote/blob/main/THIRD_PARTY_NOTICES.md"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Third-party notices
             </a>
           </Button>
         </div>
