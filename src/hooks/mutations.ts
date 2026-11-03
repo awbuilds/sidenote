@@ -362,9 +362,11 @@ export function useUpdateSettings() {
       await client.invalidateQueries({ queryKey: ["settings"] });
       // Mirror for the pre-paint script, which cannot read IndexedDB.
       // `normalizeTheme` migrates a legacy `amoled` row to `dark`.
-      const { normalizeTheme, writeStoredTheme } = await import("@/lib/theme");
+      const { normalizeTheme, normalizeThemePack, writeStoredTheme, writeStoredThemePack } =
+        await import("@/lib/theme");
       const theme = normalizeTheme(settings.theme);
       if (theme !== null) writeStoredTheme(theme);
+      writeStoredThemePack(normalizeThemePack(settings.themePack));
     },
     onError: (error) => reportError(error, "Could not save settings"),
   });
