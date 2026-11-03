@@ -397,3 +397,52 @@ html[data-theme-pack="gel"].dark body {
     transparent 3px
   );
 }
+
+/* Tailwind bakes the radius scale into utilities in this setup, so token
+   overrides alone leave cards looking like Warm Paper. These unlayered rules
+   intentionally beat the utility layer; rounded-full is left alone. */
+[data-theme-pack="blue"] .rounded-sm,
+[data-theme-pack="blue"] .rounded-md,
+[data-theme-pack="blue"] .rounded-lg,
+[data-theme-pack="blue"] .rounded-xl,
+[data-theme-pack="blue"] .rounded-2xl {
+  border-radius: 2px;
+}
+
+[data-theme-pack="glass"] .rounded-sm { border-radius: 4px; }
+[data-theme-pack="glass"] .rounded-md { border-radius: 6px; }
+[data-theme-pack="glass"] .rounded-lg { border-radius: 8px; }
+[data-theme-pack="glass"] .rounded-xl { border-radius: 12px; }
+[data-theme-pack="glass"] .rounded-2xl { border-radius: 14px; }
+
+[data-theme-pack="gel"] .rounded-sm { border-radius: 8px; }
+[data-theme-pack="gel"] .rounded-md { border-radius: 10px; }
+[data-theme-pack="gel"] .rounded-lg { border-radius: 14px; }
+[data-theme-pack="gel"] .rounded-xl { border-radius: 18px; }
+[data-theme-pack="gel"] .rounded-2xl { border-radius: 20px; }
+
+[data-theme-pack="blue"] ::selection {
+  background: #0a5bd3;
+  color: #ffffff;
+}
+[data-theme-pack="glass"] ::selection {
+  background: #1c7ed6;
+  color: #ffffff;
+}
+[data-theme-pack="gel"] ::selection {
+  background: #1a73e8;
+  color: #ffffff;
+}
+
+[data-theme-pack="blue"] * {
+  scrollbar-color: #7fa7d8 #e4ecf8;
+}
+[data-theme-pack="blue"].dark * {
+  scrollbar-color: #2c4a6e #0a1628;
+}
+[data-theme-pack="gel"] * {
+  scrollbar-color: #8b93a8 #e9ecf4;
+}
+[data-theme-pack="gel"].dark * {
+  scrollbar-color: #3a4358 #171a21;
+}
