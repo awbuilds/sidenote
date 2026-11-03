@@ -80,9 +80,23 @@ function AuthView() {
       )}
 
       {auth.status === "disabled" ? (
-        <p className="mt-6 rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
-          Remote accounts are not configured in this build.
-        </p>
+        <div className="mt-6 space-y-2 rounded-lg border border-dashed p-4">
+          <p className="text-sm text-muted-foreground">
+            Remote accounts are not configured in this build.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            This demo is local-only.{" "}
+            <a
+              href="https://github.com/awbuilds/sidenote/blob/main/docs/SELF-HOSTING.md"
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-2"
+            >
+              Self-host with your own Supabase
+            </a>{" "}
+            to enable accounts and sync.
+          </p>
+        </div>
       ) : (
         <form onSubmit={submit} className="mt-6 space-y-4">
           <Tabs value={mode} onValueChange={(value) => setMode(value as "sign-in" | "sign-up")}>

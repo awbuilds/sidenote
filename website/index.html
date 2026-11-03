@@ -105,7 +105,7 @@
       </div>
       <div class="prose">
         <p><strong>Local by default.</strong> Notes live in your browser's IndexedDB. With no server configured, the app makes no network request of its own and works with no network at all.</p>
-        <p><strong>Optional sync, your server.</strong> Set two environment variables and Sidenote can sign in and sync against a Supabase instance you control. The hosted demo uses the maintainer's instance; self-host if you want your own.</p>
+        <p><strong>Optional sync, your server.</strong> Set two environment variables and Sidenote can sign in and sync against a Supabase instance you control. The hosted demo is local-first; sync is enabled only when you self-host with your own Supabase.</p>
         <p><strong>No third parties.</strong> No analytics, advertising, crash reporting, or AI. The only outward edges are the server you configure and the share links you choose to create.</p>
         <p><a href="./privacy.html">Read the privacy policy →</a></p>
       </div>
@@ -121,7 +121,7 @@ npm run dev</code></pre>
       <pre><code>NEXT_PUBLIC_SUPABASE_URL=https://your-supabase.example.com
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key</code></pre>
       <div class="actions">
-        <a class="button button-ghost" href="https://github.com/awbuilds/sidenote/blob/main/docs/ops/supabase-stack.md">Read the self-hosting runbook</a>
+        <a class="button button-ghost" href="https://github.com/awbuilds/sidenote/blob/main/docs/SELF-HOSTING.md">Read the self-hosting runbook</a>
         <a class="button button-ghost" href="https://github.com/awbuilds/sidenote/blob/main/LICENSE">AGPL-3.0 licence</a>
       </div>
     </section>
@@ -143,7 +143,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key</code></pre>
         <a href="https://github.com/awbuilds/sidenote">Source</a>
         <a href="./privacy.html">Privacy</a>
         <a href="https://github.com/awbuilds/sidenote/blob/main/LICENSE">Licence</a>
-        <a href="https://github.com/awbuilds/sidenote/blob/main/docs/ops/supabase-stack.md">Docs</a>
+        <a href="https://github.com/awbuilds/sidenote/blob/main/docs/SELF-HOSTING.md">Docs</a>
       </nav>
       <p>© 2026 Abhijith Warrier · AGPL-3.0</p>
     </div>

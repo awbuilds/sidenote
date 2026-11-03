@@ -4,5 +4,5 @@ contact_links:
     url: https://github.com/awbuilds/sidenote/security/advisories/new
     about: Report a vulnerability privately. Do not open a public issue.
   - name: Self-hosting runbook
-    url: https://github.com/awbuilds/sidenote/blob/main/docs/ops/supabase-stack.md
+    url: https://github.com/awbuilds/sidenote/blob/main/docs/SELF-HOSTING.md
     about: Set up the optional Supabase stack.

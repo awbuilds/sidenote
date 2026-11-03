@@ -6,6 +6,9 @@
 A private, local-first notes and knowledge base. Web only, with optional
 self-hosted sync. Live at **https://sidenoteapp.vercel.app**.
 
+The hosted demo is local-first: no account and no upload. Sync is enabled only
+when you self-host with your own Supabase.
+
 A classic three-pane notes layout. **No third-party app code is copied**; this
 is a fresh implementation of the interaction model, not a port.
 
@@ -94,7 +97,7 @@ src/lib/          tiptap · search · image · transfer · storage · seed · su
 src/hooks/        queries (read) and mutations (write)
 supabase/         Postgres schema, RLS and migrations for optional sync
 docs/plans/       the product plan
-docs/ops/         self-hosting runbook for the Supabase stack
+docs/SELF-HOSTING.md  how to self-host with your own Supabase
 docs/handoffs/    one note per phase, newest last
 ```
 
@@ -154,7 +157,7 @@ delete propagates via a server-side soft delete. Free accounts include
 compressed to WebP before upload, so the budget goes far. Version snapshots
 are not synced yet.
 
-The stack's runbook is `docs/ops/supabase-stack.md`; the schema lives in
+The self-hosting guide is `docs/SELF-HOSTING.md`; the schema lives in
 `supabase/migrations/`.
 
 ## Not built (deliberately)

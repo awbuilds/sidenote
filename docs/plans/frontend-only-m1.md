@@ -403,7 +403,7 @@ Avoid cheap first-year `.xyz`/`.top` promos — renewal is 5–10× the first ye
 ## 13. Backend phase (later, user-gated)
 
 **Phase 1 done 2026-10-02** — dedicated stack provisioned and initial schema
-applied. Runbook: `docs/ops/supabase-stack.md`. Handoff:
+applied. Runbook: `docs/SELF-HOSTING.md`. Handoff:
 `docs/handoffs/2026-10-02-backend-phase-1-stack-and-schema.md`.
 
 1. ✅ `supabase/migrations/20261002191500_initial_schema.sql` — the §4.2

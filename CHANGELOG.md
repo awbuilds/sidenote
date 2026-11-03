@@ -6,6 +6,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- The hosted demo is now local-first: no account and no upload. Sync is enabled
+  only when self-hosting with your own Supabase.
+- The maintainer-specific Supabase ops runbook and account scripts were removed
+  from the public repository; `docs/SELF-HOSTING.md` is the public guide.
+
 ### Added
 
 - A generic self-hosting guide (`docs/SELF-HOSTING.md`) covering local-only,

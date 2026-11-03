@@ -43,6 +43,18 @@ export function AccountSection() {
         <p className="text-sm text-muted-foreground">
           This build has no remote configured, so everything stays in this browser.
         </p>
+        <p className="text-xs text-muted-foreground">
+          Want sync across devices?{" "}
+          <a
+            href="https://github.com/awbuilds/sidenote/blob/main/docs/SELF-HOSTING.md"
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2"
+          >
+            Self-host with your own Supabase
+          </a>
+          .
+        </p>
       </section>
     );
   }

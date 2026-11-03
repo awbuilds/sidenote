@@ -131,9 +131,9 @@ worker and auth redirects require a secure origin.
 - **Share links:** public by token, optionally password-protected and expiring.
 - **Backups:** the ZIP export is the only copy outside the browser/server. Back
   up the Supabase database and storage bucket too.
-- The hosted demo at `sidenoteapp.vercel.app` is connected to the maintainer's
-  Supabase. If you do not want your notes there, run your own deployment or use
-  the app without signing in.
+- The public demo at `sidenoteapp.vercel.app` is local-first and is not
+  connected to a shared sync service. Sync and share links are enabled only on
+  a deployment configured with its own Supabase; self-host to use them.
 
 ## 5. Security checklist
 

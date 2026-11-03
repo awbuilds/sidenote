@@ -36,7 +36,7 @@ verified end-to-end through the real API. App integration not started.
   `get_shared_note` security-definer RPC (password via `extensions.crypt`),
   private `attachments` bucket with `{user_id}/` policies.
 - `supabase/smoke.sh` — end-to-end API verification, safe to rerun.
-- `docs/ops/supabase-stack.md` — runbook (migrations, backups, restore,
+- `docs/SELF-HOSTING.md` — runbook (migrations, backups, restore,
   upgrades, quirks).
 
 ## Verification

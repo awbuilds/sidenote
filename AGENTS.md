@@ -73,7 +73,7 @@ with `npm run dev` and the log in `.next/dev/logs/next-development.log` read.
 - `src/hooks/` — `queries.ts` (TanStack Query read hooks) and `mutations.ts`
   (write hooks). Components call hooks, never Dexie directly.
 - `supabase/migrations/` — Postgres schema + RLS, applied with the Supabase CLI
-  (`docs/ops/supabase-stack.md`).
+  (`docs/SELF-HOSTING.md`).
 - `docs/handoffs/` — one note per phase, newest last.
 
 ## Non-negotiable invariants
@@ -177,8 +177,8 @@ with `npm run dev` and the log in `.next/dev/logs/next-development.log` read.
 
 ## What is deferred (do not build yet)
 
-- **Backend.** A dedicated self-hosted Supabase stack is live (runbook:
-  `docs/ops/supabase-stack.md`). Auth, LWW sync for notebooks, notes, tags and
+- **Backend.** A self-hosted Supabase stack is supported (guide:
+  `docs/SELF-HOSTING.md`). Auth, LWW sync for notebooks, notes, tags and
   note-tags, attachment byte sync with a 50 MB free budget, and public share
   links (`/s/[token]`) are implemented. Still open: version-history
   sync, images inside shared links, and multi-device *live* push (sync is

@@ -20,7 +20,7 @@ npm run dev      # http://localhost:3000
 
 The app works without any environment variables: everything is local and every
 remote path is a no-op. To exercise sync and share links you need a Supabase
-instance; the runbook is [docs/ops/supabase-stack.md](docs/ops/supabase-stack.md)
+instance; the runbook is [docs/SELF-HOSTING.md](docs/SELF-HOSTING.md)
 and the two public variables are in `.env.example`.
 
 ## Before opening a pull request

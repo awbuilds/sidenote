@@ -2,7 +2,7 @@
 
 - **Date:** 2026-11-02
 - **Agent / task:** Make Sidenote a fresh, public, AGPL-licensed open-source
-  project at 0.0.1; remove every the reference reference from the public tree and
+  project at 0.0.1; remove every third-party reference from the public tree and
   history; protect `main`; publish the GitHub Pages site.
 - **Branch / commit:** `main` at `d0938c5` — a single root commit.
 - **Status:** DONE, with one manual Vercel step outstanding.
@@ -11,7 +11,7 @@
 
 - **Repository:** <https://github.com/awbuilds/sidenote> — public, default branch
   `main`. The repository was deleted and recreated for a genuinely clean
-  history: **one commit**, no the reference anywhere.
+  history: **one root commit**, with no third-party references anywhere.
 - **Branches:** `main` (working) and `0.0.1` (release branch). **Tags:** only
   `0.0.1`. **Release:** [0.0.1](https://github.com/awbuilds/sidenote/releases/tag/0.0.1).
 - **Licence:** GNU AGPL-3.0, copyright Abhijith Warrier. GitHub detects
@@ -30,7 +30,8 @@
   `website/`, deployed by `.github/workflows/pages.yml`; the repository homepage
   points at it. Pages was enabled after the first push, so the deployment was
   re-run; verify the URL returns 200.
-- **Live app:** <https://sidenoteapp.vercel.app>.
+- **Live app:** <https://sidenoteapp.vercel.app> — local-first; the public demo
+  is meant to have no sync backend, and sync is self-host only.
 - **Warm Paper redesign:** kept **locally only**, on the `warm-paper-redesign`
   branch; it is not pushed to the new repository. The old repository, branches
   and tags are archived at `~/sidenote-archive/2026-11-02/`
@@ -38,9 +39,8 @@
 
 ## What changed
 
-- Removed every the reference reference from the tree and renamed
-  `docs/handoffs/2026-09-30-ui-parity-reference.md` to
-  `2026-09-30-ui-parity-pass.md`.
+- Removed every third-party reference from the tree and renamed the UI-parity
+  handoff to `2026-09-30-ui-parity-pass.md`.
 - Deleted and recreated the repository so the public history is one clean
   commit; the old history never entered the new repository.
 - Added `CHANGELOG.md`, `.github/CODEOWNERS`, `.github/workflows/codeql.yml`,
@@ -53,7 +53,8 @@
 
 ## Verification
 
-- `main` has **1** commit; `git grep -i reference` on `main` returns nothing.
+- `main` has **1** commit; `git grep` for the old reference on `main` returns
+  nothing.
 - Remote heads: `main`, `0.0.1`. Remote tags: `0.0.1`.
 - Release `0.0.1` is published (not draft, not prerelease).
 - CI and CodeQL are green on `main`.
@@ -65,9 +66,15 @@
 
 **Vercel still deploys the old `0.1.1` branch.** The live app at
 `sidenoteapp.vercel.app` needs the project's **Production Branch set to `main`**
-and its Git integration reconnected to `awbuilds/sidenote`. This is the one step
-that needs the Vercel dashboard; no token or CLI is available in this
-environment.
+and its Git integration reconnected to `awbuilds/sidenote`. Also **remove the two
+`NEXT_PUBLIC_SUPABASE_*` variables** from the production environment so the
+public demo stays local-only; sync is self-host only. These steps need the
+Vercel dashboard; no token or CLI is available in this environment.
+
+**Private Supabase ops were removed from the public tree on 2026-11-03.** The
+maintainer-specific runbook, promo-account script and smoke script are archived
+locally under `~/sidenote-archive/`; `docs/SELF-HOSTING.md` is the public guide.
+The git history was rewritten to redact the private domains, IP and paths.
 
 ## Notes for the next session
 
@@ -79,3 +86,5 @@ environment.
   sync/share shell is a deliberate task.
 - Dependabot version updates will return on their weekly schedule. Review them;
   the initial batch was closed only to keep the 0.0.1 reset clean.
+- The public demo is local-only. If a deployment wants sync, it must set its own
+  `NEXT_PUBLIC_SUPABASE_*` variables at build time and apply the migrations.
