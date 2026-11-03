@@ -38,7 +38,7 @@ describe("remapNonUuidIds", () => {
     await database.attachments.put({
       id: "seed-attachment-0-0",
       noteId: "seed-note-0",
-      fileName: "demo.svg",
+      fileName: "sample.svg",
       mime: "image/svg+xml",
       size: 1,
       width: null,

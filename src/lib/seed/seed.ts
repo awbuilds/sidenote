@@ -108,10 +108,10 @@ export async function removeSampleData(): Promise<void> {
 }
 
 /* ------------------------------------------------------------------ */
-/* Demo image                                                          */
+/* Sample image                                                        */
 /* ------------------------------------------------------------------ */
 
-const DEMO_IMAGE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+const SAMPLE_IMAGE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#7c3aed"/>
@@ -150,7 +150,7 @@ const WELCOME: SeedNote = {
   tags: ["getting-started"],
   content: doc(
     h(1, "Welcome"),
-    pt("This is a local-first notes app. Everything you type is stored in this browser first — no account required. Signing in is optional: it uploads your notes so they can sync to your other devices."),
+    pt("This is a local-first notes app. Everything you type is stored in this browser first — no account required. If this deployment enables sync, signing in uploads your notes so they can reach your other devices."),
     h(2, "The three panes"),
     ul(
       "Left: notebooks, nested as deep as you like.",
@@ -171,7 +171,7 @@ const WELCOME: SeedNote = {
   ),
   markdown: `# Welcome
 
-This is a local-first notes app. Everything you type is stored in this browser first — no account required. Signing in is optional: it uploads your notes so they can sync to your other devices.
+This is a local-first notes app. Everything you type is stored in this browser first — no account required. If this deployment enables sync, signing in uploads your notes so they can reach your other devices.
 
 ## The three panes
 
@@ -529,10 +529,10 @@ async function runSeed(): Promise<SeedResult | null> {
         noteId: id,
         fileName: attachment.fileName,
         mime: "image/svg+xml",
-        size: DEMO_IMAGE_SVG.length,
+        size: SAMPLE_IMAGE_SVG.length,
         width: 1200,
         height: 600,
-        data: new TextEncoder().encode(DEMO_IMAGE_SVG),
+        data: new TextEncoder().encode(SAMPLE_IMAGE_SVG),
         createdAt,
       });
     }
@@ -572,8 +572,8 @@ export type { Note, SeedNote };
  * Put the sample content back.
  *
  * Wipes content but keeps the profile and preferences, then re-seeds. The
- * inverse of `removeSampleData`, and the sidebar's "Reset sample data" — the
- * same affordance the reference calls "Reset Demo Environment".
+ * inverse of `removeSampleData` and backs the sidebar's "Reset sample data"
+ * action.
  */
 export async function restoreSampleData(): Promise<SeedResult> {
   await removeSampleData();

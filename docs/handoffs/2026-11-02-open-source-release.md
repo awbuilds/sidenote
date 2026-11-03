@@ -67,7 +67,7 @@
 Nothing blocking. The private Supabase data cleanup remains a maintainer task:
 export any notes worth keeping, then delete non-owner/test accounts (`auth.users`
 deletes cascade to profiles, notes, notebooks, tags, attachments, versions and
-shares), or delete/pause the project if it was demo-only.
+shares), or delete/pause the project if it was only used for testing.
 
 **Vercel is local-only as of 2026-11-03.** The project
 (`prj_xvYACQHMn8t0yplMYoOIWLJEI0DX`) is linked to `awbuilds/sidenote`, deploys
@@ -93,5 +93,5 @@ files, private domains, IP and paths are absent from the new history.
 - Dependabot version-update PRs are **paused** (`open-pull-requests-limit: 0`) so
   the branch list stays `main` + `0.0.1`; security updates remain enabled. Raise
   the limit to re-enable routine upgrades.
-- The public demo is local-only. If a deployment wants sync, it must set its own
+- The hosted app is local-only. If a deployment wants sync, it must set its own
   `NEXT_PUBLIC_SUPABASE_*` variables at build time and apply the migrations.

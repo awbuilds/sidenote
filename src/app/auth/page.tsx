@@ -85,7 +85,7 @@ function AuthView() {
             Remote accounts are not configured in this build.
           </p>
           <p className="text-xs text-muted-foreground">
-            This demo is local-only.{" "}
+            This build is local-only.{" "}
             <a
               href="https://github.com/awbuilds/sidenote/blob/main/docs/SELF-HOSTING.md"
               target="_blank"
