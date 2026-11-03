@@ -3,7 +3,7 @@ import { db } from "@/lib/db/db";
 import type { TombstoneRow } from "@/lib/db/types";
 import { toNotebookRow, toNoteRow } from "@/lib/db/convert";
 import { getSettings, setSetting } from "@/lib/db/repositories/settings";
-import type { Attachment, Note, Notebook, Tag } from "@/lib/db/types";
+import type { Attachment, Note, Notebook, SampleDataManifest, Tag } from "@/lib/db/types";
 import { code, doc, docToText, h, image, ol, p, pt, quote, table, tasks, text, ul } from "./builders";
 
 /* ------------------------------------------------------------------ */
@@ -75,8 +75,165 @@ export async function wipeAllData(): Promise<void> {
   );
 }
 
-/** Remove the seeded content but keep the user's profile and preferences. */
+/** Remove the sample content but keep the user's profile and preferences. */
 export async function removeSampleData(): Promise<void> {
+  const database = db();
+  const { sampleData } = await getSettings();
+  const manifest = sampleData ?? (await legacySampleManifest(database));
+  if (manifest === null) return;
+
+  const noteIds = manifest.noteIds;
+  const attachments =
+    noteIds.length === 0
+      ? []
+      : await database.attachments.where("noteId").anyOf(noteIds).toArray();
+  const deletedAt = Date.now();
+
+  const tombstones: TombstoneRow[] = [
+    ...manifest.noteIds.map((id) => ({
+      key: `notes:${id}`,
+      table: "notes" as const,
+      ref: id,
+      deletedAt,
+    })),
+    ...manifest.notebookIds.map((id) => ({
+      key: `notebooks:${id}`,
+      table: "notebooks" as const,
+      ref: id,
+      deletedAt,
+    })),
+    ...manifest.tagIds.map((id) => ({
+      key: `tags:${id}`,
+      table: "tags" as const,
+      ref: id,
+      deletedAt,
+    })),
+    ...attachments.map((attachment) => ({
+      key: `attachments:${attachment.id}|${attachment.fileName}`,
+      table: "attachments" as const,
+      ref: `${attachment.id}|${attachment.fileName}`,
+      deletedAt,
+    })),
+  ];
+
+  await database.transaction(
+    "rw",
+    [
+      database.notebooks,
+      database.notes,
+      database.tags,
+      database.noteTags,
+      database.attachments,
+      database.versions,
+      database.noteLinks,
+      database.tombstones,
+    ],
+    async () => {
+      if (tombstones.length > 0) await database.tombstones.bulkPut(tombstones);
+
+      if (noteIds.length > 0) {
+        await database.versions.where("noteId").anyOf(noteIds).delete();
+        await database.noteLinks.where("sourceId").anyOf(noteIds).delete();
+        await database.noteTags.where("noteId").anyOf(noteIds).delete();
+        await database.attachments.where("noteId").anyOf(noteIds).delete();
+        await database.notes.bulkDelete(noteIds);
+      }
+
+      if (manifest.notebookIds.length > 0) {
+        // Keep a sample notebook when the user put their own notes or child
+        // notebooks in it. Deleting only the empty ones is what makes this
+        // safe to run long after onboarding.
+        const remainingNotes = await database.notes
+          .where("notebookId")
+          .anyOf(manifest.notebookIds)
+          .toArray();
+        const used = new Set(remainingNotes.map((note) => note.notebookId));
+        const children = await database.notebooks
+          .where("parentId")
+          .anyOf(manifest.notebookIds)
+          .toArray();
+        const hasChild = new Set(children.map((child) => child.parentId));
+        const removable = manifest.notebookIds.filter(
+          (id) => !used.has(id) && !hasChild.has(id),
+        );
+        if (removable.length > 0) await database.notebooks.bulkDelete(removable);
+      }
+
+      if (manifest.tagIds.length > 0) {
+        const remainingLinks = await database.noteTags
+          .where("tagId")
+          .anyOf(manifest.tagIds)
+          .toArray();
+        const used = new Set(remainingLinks.map((link) => link.tagId));
+        const removable = manifest.tagIds.filter((id) => !used.has(id));
+        if (removable.length > 0) await database.tags.bulkDelete(removable);
+      }
+    },
+  );
+
+  const settings = await getSettings();
+  const lastNotebook =
+    settings.lastNotebookId === null
+      ? null
+      : await database.notebooks.get(settings.lastNotebookId);
+  await setSetting("sampleData", null);
+  if (settings.lastNotebookId !== null && lastNotebook === undefined) {
+    await setSetting("lastNotebookId", null);
+  }
+  await setSetting("dataVersion", settings.dataVersion + 1);
+}
+
+/**
+ * Manifest for databases seeded before `sampleData` was tracked (0.0.1).
+ *
+ * Matching is deliberately conservative: exact seed titles only, notebooks
+ * only when every note inside belongs to the sample set, and tags only when
+ * every link points at one. A user's note is never deleted by a fuzzy match;
+ * at worst a renamed sample note is left behind.
+ */
+async function legacySampleManifest(
+  database: ReturnType<typeof db>,
+): Promise<SampleDataManifest | null> {
+  const seedTitles = new Set(SEED_NOTES.map((note) => note.title));
+  const notes = await database.notes.toArray();
+  const noteIds = notes
+    .filter((note) => seedTitles.has(note.title))
+    .map((note) => note.id);
+  if (noteIds.length === 0) return null;
+
+  const sampleNotes = new Set(noteIds);
+  const [attachments, notebooks, tags, noteTags] = await Promise.all([
+    database.attachments.toArray(),
+    database.notebooks.toArray(),
+    database.tags.toArray(),
+    database.noteTags.toArray(),
+  ]);
+
+  const seedNotebookNames = new Set(NOTEBOOKS.map((notebook) => notebook.name));
+  const notebookIds = notebooks
+    .filter((notebook) => {
+      if (!seedNotebookNames.has(notebook.name)) return false;
+      const contents = notes.filter((note) => note.notebookId === notebook.id);
+      return contents.every((note) => sampleNotes.has(note.id));
+    })
+    .map((notebook) => notebook.id);
+
+  const tagIds = tags
+    .filter((tag) => {
+      const links = noteTags.filter((link) => link.tagId === tag.id);
+      return links.length > 0 && links.every((link) => sampleNotes.has(link.noteId));
+    })
+    .map((tag) => tag.id);
+
+  const attachmentIds = attachments
+    .filter((attachment) => sampleNotes.has(attachment.noteId))
+    .map((attachment) => attachment.id);
+
+  return { noteIds, notebookIds, tagIds, attachmentIds };
+}
+
+/** Clear every content table but keep settings. Used by "restore samples". */
+async function clearAllContent(): Promise<void> {
   const database = db();
   await database.transaction(
     "rw",
@@ -561,6 +718,15 @@ async function runSeed(): Promise<SeedResult | null> {
 
   await setSetting("seeded", true);
   await setSetting("dataVersion", 1);
+  // Recorded so "remove sample data" can delete only what this run created.
+  await setSetting("sampleData", {
+    noteIds: noteRows.map((note) => note.id),
+    notebookIds: notebookRows.map((notebook) => notebook.id),
+    tagIds: tagRows.map((tag) => tag.id),
+    attachmentIds: attachmentRows.map((attachment) => attachment.id),
+  });
+  // A fresh database gets the tour. Restoring samples later clears this again.
+  await setSetting("onboardingPending", true);
   if (byName.has("Inbox")) await setSetting("lastNotebookId", byName.get("Inbox")!.id);
 
   return { notebooks: notebookRows.length, notes: noteRows.length, tags: tagRows.length };
@@ -573,10 +739,12 @@ export type { Note, SeedNote };
  *
  * Wipes content but keeps the profile and preferences, then re-seeds. The
  * inverse of `removeSampleData` and backs the sidebar's "Reset sample data"
- * action.
+ * action. This is the one deliberate full wipe, so users who ask for the
+ * samples back get a clean set rather than a merge.
  */
 export async function restoreSampleData(): Promise<SeedResult> {
-  await removeSampleData();
+  await clearAllContent();
+  await setSetting("sampleData", null);
 
   // `removeSampleData` keeps the `seeded` flag on purpose, so deleting the
   // samples does not bring them back on the next reload. An explicit reset is
@@ -586,5 +754,7 @@ export async function restoreSampleData(): Promise<SeedResult> {
 
   const result = await seedIfEmpty();
   if (result === null) throw new Error("Sample data could not be restored");
+  // Replaying the samples is not a first run; do not reopen the tour.
+  await setSetting("onboardingPending", false);
   return result;
 }
