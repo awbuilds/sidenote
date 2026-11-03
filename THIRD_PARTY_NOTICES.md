@@ -22,7 +22,6 @@ package remains the authoritative one.
 | `cn` | MIT | <https://github.com/shadcn-ui/cn> |
 | `dexie` | Apache-2.0 | <https://github.com/dexie/Dexie.js> |
 | `fast-xml-parser` | MIT | <https://github.com/NaturalIntelligence/fast-xml-parser> |
-| `happy-dom` | MIT | <https://github.com/capricorn86/happy-dom> |
 | `jszip` | MIT (dual MIT / GPL-3.0-or-later; Sidenote uses MIT) | <https://github.com/Stuk/jszip> |
 | `katex` | MIT | <https://github.com/KaTeX/KaTeX> |
 | `lucide-react` | ISC | <https://github.com/lucide-icons/lucide> |
@@ -69,9 +68,20 @@ Sidenote names explicitly.
 
 ## Development tools
 
-The build and test toolchain (TypeScript, ESLint, Tailwind CSS, Vitest, the
-`shadcn` CLI and their dependencies) is used under its own licenses and is not
-part of the deployed application bundle except where noted above.
+The build and test toolchain is used under its own licenses and is not part of
+the deployed application bundle except where noted above.
+
+| Package | License |
+|---|---|
+| `typescript` | Apache-2.0 |
+| `fake-indexeddb` | Apache-2.0 |
+| `eslint`, `eslint-config-next` | MIT |
+| `tailwindcss`, `@tailwindcss/postcss` | MIT |
+| `vitest`, `@vitejs/plugin-react` | MIT |
+| `jsdom` | MIT |
+| `@testing-library/jest-dom`, `@testing-library/react`, `@testing-library/user-event` | MIT |
+| `shadcn` | MIT |
+| `@types/node`, `@types/react`, `@types/react-dom` | MIT |
 
 ## License texts
 
