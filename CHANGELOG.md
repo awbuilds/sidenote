@@ -8,8 +8,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-- The hosted demo is local-only: no account, no upload, no sync backend. Sync is
+- The hosted app is local-only: no account, no upload, no sync backend. Sync is
   enabled only when a deployment is configured with its own Supabase.
+- The hosted app is no longer described as a demo. Share entry points are hidden
+  on deployments without a backend instead of opening a dialog that cannot act.
 - The maintainer-specific Supabase ops runbook and account scripts were removed
   from the public repository; `docs/SELF-HOSTING.md` is the public guide.
 

@@ -6,7 +6,7 @@
 A private, local-first notes and knowledge base. Web only, with optional
 self-hosted sync. Live at **https://sidenoteapp.vercel.app**.
 
-The hosted demo is local-only: no account and no upload. Sync is enabled only
+The hosted app is local-only: no account and no upload. Sync is enabled only
 on deployments configured with their own Supabase.
 
 A classic three-pane notes layout. **No third-party app code is copied**; this

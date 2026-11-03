@@ -58,6 +58,7 @@ import { QUERY_KEYS } from "@/hooks/query-keys";
 import { useSaveNoteContent, useTogglePin, useTrashNotes } from "@/hooks/mutations";
 import { downloadTextFile, exportNoteAsHtml } from "@/lib/transfer/export-note";
 import { wikiLink } from "@/lib/links/wiki";
+import { isRemoteEnabled } from "@/lib/supabase/client";
 import type { Note, NoteId } from "@/lib/db/types";
 import { toast } from "sonner";
 
@@ -113,6 +114,7 @@ export function EditorPane({
   const [railTab, setRailTab] = useState<"outline" | "links" | null>("outline");
   const [linkDialogOpen, setLinkDialogOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
+  const shareEnabled = isRemoteEnabled();
   const [focus, toggleFocus] = useFocusMode();
   const [locked, toggleLocked] = useReadOnly(noteId ?? "");
 
@@ -230,15 +232,17 @@ export function EditorPane({
           <Link2 className="size-4" />
         </Button>
 
-        <Button
-          variant="ghost"
-          size="icon"
-          className="size-8 shrink-0"
-          aria-label="Share this note"
-          onClick={() => setShareOpen(true)}
-        >
-          <Share2 className="size-4" />
-        </Button>
+        {shareEnabled && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-8 shrink-0"
+            aria-label="Share this note"
+            onClick={() => setShareOpen(true)}
+          >
+            <Share2 className="size-4" />
+          </Button>
+        )}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -267,10 +271,12 @@ export function EditorPane({
               <Download className="size-4" />
               Export as HTML
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => setShareOpen(true)}>
-              <Share2 className="size-4" />
-              Share link…
-            </DropdownMenuItem>
+            {shareEnabled && (
+              <DropdownMenuItem onSelect={() => setShareOpen(true)}>
+                <Share2 className="size-4" />
+                Share link…
+              </DropdownMenuItem>
+            )}
             <DropdownMenuSeparator />
             <AlertDialog>
               <AlertDialogTrigger asChild>
