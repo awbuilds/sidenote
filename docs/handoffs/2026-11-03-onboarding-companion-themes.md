@@ -70,6 +70,13 @@ theme provider instead of the unused `next-themes` one.
   - Blue 2001, Gel 2000 and Glass 2009 applied, persisted in IndexedDB and
     localStorage, survived reload
   - companion on/off and reduced-motion paths checked in the settings UI
+- Verified in a real browser that each pack's system font reaches the document
+  (Geist → Tahoma / Lucida Grande / Segoe UI) and that a 500px viewport keeps
+  the tour footer reachable and stacks the workspace above the mobile tab bar.
+- `npm run build` and `npm start` were exercised; the production bundle renders
+  the tour and all four packs.
+- Reduced motion was emulated through CDP: the companion did not run, and
+  Settings showed the reduced-motion note.
 - The `.next/dev` log was read after each pass; stale conflict and JSX errors
   from intermediate edits were cleared by a restart.
 
