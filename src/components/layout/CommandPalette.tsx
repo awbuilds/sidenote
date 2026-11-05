@@ -6,7 +6,6 @@ import { FileText, Folder, Hash, Plus, Search, Settings, Trash2 } from "lucide-r
 
 import {
   Command,
-  CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -15,6 +14,13 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
+import {
+  Dialog,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { PetDialogContent } from "@/components/companion/PetDialogContent";
 import { useNotebookTree, useRecentNotes } from "@/hooks/queries";
 import { useCreateNotebook, useCreateNote } from "@/hooks/mutations";
 import { useWorkspaceParams } from "@/hooks/useWorkspaceParams";
@@ -72,13 +78,18 @@ export function CommandPalette() {
   };
 
   return (
-    <CommandDialog
-      open={open}
-      onOpenChange={setCommandPaletteOpen}
-      title="Command palette"
-      description="Search notes, or jump to something."
-    >
-      <Command>
+    <Dialog open={open} onOpenChange={setCommandPaletteOpen}>
+      <PetDialogContent
+        mode="command"
+        className="sm:w-[36rem]"
+        fallbackClassName="top-1/3 translate-y-0 overflow-hidden rounded-xl! p-0 sm:max-w-xl"
+        showCloseButton={false}
+      >
+        <DialogHeader className="sr-only">
+          <DialogTitle>Command palette</DialogTitle>
+          <DialogDescription>Search notes, or jump to something.</DialogDescription>
+        </DialogHeader>
+        <Command>
         <CommandInput placeholder="Search notes and commands…" />
         <CommandList>
           <CommandEmpty>No results.</CommandEmpty>
@@ -182,6 +193,7 @@ export function CommandPalette() {
           </CommandGroup>
         </CommandList>
       </Command>
-    </CommandDialog>
+      </PetDialogContent>
+    </Dialog>
   );
 }

@@ -16,7 +16,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useOnline } from "@/hooks/use-online";
 import { useSyncStatus } from "@/hooks/use-sync-status";
 import { relativeTime } from "@/lib/format";
-import { isRemoteEnabled } from "@/lib/supabase/client";
+import { isRemoteEnabled } from "@/lib/supabase/config";
 import { syncIconState, type SyncIconState } from "@/lib/sync/icon-state";
 import { runSyncNow, SYNC_INTERVAL_MS } from "@/lib/sync/trigger";
 import { cn } from "@/lib/utils";

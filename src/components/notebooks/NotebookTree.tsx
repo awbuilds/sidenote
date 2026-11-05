@@ -110,18 +110,25 @@ export function NotebookTree({
 
   if (nodes.length === 0) {
     return (
-      <div className={cn("px-3 py-2", className)}>
-        <p className="text-sm text-muted-foreground">No notebooks yet.</p>
-        <Button
-          size="sm"
-          variant="outline"
-          className="mt-2 gap-1.5"
-          onClick={() => setDialog({ kind: "create", parentId: null })}
-        >
-          <Plus className="size-3.5" />
-          New notebook
-        </Button>
-      </div>
+      <>
+        <div className={cn("px-3 py-2", className)}>
+          <p className="text-sm text-muted-foreground">No notebooks yet.</p>
+          <Button
+            size="sm"
+            variant="outline"
+            className="mt-2 gap-1.5"
+            onClick={() => setDialog({ kind: "create", parentId: null })}
+          >
+            <Plus className="size-3.5" />
+            New notebook
+          </Button>
+        </div>
+        <NotebookDialogs
+          state={dialog}
+          all={[]}
+          onClose={() => setDialog({ kind: "none" })}
+        />
+      </>
     );
   }
 

@@ -6,11 +6,11 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { PetDialogContent } from "@/components/companion/PetDialogContent";
 import { Input } from "@/components/ui/input";
 import { useTagSummaries } from "@/hooks/useTags";
 import { useDeleteTag, useRenameTag, useUpdateTagColor } from "@/hooks/mutations";
@@ -38,7 +38,7 @@ export function TagManagerDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <PetDialogContent mode="tags" className="sm:w-[28rem]" fallbackClassName="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Tags</DialogTitle>
           <DialogDescription>
@@ -111,7 +111,7 @@ export function TagManagerDialog({
             })}
           </ul>
         )}
-      </DialogContent>
+      </PetDialogContent>
     </Dialog>
   );
 }

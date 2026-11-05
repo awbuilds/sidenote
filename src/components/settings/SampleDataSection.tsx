@@ -4,16 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { RotateCcw, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { PetAlertDialog } from "@/components/companion/PetAlertDialog";
 import { useInvalidateAll } from "@/hooks/queries";
 import { pluralize } from "@/lib/format";
 import { sampleDataWarning } from "@/lib/copy";
@@ -41,7 +32,6 @@ export function SampleDataSection() {
       toast.error("Could not restore the sample data");
     } finally {
       setBusy(false);
-      setConfirmRestore(false);
     }
   };
 
@@ -75,18 +65,15 @@ export function SampleDataSection() {
         </div>
       </section>
 
-      <AlertDialog open={confirmRestore} onOpenChange={setConfirmRestore}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Restore sample data?</AlertDialogTitle>
-            <AlertDialogDescription>{sampleDataWarning()}</AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => void restore()}>Restore</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <PetAlertDialog
+        open={confirmRestore}
+        onOpenChange={setConfirmRestore}
+        title="Restore sample data?"
+        description={sampleDataWarning()}
+        confirmLabel="Restore"
+        tone="danger"
+        onConfirm={() => void restore()}
+      />
     </>
   );
 }

@@ -13,7 +13,10 @@
  *  - everything else: passthrough. Never cache an API or a mutation.
  */
 
-const VERSION = "v1";
+/* Bump on a release or an asset-strategy change. `activate` deletes every
+   cache that is not part of the current version, which is how a stale chunk
+   from a previous build stops being served. */
+const VERSION = "v2";
 const SHELL_CACHE = `sidenote-shell-${VERSION}`;
 const ASSET_CACHE = `sidenote-assets-${VERSION}`;
 

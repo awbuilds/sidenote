@@ -4,6 +4,44 @@ All notable changes to Sidenote are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- A persistent GitHub icon in the app chrome — sidebar, collapsed rail, mobile
+  pane headers and Settings → About — linking to the public source repository.
+- The companion now presents every confirmation dialog on a small stage: the
+  pet enters, speaks the prompt in a speech bubble, reacts to the option being
+  considered, and can be petted for a hint. Share, link-note, notebook-picker,
+  tag-manager and command-palette dialogs use the same stage.
+- When the companion is off, or the OS asks for reduced motion, the standard
+  dialogs return unchanged (the stage still appears for reduced motion, but
+  without animation or a close delay).
+
+### Changed
+
+- Confirmation dialogs no longer use the centered `AlertDialog` card. The pet
+  wrapper owns closing after the reaction; turning the companion off restores
+  the standard alert.
+
+### Fixed
+
+- The sidebar's **New notebook** button now opens the create dialog when there
+  are no notebooks yet. The empty state returned before rendering
+  `NotebookDialogs`, so its click only updated state that was never mounted.
+- UI code no longer imports the Supabase client module just to ask whether sync
+  is configured. It imports `supabase/config.ts`, so the lazily loaded client
+  cannot be pulled into the page graph by an editor component.
+- Development unregisters a leftover service worker, and the production cache
+  version is bumped, so stale chunks cannot outlive a deploy.
+
+### Website
+
+- Every page has a persistent light/dark switch. The choice is stored in
+  `localStorage` (`sidenote-site-theme`), applied before paint, and falls back
+  to the OS preference until you choose. The hero swaps between the light and
+  dark product screenshots, and the theme-colour metadata follows the switch.
+
 ## 0.0.2 — 2026-11-03
 
 ### Fixed

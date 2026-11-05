@@ -7,16 +7,7 @@ import { AlertTriangle, Download, Upload } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { PetAlertDialog } from "@/components/companion/PetAlertDialog";
 
 import { downloadBlob } from "@/lib/transfer/export-note";
 import {
@@ -95,7 +86,6 @@ export function BackupSection() {
       });
     } finally {
       setBusy(null);
-      setPendingImport(null);
     }
   };
 
@@ -212,30 +202,17 @@ export function BackupSection() {
         </div>
       </section>
 
-      <AlertDialog
+      <PetAlertDialog
         open={pendingImport !== null}
         onOpenChange={(open) => !open && setPendingImport(null)}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Restore this backup?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Notes in the backup overwrite anything with the same id. Nothing
-              is deleted that is not in the backup.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => {
-                if (pendingImport !== null) void doImport(pendingImport, "zip");
-              }}
-            >
-              Restore
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        title="Restore this backup?"
+        description="Notes in the backup overwrite anything with the same id. Nothing is deleted that is not in the backup."
+        confirmLabel="Restore"
+        tone="restore"
+        onConfirm={() => {
+          if (pendingImport !== null) void doImport(pendingImport, "zip");
+        }}
+      />
     </div>
   );
 }

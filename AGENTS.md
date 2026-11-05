@@ -153,6 +153,11 @@ with `npm run dev` and the log in `.next/dev/logs/next-development.log` read.
 - **Any new dependency, font, icon set or piece of artwork must be added to
   `THIRD_PARTY_NOTICES.md`.** The app is AGPL-3.0-only; the notices file is how
   the project keeps its attribution honest.
+- **Confirmation dialogs go through the companion.** Use `PetAlertDialog` for
+  confirmations and `PetDialogContent` for utility dialogs (share, link note,
+  notebook picker, tags, command palette). They fall back to the standard
+  dialogs when `companionEnabled` is off. Do not import `AlertDialog` or
+  `DialogContent` directly for a new dialog.
 - **Relative links in the docs and website are tested.** `src/lib/docs-links.test.ts`
   walks every Markdown and website HTML file; moving a page or asset without
   updating its links fails the suite.

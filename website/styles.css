@@ -31,25 +31,23 @@
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #14120e;
-    --paper-2: #1b1813;
-    --surface: #1d1a15;
-    --ink: #f5efe3;
-    --ink-soft: #e4dccb;
-    --muted: #b7ad9d;
-    --line: #322c23;
-    --line-strong: #463c2d;
-    --accent: #fbbf24;
-    --accent-strong: #fcd34d;
-    --accent-soft: #2a2317;
-    --good: #7dd3a8;
-    --good-soft: #1c2a22;
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px -16px rgba(0, 0, 0, 0.6);
-    --shadow-lg: 0 30px 70px -35px rgba(0, 0, 0, 0.75), 0 2px 6px rgba(0, 0, 0, 0.4);
-    color-scheme: dark;
-  }
+:root[data-theme="dark"] {
+  --paper: #14120e;
+  --paper-2: #1b1813;
+  --surface: #1d1a15;
+  --ink: #f5efe3;
+  --ink-soft: #e4dccb;
+  --muted: #b7ad9d;
+  --line: #322c23;
+  --line-strong: #463c2d;
+  --accent: #fbbf24;
+  --accent-strong: #fcd34d;
+  --accent-soft: #2a2317;
+  --good: #7dd3a8;
+  --good-soft: #1c2a22;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px -16px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 30px 70px -35px rgba(0, 0, 0, 0.75), 0 2px 6px rgba(0, 0, 0, 0.4);
+  color-scheme: dark;
 }
 
 *,
@@ -297,6 +295,76 @@ hr {
   gap: 0.7rem;
 }
 
+/* Light/dark switch. The thumb and icons are driven by the html attribute,
+   so the correct state paints before the deferred theme.js runs. */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--paper-2);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--ink);
+}
+
+.theme-toggle-track {
+  position: relative;
+  display: block;
+  width: 40px;
+  height: 20px;
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform 180ms ease;
+}
+
+html[data-theme="dark"] .theme-toggle-thumb {
+  transform: translateX(20px);
+}
+
+.theme-toggle-icon {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  color: var(--ink-soft);
+  transition: opacity 160ms ease;
+}
+
+.theme-toggle-sun {
+  opacity: 1;
+}
+
+.theme-toggle-moon {
+  opacity: 0;
+}
+
+html[data-theme="dark"] .theme-toggle-sun {
+  opacity: 0;
+}
+
+html[data-theme="dark"] .theme-toggle-moon {
+  opacity: 1;
+}
+
 .nav-mobile {
   display: none;
   position: relative;
@@ -388,17 +456,15 @@ hr {
   transform: translateY(-1px);
 }
 
-@media (prefers-color-scheme: dark) {
-  .button {
-    background: var(--ink);
-    color: #14120e;
-    border-color: var(--ink);
-  }
-  .button:hover {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #14120e;
-  }
+[data-theme="dark"] .button {
+  background: var(--ink);
+  color: #14120e;
+  border-color: var(--ink);
+}
+[data-theme="dark"] .button:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #14120e;
 }
 
 .button-ghost {
@@ -413,16 +479,14 @@ hr {
   border-color: var(--ink);
 }
 
-@media (prefers-color-scheme: dark) {
-  .button-ghost {
-    background: transparent;
-    color: var(--ink);
-  }
-  .button-ghost:hover {
-    background: var(--paper-2);
-    color: var(--ink);
-    border-color: var(--ink);
-  }
+[data-theme="dark"] .button-ghost {
+  background: transparent;
+  color: var(--ink);
+}
+[data-theme="dark"] .button-ghost:hover {
+  background: var(--paper-2);
+  color: var(--ink);
+  border-color: var(--ink);
 }
 
 .button-small {
@@ -537,6 +601,18 @@ hr {
 .frame img {
   border-radius: 12px;
   border: 1px solid var(--line);
+}
+
+.hero-shot-dark {
+  display: none;
+}
+
+html[data-theme="dark"] .hero-shot-light {
+  display: none;
+}
+
+html[data-theme="dark"] .hero-shot-dark {
+  display: block;
 }
 
 .hero-badge {
@@ -658,10 +734,8 @@ hr {
   border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
-@media (prefers-color-scheme: dark) {
-  .card-icon {
-    color: var(--accent);
-  }
+[data-theme="dark"] .card-icon {
+  color: var(--accent);
 }
 
 .card-icon svg {
@@ -1353,11 +1427,33 @@ hr {
   }
 }
 
-@media (max-width: 400px) {
-  /* At 320px the brand, CTA and menu no longer fit on one row; the hero
+@media (max-width: 520px) {
+  /* The brand, toggle, CTA and menu no longer fit on one row; the hero
      repeats the CTA immediately below, so drop the header copy. */
   .nav-actions > .button {
     display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .header-inner {
+    gap: 0.75rem;
+  }
+  .nav-actions {
+    gap: 0.5rem;
+  }
+  .theme-toggle {
+    width: 42px;
+  }
+  .theme-toggle-track {
+    width: 36px;
+  }
+  .theme-toggle-thumb {
+    width: 16px;
+    height: 16px;
+  }
+  html[data-theme="dark"] .theme-toggle-thumb {
+    transform: translateX(18px);
   }
 }
 
@@ -1455,8 +1551,9 @@ hr {
    -------------------------------------------------------------------------- */
 
 @media print {
-  :root {
-    --paper: #fff;
+  :root,
+ :root[data-theme="dark"] {
+  --paper: #fff;
     --surface: #fff;
     --ink: #000;
     --ink-soft: #111;

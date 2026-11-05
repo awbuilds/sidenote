@@ -34,6 +34,7 @@ import { NewNoteButton } from "@/components/layout/NewNoteButton";
 import { TagSection } from "@/components/notes/TagSection";
 import { AccountButton } from "@/components/sync/AccountButton";
 import { Brand } from "@/components/Brand";
+import { GitHubLink } from "@/components/GitHubLink";
 import { CompanionPet } from "@/components/companion/CompanionPet";
 import { DEFAULT_COMPANION } from "@/lib/companion";
 
@@ -214,6 +215,7 @@ function PaneHeaderRight() {
   return (
     <div className="flex items-center gap-0.5">
       <SyncStatusButton />
+      <GitHubLink />
       <ThemeToggle />
     </div>
   );
@@ -409,7 +411,10 @@ function NotebookSidebar({
             </Button>
           </div>
         </div>
-        <Brand className="px-1 pt-1" />
+        <div className="flex items-center justify-between gap-1 px-1 pt-1">
+          <Brand />
+          <GitHubLink className="size-7 shrink-0" />
+        </div>
       </div>
     </>
   );

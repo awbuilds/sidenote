@@ -12,7 +12,7 @@ import { relativeTime } from "@/lib/format";
 import { FREE_ATTACHMENT_BYTES } from "@/lib/attachments/path";
 import { formatBytes } from "@/lib/storage/quota";
 import { signOutRemote } from "@/lib/supabase/actions";
-import { supabaseHost } from "@/lib/supabase/client";
+import { supabaseHost } from "@/lib/supabase/config";
 import { runSyncNow } from "@/lib/sync/trigger";
 import type { AuthSnapshot } from "@/lib/supabase/auth-store";
 import type { SyncStatus } from "@/lib/sync/status";

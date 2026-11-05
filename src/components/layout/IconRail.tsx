@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { cn } from "@/lib/utils";
 import { useTrashedNotes } from "@/hooks/queries";
 import { SyncStatusButton } from "@/components/sync/SyncStatusButton";
+import { GitHubLink } from "@/components/GitHubLink";
 
 /**
  * Compact icon rail.
@@ -55,6 +56,7 @@ export function IconRail({
       <RailButton label="Settings" href="/settings">
         <Settings className="size-4" />
       </RailButton>
+      <GitHubLink className="size-9" />
       <SyncStatusButton variant="rail" />
     </nav>
   );

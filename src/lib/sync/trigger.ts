@@ -1,4 +1,5 @@
-import { getSupabase, isRemoteEnabled } from "@/lib/supabase/client";
+import { getSupabase } from "@/lib/supabase/client";
+import { isRemoteEnabled } from "@/lib/supabase/config";
 import { db } from "@/lib/db/db";
 import { repairLocalIds } from "@/lib/db/migrate-ids";
 import { reconcile } from "./engine";

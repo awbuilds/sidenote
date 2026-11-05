@@ -7,11 +7,11 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { PetDialogContent } from "@/components/companion/PetDialogContent";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -29,7 +29,7 @@ import {
   SHARE_EXPIRY_MAX_DAYS,
   SHARE_EXPIRY_OPTIONS,
 } from "@/lib/share/expiry";
-import { isRemoteEnabled } from "@/lib/supabase/client";
+import { isRemoteEnabled } from "@/lib/supabase/config";
 import { runSync } from "@/lib/sync/trigger";
 
 export function ShareDialog({
@@ -99,7 +99,7 @@ export function ShareDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <PetDialogContent mode="share" className="sm:w-[28rem]" fallbackClassName="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Share this note</DialogTitle>
           <DialogDescription>
@@ -224,7 +224,7 @@ export function ShareDialog({
             )}
           </div>
         )}
-      </DialogContent>
+      </PetDialogContent>
     </Dialog>
   );
 }

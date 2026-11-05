@@ -30,7 +30,7 @@ export function CompanionSection() {
           <div>
             <h2 className="text-sm font-medium">Companion</h2>
             <p className="text-xs text-muted-foreground">
-              A small pet that crosses the screen once a session. Purely decorative.
+              A small pet that crosses the screen once a session and presents dialogs. Turn it off to use the standard dialogs.
             </p>
           </div>
         </div>
