@@ -49,7 +49,7 @@ import { QUERY_KEYS } from "@/hooks/query-keys";
 import { useSaveNoteContent, useTogglePin, useTrashNotes } from "@/hooks/mutations";
 import { downloadTextFile, exportNoteAsHtml } from "@/lib/transfer/export-note";
 import { wikiLink } from "@/lib/links/wiki";
-import { isRemoteEnabled } from "@/lib/supabase/client";
+import { isRemoteEnabled } from "@/lib/supabase/config";
 import type { Note, NoteId } from "@/lib/db/types";
 import { toast } from "sonner";
 

@@ -2,7 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
-import { getSupabase, isRemoteEnabled } from "@/lib/supabase/client";
+import { getSupabase } from "@/lib/supabase/client";
+import { isRemoteEnabled } from "@/lib/supabase/config";
 import { QUERY_KEYS } from "./query-keys";
 
 /**

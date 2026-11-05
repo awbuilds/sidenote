@@ -13,7 +13,7 @@ import { Brand } from "@/components/Brand";
 import { useAuth } from "@/hooks/use-auth";
 import { useAuthLinkError } from "@/hooks/use-auth-link-error";
 import { signInWithPassword, signUpWithPassword } from "@/lib/supabase/actions";
-import { supabaseHost } from "@/lib/supabase/client";
+import { supabaseHost } from "@/lib/supabase/config";
 
 function AuthView() {
   const router = useRouter();

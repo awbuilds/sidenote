@@ -21,7 +21,22 @@ const listeners = new Set<() => void>();
  */
 export function useServiceWorker(): void {
   useEffect(() => {
-    if (process.env.NODE_ENV !== "production") return;
+    if (process.env.NODE_ENV !== "production") {
+      // A service worker left over from a production run on the same origin
+      // serves cache-first chunks that no longer match the dev module graph.
+      // Unregister it in development; production registers normally below.
+      if (typeof navigator !== "undefined" && "serviceWorker" in navigator) {
+        void navigator.serviceWorker
+          .getRegistrations()
+          .then((registrations) => {
+            for (const registration of registrations) void registration.unregister();
+          })
+          .catch(() => {
+            // Unregistering is best-effort; never block the dev app.
+          });
+      }
+      return;
+    }
     if (typeof navigator === "undefined" || !("serviceWorker" in navigator)) return;
 
     const register = () => {

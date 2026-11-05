@@ -24,6 +24,14 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   wrapper owns closing after the reaction; turning the companion off restores
   the standard alert.
 
+### Fixed
+
+- UI code no longer imports the Supabase client module just to ask whether sync
+  is configured. It imports `supabase/config.ts`, so the lazily loaded client
+  cannot be pulled into the page graph by an editor component.
+- Development unregisters a leftover service worker, and the production cache
+  version is bumped, so stale chunks cannot outlive a deploy.
+
 ### Website
 
 - Every page has a persistent light/dark switch. The choice is stored in

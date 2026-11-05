@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createShare, listAllShares, listShares, revokeShare } from "@/lib/share/api";
 import { useAuth } from "@/hooks/use-auth";
-import { isRemoteEnabled } from "@/lib/supabase/client";
+import { isRemoteEnabled } from "@/lib/supabase/config";
 import { QUERY_FAMILIES, QUERY_KEYS } from "./query-keys";
 
 export function useShares(noteId: string | null, enabled: boolean) {

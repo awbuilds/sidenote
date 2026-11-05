@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { isRemoteEnabled, supabaseConfig, supabaseHost } from "./config";
+import { supabaseConfig } from "./config";
 
 /**
  * Browser Supabase client.
@@ -19,7 +19,7 @@ import { isRemoteEnabled, supabaseConfig, supabaseHost } from "./config";
  * actually made.
  */
 
-export { isRemoteEnabled, supabaseHost };
+export { supabaseConfig };
 
 let cached: Promise<SupabaseClient | null> | null = null;
 

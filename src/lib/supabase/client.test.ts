@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { __resetSupabaseClient, getSupabase, supabaseHost } from "./client";
+import { __resetSupabaseClient, getSupabase } from "./client";
+import { supabaseHost } from "./config";
 
 const saved = {
   url: process.env.NEXT_PUBLIC_SUPABASE_URL,

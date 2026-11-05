@@ -11,6 +11,9 @@ const h = vi.hoisted(() => ({
 
 vi.mock("@/lib/supabase/client", () => ({
   getSupabase: () => ({ auth: { getSession: h.getSession } }),
+}));
+
+vi.mock("@/lib/supabase/config", () => ({
   isRemoteEnabled: () => true,
 }));
 

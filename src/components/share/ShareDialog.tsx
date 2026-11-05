@@ -29,7 +29,7 @@ import {
   SHARE_EXPIRY_MAX_DAYS,
   SHARE_EXPIRY_OPTIONS,
 } from "@/lib/share/expiry";
-import { isRemoteEnabled } from "@/lib/supabase/client";
+import { isRemoteEnabled } from "@/lib/supabase/config";
 import { runSync } from "@/lib/sync/trigger";
 
 export function ShareDialog({

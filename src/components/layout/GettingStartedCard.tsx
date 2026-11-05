@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useInstallPrompt } from "@/hooks/usePwa";
 import { useSettings } from "@/hooks/queries";
 import { useUpdateSettings } from "@/hooks/mutations";
-import { isRemoteEnabled } from "@/lib/supabase/client";
+import { isRemoteEnabled } from "@/lib/supabase/config";
 import { cn } from "@/lib/utils";
 import { backupHealth } from "@/lib/backup";
 
