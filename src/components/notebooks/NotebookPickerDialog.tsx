@@ -4,12 +4,12 @@ import { useState } from "react";
 import { Check, ChevronRight, FolderInput } from "lucide-react";
 import {
   Dialog,
-  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { PetDialogContent } from "@/components/companion/PetDialogContent";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -52,7 +52,7 @@ export function NotebookPickerDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <PetDialogContent mode="pick" className="sm:w-[28rem]" fallbackClassName="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
@@ -99,7 +99,7 @@ export function NotebookPickerDialog({
             {confirmLabel}
           </Button>
         </DialogFooter>
-      </DialogContent>
+      </PetDialogContent>
     </Dialog>
   );
 }

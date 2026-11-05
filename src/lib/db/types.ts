@@ -233,7 +233,7 @@ export interface AppSettings {
   listDensity: ListDensity;
   /** Which companion pet is selected. */
   companionId: CompanionId;
-  /** Whether the companion may run across the screen. */
+  /** Whether the companion may run across the screen and present dialogs. */
   companionEnabled: boolean;
   /** Editor reading column preferences. */
   editorFont: EditorFont;

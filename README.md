@@ -75,8 +75,9 @@ Settings → Backup.
   light and dark variant. Packs change the palette, type, shape, controls and
   chrome, not just an accent colour.
 - **Companion** — four original pets. One can cross the screen once a session,
-  or stay off. Click it to make it hop and say something; it respects
-  reduced-motion settings and never blocks a click.
+  present confirmations and utility dialogs (share, link note, notebook
+  picker, tags, command palette), or stay off. Click it to make it hop and say
+  something; it respects reduced-motion settings and never blocks a click.
 
 ## Running it
 

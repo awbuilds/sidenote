@@ -4,16 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, RotateCcw, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { PetAlertDialog } from "@/components/companion/PetAlertDialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Providers } from "@/components/providers";
 import { StorageStatus } from "@/components/layout/StorageStatus";
@@ -130,57 +121,41 @@ function TrashView() {
         </div>
       </section>
 
-      <AlertDialog open={confirmEmpty} onOpenChange={setConfirmEmpty}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Empty the trash?</AlertDialogTitle>
-            <AlertDialogDescription>
-              {pluralize(notes.length, "note")} will be deleted permanently,
-              including their attachments and version history. This cannot be
-              undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={() => empty.mutate()}
-            >
-              Delete permanently
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <PetAlertDialog
+        open={confirmEmpty}
+        onOpenChange={setConfirmEmpty}
+        title="Empty the trash?"
+        description={
+          <>
+            {pluralize(notes.length, "note")} will be deleted permanently,
+            including their attachments and version history. This cannot be
+            undone.
+          </>
+        }
+        confirmLabel="Delete permanently"
+        confirmVariant="destructive"
+        tone="danger"
+        onConfirm={() => empty.mutate()}
+      />
 
-      <AlertDialog
+      <PetAlertDialog
         open={purgeTarget !== null}
         onOpenChange={(open) => !open && setPurgeTarget(null)}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete permanently?</AlertDialogTitle>
-            <AlertDialogDescription>
-              {purgeTarget === null
-                ? ""
-                : pluralize(purgeTarget.length, "note")}{" "}
-              will be deleted along with their attachments and history. This
-              cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={() => {
-                if (purgeTarget) purge.mutate(purgeTarget);
-                setPurgeTarget(null);
-              }}
-            >
-              Delete permanently
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        title="Delete permanently?"
+        description={
+          <>
+            {purgeTarget === null ? "" : pluralize(purgeTarget.length, "note")}{" "}
+            will be deleted along with their attachments and history. This
+            cannot be undone.
+          </>
+        }
+        confirmLabel="Delete permanently"
+        confirmVariant="destructive"
+        tone="danger"
+        onConfirm={() => {
+          if (purgeTarget) purge.mutate(purgeTarget);
+        }}
+      />
     </div>
   );
 }

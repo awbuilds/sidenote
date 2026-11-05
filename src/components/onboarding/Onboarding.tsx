@@ -126,8 +126,8 @@ export function Onboarding() {
                   This is {companionName(companionId)}.
                 </p>
                 <p className="mt-1 max-w-xs text-xs leading-relaxed text-muted-foreground">
-                  A small companion that crosses the screen once in a while. You
-                  can turn it off, or pick another, at the end of the tour.
+                  A small companion that crosses the screen once in a while and presents
+                  dialogs. You can turn it off, or pick another, at the end of the tour.
                 </p>
                 <p className="mt-2 text-[10px] uppercase tracking-wide text-muted-foreground/70">
                   Click to say hello
@@ -280,8 +280,8 @@ export function Onboarding() {
                 <div>
                   <h2 className="text-sm font-medium">Companion</h2>
                   <p className="text-xs text-muted-foreground">
-                    Let {companionName(companionId)} cross the screen once a
-                    session.
+                    Let {companionName(companionId)} cross the screen and present
+                    dialogs.
                   </p>
                 </div>
                 <Switch

@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Dialog,
-  DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { PetDialogContent } from "@/components/companion/PetDialogContent";
 import { useTitleResolver } from "./useWikiLink";
 import { wikiLink } from "@/lib/links/wiki";
 import type { Editor } from "@tiptap/react";
@@ -61,7 +61,7 @@ export function LinkNoteDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <PetDialogContent mode="link" className="sm:w-[28rem]" fallbackClassName="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Link to a note</DialogTitle>
           <DialogDescription>
@@ -109,7 +109,7 @@ export function LinkNoteDialog({
             ))
           )}
         </div>
-      </DialogContent>
+      </PetDialogContent>
     </Dialog>
   );
 }

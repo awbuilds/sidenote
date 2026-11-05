@@ -2,16 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { PetAlertDialog } from "@/components/companion/PetAlertDialog";
 import { useAuth } from "@/hooks/use-auth";
 import { useWipeAllData } from "@/hooks/mutations";
 import { deleteWarning, toCopyAccountState } from "@/lib/copy";
@@ -42,26 +33,16 @@ export function DeleteSection() {
         </Button>
       </section>
 
-      <AlertDialog open={confirmWipe} onOpenChange={setConfirmWipe}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete all data?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This cannot be undone. If you have not downloaded a backup, the
-              notes will be gone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={() => wipe.mutate()}
-            >
-              Delete everything
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <PetAlertDialog
+        open={confirmWipe}
+        onOpenChange={setConfirmWipe}
+        title="Delete all data?"
+        description="This cannot be undone. If you have not downloaded a backup, the notes will be gone."
+        confirmLabel="Delete everything"
+        confirmVariant="destructive"
+        tone="danger"
+        onConfirm={() => wipe.mutate()}
+      />
     </>
   );
 }

@@ -94,8 +94,11 @@ refetching the list.
 The project site was rebuilt from scratch on the app's warm-paper palette: a
 serif editorial hero with a browser-framed screenshot, a feature grid, a
 privacy diagram, a self-host terminal, an FAQ, a full footer, and a responsive
-header with a no-JavaScript mobile menu. It follows the system colour scheme,
-uses system fonts only, and loads no scripts.
+header with a no-JavaScript mobile menu. It uses system fonts only. It follows
+the system colour scheme by default, and a persistent light/dark switch (one
+small `theme.js` plus a pre-paint inline snippet) stores
+`sidenote-site-theme`; the hero swaps between `assets/poster.png` and
+`assets/poster-dark.png`.
 
 The policy set is now complete and internally linked:
 

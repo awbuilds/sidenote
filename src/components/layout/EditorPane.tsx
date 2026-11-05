@@ -29,17 +29,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { PetAlertDialog } from "@/components/companion/PetAlertDialog";
 
 import { NoteEditor } from "@/components/editor/NoteEditor";
 import { MarkdownSource } from "@/components/editor/MarkdownSource";
@@ -115,6 +105,7 @@ export function EditorPane({
   const [railTab, setRailTab] = useState<"outline" | "links" | null>("outline");
   const [linkDialogOpen, setLinkDialogOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
+  const [trashOpen, setTrashOpen] = useState(false);
   const shareEnabled = isRemoteEnabled();
   const [focus, toggleFocus] = useFocusMode();
   const [locked, toggleLocked] = useReadOnly(noteId ?? "");
@@ -173,6 +164,15 @@ export function EditorPane({
       className="flex min-h-0 flex-1 flex-col"
     >
       <ShareDialog noteId={note.id} open={shareOpen} onOpenChange={setShareOpen} />
+      <PetAlertDialog
+        open={trashOpen}
+        onOpenChange={setTrashOpen}
+        title="Move this note to trash?"
+        description="It can be restored from the trash until you empty it."
+        confirmLabel="Move to trash"
+        tone="warning"
+        onConfirm={() => trash.mutate([note.id], { onSuccess: onNoteDeleted })}
+      />
       <div className="flex shrink-0 items-center gap-2 border-b px-3 py-1.5">
         <TabsList className="h-7">
             <TabsTrigger value="rich" className="h-6 text-xs">
@@ -287,32 +287,12 @@ export function EditorPane({
               </DropdownMenuItem>
             )}
             <DropdownMenuSeparator />
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <DropdownMenuItem
-                  variant="destructive"
-                  onSelect={(event) => event.preventDefault()}
-                >
-                  Move to trash
-                </DropdownMenuItem>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Move this note to trash?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    It can be restored from the trash until you empty it.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={() => trash.mutate([note.id], { onSuccess: onNoteDeleted })}
-                  >
-                    Move to trash
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+            <DropdownMenuItem
+              variant="destructive"
+              onSelect={() => setTrashOpen(true)}
+            >
+              Move to trash
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

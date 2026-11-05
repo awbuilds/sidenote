@@ -16,16 +16,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { PetAlertDialog } from "@/components/companion/PetAlertDialog";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -328,26 +319,17 @@ export function NoteListPane({
         onConfirm={(target) => moveNotes.mutate({ ids: selectedIds, notebookId: target })}
       />
 
-      <AlertDialog open={trashOpen} onOpenChange={setTrashOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Move {pluralize(selectedIds.length, "note")} to trash?</AlertDialogTitle>
-            <AlertDialogDescription>
-              They can be restored from the trash until you empty it.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => {
-                trashNotes.mutate(selectedIds, { onSuccess: clearSelection });
-              }}
-            >
-              Move to trash
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <PetAlertDialog
+        open={trashOpen}
+        onOpenChange={setTrashOpen}
+        title={`Move ${pluralize(selectedIds.length, "note")} to trash?`}
+        description="They can be restored from the trash until you empty it."
+        confirmLabel="Move to trash"
+        tone="warning"
+        onConfirm={() => {
+          trashNotes.mutate(selectedIds, { onSuccess: clearSelection });
+        }}
+      />
     </div>
   );
 }
