@@ -26,6 +26,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- The sidebar's **New notebook** button now opens the create dialog when there
+  are no notebooks yet. The empty state returned before rendering
+  `NotebookDialogs`, so its click only updated state that was never mounted.
 - UI code no longer imports the Supabase client module just to ask whether sync
   is configured. It imports `supabase/config.ts`, so the lazily loaded client
   cannot be pulled into the page graph by an editor component.
