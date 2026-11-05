@@ -22,6 +22,7 @@ import { DeleteSection } from "@/components/settings/DeleteSection";
 import { SharesSection } from "@/components/settings/SharesSection";
 import { CompanionSection } from "@/components/companion/CompanionSection";
 import { Brand } from "@/components/Brand";
+import { GitHubMark } from "@/components/GitHubLink";
 import { useAuth } from "@/hooks/use-auth";
 import { useSettings } from "@/hooks/queries";
 import { useUpdateSettings } from "@/hooks/mutations";
@@ -191,6 +192,7 @@ function SettingsView() {
               target="_blank"
               rel="noreferrer"
             >
+              <GitHubMark className="size-4" />
               Source code
             </a>
           </Button>

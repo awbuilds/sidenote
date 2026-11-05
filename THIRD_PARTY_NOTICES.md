@@ -56,6 +56,10 @@ Sidenote names explicitly.
 - **shadcn/ui** — MIT. The components in `src/components/ui/` are generated from
   shadcn/ui and adapted for this app. <https://github.com/shadcn-ui/ui>
 - **Radix UI primitives** — MIT.
+- **GitHub mark** — the octocat is a trademark of GitHub, Inc. It is used only
+  as a link to this project's source repository. The path is the one published
+  by Simple Icons (CC0 1.0); Simple Icons is not a dependency.
+  <https://github.com/simple-icons/simple-icons>
 - **Companion artwork** (Pip, Miso, Olive, Moss) — original SVG illustrations
   created for Sidenote, licensed under AGPL-3.0-only with the rest of the
   project.

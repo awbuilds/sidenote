@@ -8,6 +8,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- A persistent GitHub icon in the app chrome — sidebar, collapsed rail, mobile
+  pane headers and Settings → About — linking to the public source repository.
 - The companion now presents every confirmation dialog on a small stage: the
   pet enters, speaks the prompt in a speech bubble, reacts to the option being
   considered, and can be petted for a hint. Share, link-note, notebook-picker,
